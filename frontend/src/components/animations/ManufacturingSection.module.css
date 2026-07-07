@@ -1,0 +1,72 @@
+.mfgSection {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.mfgContainer {
+  position: relative;
+  width: 60%;
+  height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stageText {
+  position: absolute;
+  top: 5%;
+  font-size: 2.5rem;
+  color: #333;
+  z-index: 10;
+  text-align: center;
+  width: 100%;
+  opacity: 0;
+}
+
+.flowerBase {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background-color: #f0f0f0; /* White shape */
+  border-radius: 50% 50% 0 50%;
+  box-shadow: inset -10px -10px 20px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #999;
+}
+
+.dyeOverlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #e91e63;
+  border-radius: inherit;
+  opacity: 0;
+  mix-blend-mode: multiply;
+}
+
+.heatEffect {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  border: 5px solid rgba(255, 87, 34, 0.5);
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.designedFlower {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23e91e63"/><circle cx="50" cy="50" r="20" fill="%23ffeb3b"/></svg>') center/contain no-repeat;
+  opacity: 0;
+}

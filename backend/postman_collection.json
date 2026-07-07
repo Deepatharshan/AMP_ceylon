@@ -1,0 +1,195 @@
+{
+  "info": {
+    "name": "AMP Ceylon Backend API",
+    "description": "Test the CRUD operations for the AMP Ceylon Next.js Backend.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Public API (No Auth Required)",
+      "item": [
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Get Seasons",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/seasons",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "seasons"]
+            }
+          }
+        },
+        {
+          "name": "Get Badges",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/badges",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "badges"]
+            }
+          }
+        },
+        {
+          "name": "Get Regions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/regions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "regions"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Offers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/offers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "offers"]
+            }
+          }
+        },
+        {
+          "name": "Submit Inquiry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_name\": \"John Doe\",\n  \"company_name\": \"Acme Corp\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"+1234567890\",\n  \"country\": \"USA\",\n  \"message\": \"I am interested in bulk ordering.\",\n  \"items\": [\n    {\n      \"product_id\": \"REPLACE_WITH_REAL_PRODUCT_UUID\",\n      \"product_name\": \"Red Rose Bouquet\",\n      \"product_code\": \"FLR-001\",\n      \"quantity\": 50,\n      \"notes\": \"Need them by next week\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/inquiries",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inquiries"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Admin API (Requires Auth Cookie)",
+      "description": "NOTE: You MUST run the 'Admin - Login' request first. Postman will automatically save the cookie it returns, allowing all the other Admin requests to succeed.",
+      "item": [
+        {
+          "name": "Admin - Login (Run this first!)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"your_admin_email@example.com\",\n  \"password\": \"your_strong_password\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "login"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "products"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Luxury White Lily Arrangement\",\n  \"product_code\": \"LILY-002\",\n  \"category_id\": \"REPLACE_WITH_CATEGORY_UUID\",\n  \"season_id\": \"REPLACE_WITH_SEASON_UUID\",\n  \"description\": \"Beautiful white lilies in a glass vase.\",\n  \"materials\": \"Polysilk, Glass\",\n  \"images\": [\"https://example.com/image1.jpg\"],\n  \"is_active\": true,\n  \"badge_ids\": [\"REPLACE_WITH_BADGE_UUID\"],\n  \"variants\": [\n    {\n      \"variant_name\": \"Standard Size\",\n      \"color_hex\": \"#FFFFFF\",\n      \"sort_order\": 1\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "products"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Update Inquiry Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"contacted\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/inquiries/REPLACE_WITH_INQUIRY_UUID",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "inquiries", "REPLACE_WITH_INQUIRY_UUID"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

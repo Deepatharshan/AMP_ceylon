@@ -1,0 +1,76 @@
+.shippingSection {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0f7fa;
+  overflow: hidden;
+}
+
+.sceneContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.themeText {
+  position: absolute;
+  top: 10%;
+  font-size: 3rem;
+  color: #006064;
+  font-weight: bold;
+}
+
+.product {
+  position: absolute;
+  width: 200px;
+  height: 300px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  z-index: 2;
+}
+
+.box {
+  position: absolute;
+  width: 220px;
+  height: 320px;
+  background-color: #8d6e63;
+  border: 2px solid #5d4037;
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(-100px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.lorry {
+  position: absolute;
+  right: -500px;
+  bottom: 20%;
+  width: 400px;
+  height: 200px;
+  background-color: #d32f2f;
+  border-radius: 10px 30px 10px 10px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+}

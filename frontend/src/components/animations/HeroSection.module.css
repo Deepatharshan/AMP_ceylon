@@ -1,0 +1,74 @@
+.heroSection {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  overflow: hidden;
+}
+
+.videoWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.videoPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.introContent {
+  position: absolute;
+  right: 5%;
+  width: 40%;
+  z-index: 2;
+  opacity: 0; /* Hidden initially */
+  padding: 2rem;
+}
+
+.introContent h2 {
+  font-size: 3rem;
+  color: #5c182e;
+  margin-bottom: 1rem;
+}
+
+.introContent p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.statsRow {
+  display: flex;
+  gap: 2rem;
+}
+
+.statsRow div h3 {
+  font-size: 2.5rem;
+  margin: 0;
+  color: #5c182e;
+}
+
+.statsRow div span {
+  font-size: 1rem;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
