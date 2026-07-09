@@ -35,6 +35,11 @@ export default async function EditProductPage({
     is_new_collection: product.is_new_collection || false,
     is_limited_product: product.is_limited_product || false,
     image_url: product.image_url || '',
+    image_urls: product.image_urls || (product.image_url ? [product.image_url] : []),
+    stock_count: product.stock_count || 0,
+    active_count: product.active_count || 0,
+    size: product.size || '',
+    market: product.market || 'Both',
   };
 
   return <ProductForm product={mappedProduct} />;

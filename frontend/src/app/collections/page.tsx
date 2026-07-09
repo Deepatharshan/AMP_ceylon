@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import { CATEGORIES, SPECIFICATIONS } from '@/lib/mock-data';
 import Navbar from '@/components/Navbar';
@@ -13,17 +14,39 @@ interface Product {
   sku: string;
   image_url?: string;
   category: string;
+  description?: string;
+  is_top_seller?: boolean;
+  is_new_collection?: boolean;
+  is_limited_product?: boolean;
 }
 
 export default function CollectionsPage() {
   const [activeCategory, setActiveCategory] = useState("All Collections");
   const [products, setProducts] = useState<Product[]>([]);
+  const [categoriesList, setCategoriesList] = useState<string[]>(CATEGORIES);
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
+  };
 
   useEffect(() => {
     async function loadProducts() {
       try {
         const supabase = createClient();
+        
+        // Fetch categories
+        const { data: catData } = await supabase
+          .from('categories')
+          .select('name')
+          .order('name', { ascending: true });
+        
+        if (catData && catData.length > 0) {
+          setCategoriesList(["All Collections", ...catData.map(c => c.name)]);
+        }
+
         const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
         if (error) throw error;
         if (data) {
@@ -33,7 +56,11 @@ export default function CollectionsPage() {
             name: item.name,
             sku: item.sku,
             image_url: item.image_url,
-            category: item.category
+            category: item.category,
+            description: item.description || '',
+            is_top_seller: item.is_top_seller,
+            is_new_collection: item.is_new_collection,
+            is_limited_product: item.is_limited_product
           }));
           setProducts(mapped);
         }
@@ -46,6 +73,20 @@ export default function CollectionsPage() {
     }
     loadProducts();
   }, []);
+
+  const addToCart = (product: Product) => {
+    if (typeof window === 'undefined') return;
+    const cart = JSON.parse(localStorage.getItem('inquiry_cart') || '[]');
+    const exists = cart.find((item: any) => item.id === product.id);
+    if (exists) {
+      exists.quantity = (exists.quantity || 1) + 100;
+    } else {
+      cart.push({ ...product, quantity: 100 });
+    }
+    localStorage.setItem('inquiry_cart', JSON.stringify(cart));
+    window.dispatchEvent(new Event('cart-updated'));
+    showToast(`Added ${product.name} to your Inquiry Cart!`);
+  };
 
   const filteredProducts = activeCategory === "All Collections" 
     ? products 
@@ -92,18 +133,18 @@ export default function CollectionsPage() {
             
             {/* Categories */}
             <div>
-              <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-6" style={{ fontFamily: 'var(--font-inter)' }}>
+              <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" style={{ fontFamily: 'var(--font-inter)' }}>
                 Categories
               </h3>
-              <ul className="space-y-2">
-                {CATEGORIES.map(category => (
+              <ul className="space-y-2 mt-4">
+                {categoriesList.map(category => (
                   <li key={category}>
                     <button
                       onClick={() => setActiveCategory(category)}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors ${
+                      className={`block w-[calc(100%+1.5rem)] text-left -ml-3 px-3 py-2 text-sm rounded-md transition-all ${
                         activeCategory === category 
-                          ? 'bg-[#3a081a] text-white font-medium' 
-                          : 'text-gray-600 hover:bg-gray-100'
+                          ? 'bg-[#3a081a] text-white font-medium shadow-sm' 
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-[#3a081a]'
                       }`}
                     >
                       {category}
@@ -160,24 +201,49 @@ export default function CollectionsPage() {
             {filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-12">
                 {filteredProducts.map(product => (
-                  <div key={product.id} className="group cursor-pointer flex flex-col">
-                    <div className="relative aspect-square mb-6 overflow-hidden bg-gray-100">
+                  <Link 
+                    href={`/product/${product.id}`}
+                    key={product.id} 
+                    className="group flex flex-col bg-white border border-[#ececec] p-4 rounded shadow-sm hover:shadow transition-shadow cursor-pointer"
+                  >
+                    <div className="relative aspect-square mb-6 overflow-hidden bg-gray-100 rounded">
                       <Image 
                         src={product.image_url || 'https://images.unsplash.com/photo-1562690868-60bbe7293e94?q=80&w=800&auto=format&fit=crop'} 
                         alt={product.name}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="object-cover transition-transform duration-700 group-hover:scale-102"
                       />
+                      {/* Banner tags overlay */}
+                      <div className="absolute top-2 left-2 flex flex-col gap-1.5 z-10">
+                        {product.is_top_seller && (
+                          <span className="bg-[#3a081a] text-[#f5ebd3] text-[8px] font-bold px-2 py-0.5 uppercase tracking-wider rounded shadow-sm">
+                            Top Seller
+                          </span>
+                        )}
+                        {product.is_new_collection && (
+                          <span className="bg-emerald-600 text-white text-[8px] font-bold px-2 py-0.5 uppercase tracking-wider rounded shadow-sm">
+                            New Collection
+                          </span>
+                        )}
+                        {product.is_limited_product && (
+                          <span className="bg-amber-600 text-white text-[8px] font-bold px-2 py-0.5 uppercase tracking-wider rounded shadow-sm">
+                            Limited Edition
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div className="text-center">
-                      <h4 className="font-medium text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>
+                    <div className="flex flex-col flex-1">
+                      <h4 className="font-bold text-base text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>
                         {product.name}
                       </h4>
-                      <p className="text-xs text-gray-500 tracking-wider">
-                        {product.sku}
+                      <p className="text-xs text-gray-500 line-clamp-3 mb-4 flex-1">
+                        {product.description || "Premium botanical arrangement handcrafted for export quality and high-grade aesthetic durability."}
                       </p>
+                      <div className="w-full bg-[#3a081a] text-white py-2 px-4 rounded text-xs font-semibold uppercase tracking-wider hover:bg-[#4a0b22] text-center transition-colors mt-auto">
+                        Inquire Now
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (
@@ -200,6 +266,24 @@ export default function CollectionsPage() {
 
         </div>
       </div>
+
+      {/* Custom Toast Notification */}
+      {toast && (
+        <div className="fixed bottom-6 right-6 z-50 max-w-sm w-full bg-white border border-gray-100 rounded-lg shadow-2xl p-4 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-green-50 text-green-600 border border-green-200 font-bold text-sm shrink-0">
+            ✓
+          </div>
+          <div className="flex-1 text-xs text-gray-600 font-medium">
+            {toast.message}
+          </div>
+          <button 
+            onClick={() => setToast(null)}
+            className="text-gray-400 hover:text-gray-600 p-0.5 cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <Footer />
     </main>

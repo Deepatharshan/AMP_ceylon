@@ -29,19 +29,23 @@
   letter-spacing: 1px;
 }
 
-.navbar.scrolled {
+.navbar.scrolled,
+.navbar.lightMode {
   background: rgba(255, 255, 255, 0.7);
   color: #333;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
   border-color: rgba(0, 0, 0, 0.1);
 }
 
-.navbar.scrolled .navLinks a {
+.navbar.scrolled .navLinks a,
+.navbar.lightMode .navLinks a {
   color: #555;
 }
 
 .navbar.scrolled .navLinks a:hover,
-.navbar.scrolled .navLinks .active {
+.navbar.scrolled .navLinks .active,
+.navbar.lightMode .navLinks a:hover,
+.navbar.lightMode .navLinks .active {
   color: var(--brand-maroon);
 }
 

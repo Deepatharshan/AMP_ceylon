@@ -10,12 +10,21 @@ export default async function CatalogPage() {
     .select('*')
     .order('created_at', { ascending: false });
 
+  const { data: inquiries = [] } = await supabase
+    .from('inquiries')
+    .select('status');
+
   if (error) {
     console.error('Failed to load products:', error);
   }
 
   const totalProducts = products?.length || 0;
   const categoriesCount = Array.from(new Set((products || []).map(p => p.category))).length;
+  const totalInquiries = inquiries?.length || 0;
+  const totalOrders = (inquiries || []).filter(inq => 
+    inq.status?.toLowerCase() === 'order_confirmed' || 
+    inq.status?.toLowerCase() === 'order confirmed'
+  ).length;
 
   return (
     <div className="max-w-6xl mx-auto pb-12">
@@ -31,8 +40,16 @@ export default async function CatalogPage() {
         </div>
         <div className="flex gap-4">
           <Link 
+            href="/admin/dashboard/report"
+            className="px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-[#3a081a] rounded hover:bg-[#4a0b22] transition-colors flex items-center gap-2"
+            style={{ color: '#ffffff' }}
+          >
+            Export Report
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          </Link>
+          <Link 
             href="/admin/dashboard/catalog/new"
-            className="px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-[#3a081a] text-white rounded hover:bg-[#4a0b22] transition-colors flex items-center gap-2"
+            className="px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-[#3a081a] rounded hover:bg-[#4a0b22] transition-colors flex items-center gap-2"
             style={{ color: '#ffffff' }}
           >
             + Add New Product
@@ -61,7 +78,7 @@ export default async function CatalogPage() {
         <div className="bg-white p-5 border border-[#ececec] rounded shadow-sm">
           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Total Inquiries</p>
           <h3 className="text-3xl font-bold text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>
-            342
+            {totalInquiries}
           </h3>
           <p className="text-[10px] text-gray-400 mt-2">Global inquiries received</p>
         </div>
@@ -69,7 +86,7 @@ export default async function CatalogPage() {
         <div className="bg-white p-5 border border-[#ececec] rounded shadow-sm">
           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Total Orders</p>
           <h3 className="text-3xl font-bold text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>
-            856
+            {totalOrders}
           </h3>
           <p className="text-[10px] text-gray-400 mt-2">Total orders processed</p>
         </div>

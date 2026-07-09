@@ -17,10 +17,11 @@ export default function SidebarLinks() {
     },
     {
       name: 'Inquiries',
-      href: '#',
+      href: '/admin/dashboard/inquiries',
       icon: (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-      )
+      ),
+      exact: false
     },
     {
       name: 'Product Catalog',
@@ -31,11 +32,12 @@ export default function SidebarLinks() {
       exact: false
     },
     {
-      name: 'Analytics',
-      href: '#',
+      name: 'Offers & Campaigns',
+      href: '/admin/dashboard/offers',
       icon: (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-      )
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+      ),
+      exact: false
     }
   ];
 

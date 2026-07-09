@@ -1,28 +1,137 @@
 import { createClient } from '@/utils/supabase/server'
 import Image from 'next/image'
+import Link from 'next/link'
+
+const getFlagEmoji = (countryName: string) => {
+  const code = countryName.toLowerCase();
+  if (code.includes('france')) return '🇫🇷';
+  if (code.includes('uae') || code.includes('dubai') || code.includes('united arab')) return '🇦🇪';
+  if (code.includes('sweden')) return '🇸🇪';
+  if (code.includes('uk') || code.includes('united kingdom') || code.includes('london')) return '🇬🇧';
+  if (code.includes('usa') || code.includes('united states') || code.includes('america')) return '🇺🇸';
+  if (code.includes('sri lanka') || code.includes('colombo') || code.includes('ceylon')) return '🇱🇰';
+  if (code.includes('india')) return '🇮🇳';
+  if (code.includes('japan') || code.includes('tokyo')) return '🇯🇵';
+  if (code.includes('germany')) return '🇩🇪';
+  if (code.includes('italy')) return '🇮🇹';
+  if (code.includes('spain')) return '🇪🇸';
+  if (code.includes('colombia')) return '🇨🇴';
+  return '🌐';
+};
+
+const getStatusColor = (status: string) => {
+  switch(status.toLowerCase()) {
+    case 'quoted': return 'bg-green-50 text-green-700 border border-green-200'
+    case 'pending': 
+    case 'new': 
+      return 'bg-gray-50 text-gray-600 border border-gray-200'
+    case 'order_confirmed':
+    case 'order confirmed':
+      return 'bg-rose-50 text-rose-700 border border-rose-200'
+    case 'reply_sent':
+    case 'reply sent':
+      return 'bg-amber-50 text-amber-700 border border-amber-200'
+    default: return 'bg-blue-50 text-blue-700 border border-blue-200'
+  }
+}
 
 export default async function DashboardPage() {
   const supabase = await createClient()
 
-  // We attempt to fetch inquiries, but if the table doesn't exist yet, we fallback to mock data
-  const { data: dbInquiries, error } = await supabase.from('inquiries').select('*').order('created_at', { ascending: false }).limit(5)
-  
-  const inquiries = dbInquiries && dbInquiries.length > 0 ? dbInquiries : [
-    { id: 1, buyer_name: "L'Art de Vivre", country: "France", created_at: "2024-10-24T10:00:00Z", status: "QUOTED" },
-    { id: 2, buyer_name: "Dubai Luxe Hotels", country: "UAE", created_at: "2024-10-23T14:30:00Z", status: "PENDING" },
-    { id: 3, buyer_name: "Nordic Floral Design", country: "Sweden", created_at: "2024-10-22T09:15:00Z", status: "FOLLOW UP" },
-    { id: 4, buyer_name: "Bloom & Willow", country: "UK", created_at: "2024-10-21T16:45:00Z", status: "QUOTED" },
-    { id: 5, buyer_name: "Garden State Co.", country: "USA", created_at: "2024-10-20T11:20:00Z", status: "PENDING" },
-  ]
+  // Fetch inquiries with items and products
+  const { data: dbInquiries } = await supabase
+    .from('inquiries')
+    .select(`
+      *,
+      inquiry_items (
+        *,
+        products (
+          category
+        )
+      )
+    `)
+    .order('created_at', { ascending: false });
 
-  const getStatusColor = (status: string) => {
-    switch(status) {
-      case 'QUOTED': return 'bg-[#e8ece3] text-[#4a5d3c]'
-      case 'PENDING': return 'bg-[#fceeed] text-[#e05d52]'
-      case 'FOLLOW UP': return 'bg-[#ecd8dd] text-[#8e4554]'
-      default: return 'bg-gray-100 text-gray-600'
-    }
+  // Fetch products
+  const { data: dbProducts } = await supabase
+    .from('products')
+    .select('category, sku');
+
+  const inquiries = dbInquiries && dbInquiries.length > 0 ? dbInquiries : [
+    { id: 'inq-1', customer_name: "L'Art de Vivre", company_name: "L'Art Group", country: "France", created_at: "2024-10-24T10:00:00Z", status: "quoted" },
+    { id: 'inq-2', customer_name: "Dubai Luxe Hotels", company_name: "Luxe Group", country: "UAE", created_at: "2024-10-23T14:30:00Z", status: "pending" },
+    { id: 'inq-3', customer_name: "Nordic Floral Design", company_name: "Nordic AB", country: "Sweden", created_at: "2024-10-22T09:15:00Z", status: "reply_sent" },
+    { id: 'inq-4', customer_name: "Bloom & Willow", company_name: "Bloom Ltd", country: "United Kingdom", created_at: "2024-10-21T16:45:00Z", status: "quoted" },
+    { id: 'inq-5', customer_name: "Garden State Co.", company_name: "Garden Co", country: "USA", created_at: "2024-10-20T11:20:00Z", status: "pending" },
+  ];
+
+  // 1. Total Inquiries
+  const totalInquiries = inquiries.length;
+  const now = new Date();
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
+  const currentMonthCount = inquiries.filter(i => new Date(i.created_at) >= thirtyDaysAgo).length;
+  const prevMonthCount = inquiries.filter(i => {
+    const d = new Date(i.created_at);
+    return d >= sixtyDaysAgo && d < thirtyDaysAgo;
+  }).length;
+  let percentMonthChange = 0;
+  if (prevMonthCount > 0) {
+    percentMonthChange = Math.round(((currentMonthCount - prevMonthCount) / prevMonthCount) * 100);
+  } else if (currentMonthCount > 0) {
+    percentMonthChange = 100;
   }
+
+  // 2. Active Quotes
+  const activeQuotes = inquiries.filter(i => 
+    ['quoted', 'reply_sent', 'pending', 'new'].includes(i.status.toLowerCase())
+  ).length;
+
+  // 3. Catalog Items
+  const productsList = dbProducts || [];
+  const catalogCount = productsList.length;
+  const categoriesCount = new Set(productsList.map(p => p.category)).size;
+
+  // 4. Regional Reach (unique countries)
+  const regionalCount = new Set(inquiries.map(i => i.country)).size;
+
+  // 5. Monthly Volume Chart
+  const getMonthName = (date: Date) => date.toLocaleString('en-US', { month: 'short' });
+  const monthsList: { name: string; count: number; year: number; month: number }[] = [];
+  for (let i = 3; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    monthsList.push({ name: getMonthName(d), count: 0, year: d.getFullYear(), month: d.getMonth() });
+  }
+  inquiries.forEach(inq => {
+    const inqDate = new Date(inq.created_at);
+    const match = monthsList.find(m => m.year === inqDate.getFullYear() && m.month === inqDate.getMonth());
+    if (match) match.count++;
+  });
+  const maxVolumeCount = Math.max(...monthsList.map(m => m.count), 1);
+
+  // 6. Category Interest Share
+  const categoryCounts: Record<string, number> = {};
+  let totalItemsCount = 0;
+  inquiries.forEach(inq => {
+    inq.inquiry_items?.forEach((item: any) => {
+      const cat = item.products?.category || 'Floral Arrangements';
+      categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+      totalItemsCount++;
+    });
+  });
+  const sortedCategories = Object.entries(categoryCounts)
+    .map(([name, count]) => ({
+      name,
+      percentage: totalItemsCount > 0 ? Math.round((count / totalItemsCount) * 100) : 0
+    }))
+    .sort((a, b) => b.percentage - a.percentage)
+    .slice(0, 3);
+
+  const topCategories = sortedCategories.length > 0 ? sortedCategories : [
+    { name: 'Floral Arrangements', percentage: 52 },
+    { name: 'Luxury Candles', percentage: 28 },
+    { name: 'Hand-woven Rattan', percentage: 20 }
+  ];
 
   return (
     <div className="max-w-6xl mx-auto pb-12">
@@ -33,17 +142,21 @@ export default async function DashboardPage() {
             Dashboard Overview
           </h2>
           <p className="text-sm text-gray-500 max-w-lg">
-            Welcome back to the Botanical Heritage export gateway. Monitor your global inquiry volume and inventory health in real-time.
+            Welcome back to the AMP Ceylon export gateway. Monitor your global inquiry volume and inventory health in real-time.
           </p>
         </div>
         <div className="flex gap-4">
-          <button className="px-4 py-2 text-xs font-semibold uppercase tracking-wider border border-gray-200 text-gray-600 rounded hover:bg-gray-50 transition-colors">
-            Date Range
-          </button>
-          <button className="px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-[#3a081a] text-white rounded hover:bg-[#4a0b22] transition-colors flex items-center gap-2">
+          <Link href="/admin/dashboard/inquiries" className="px-4 py-2 text-xs font-semibold uppercase tracking-wider border border-gray-200 text-gray-600 rounded hover:bg-gray-50 transition-colors text-center block">
+            Manage Inquiries
+          </Link>
+          <Link 
+            href="/admin/dashboard/report"
+            className="px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-[#3a081a] text-white rounded hover:bg-[#4a0b22] transition-colors flex items-center gap-2"
+            style={{ color: '#ffffff' }}
+          >
             Export Report
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -54,11 +167,14 @@ export default async function DashboardPage() {
             <div className="w-8 h-8 bg-[#f9f5f6] rounded text-[#3a081a] flex items-center justify-center">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
             </div>
-            <span className="text-xs font-bold text-[#4a5d3c] flex items-center gap-1">+12% <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></span>
+            <span className={`text-xs font-bold flex items-center gap-1 ${percentMonthChange >= 0 ? 'text-[#4a5d3c]' : 'text-red-500'}`}>
+              {percentMonthChange >= 0 ? `+${percentMonthChange}%` : `${percentMonthChange}%`}{' '}
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+            </span>
           </div>
           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Total Inquiries</p>
-          <h3 className="text-3xl text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>324</h3>
-          <p className="text-[10px] text-gray-400 mt-2">vs 289 last month</p>
+          <h3 className="text-3xl text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>{totalInquiries}</h3>
+          <p className="text-[10px] text-gray-400 mt-2">vs {prevMonthCount} last month</p>
         </div>
 
         <div className="bg-white p-5 border border-[#ececec] rounded shadow-sm">
@@ -68,7 +184,7 @@ export default async function DashboardPage() {
             </div>
           </div>
           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Active Quotes</p>
-          <h3 className="text-3xl text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>48</h3>
+          <h3 className="text-3xl text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>{activeQuotes}</h3>
           <p className="text-[10px] text-gray-400 mt-2">Awaiting buyer response</p>
         </div>
 
@@ -79,8 +195,10 @@ export default async function DashboardPage() {
             </div>
           </div>
           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Catalog Items</p>
-          <h3 className="text-3xl text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>1,240</h3>
-          <p className="text-[10px] text-gray-400 mt-2">Active SKUs across 8 categories</p>
+          <h3 className="text-3xl text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>
+            {catalogCount > 0 ? catalogCount.toLocaleString() : '0'}
+          </h3>
+          <p className="text-[10px] text-gray-400 mt-2">Active SKUs across {categoriesCount} categories</p>
         </div>
 
         <div className="bg-white p-5 border border-[#ececec] rounded shadow-sm">
@@ -91,7 +209,7 @@ export default async function DashboardPage() {
             <span className="text-[10px] font-bold bg-[#fceeed] text-[#e05d52] px-2 py-0.5 rounded">NEW</span>
           </div>
           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Regional Reach</p>
-          <h3 className="text-3xl text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>42</h3>
+          <h3 className="text-3xl text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>{regionalCount}</h3>
           <p className="text-[10px] text-gray-400 mt-2">Active countries served</p>
         </div>
       </div>
@@ -101,7 +219,7 @@ export default async function DashboardPage() {
         <div className="col-span-2 bg-white border border-[#ececec] rounded shadow-sm flex flex-col">
           <div className="p-5 flex justify-between items-center border-b border-[#ececec]">
             <h3 className="font-bold text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>Recent Inquiries</h3>
-            <button className="text-xs font-bold text-[#3a081a] hover:underline">View All</button>
+            <Link href="/admin/dashboard/inquiries" className="text-xs font-bold text-[#3a081a] hover:underline">View All</Link>
           </div>
           <div className="flex-1 overflow-x-auto">
             <table className="w-full text-sm text-left text-gray-600">
@@ -115,25 +233,28 @@ export default async function DashboardPage() {
                 </tr>
               </thead>
               <tbody>
-                {inquiries.map((inq, idx) => (
-                  <tr key={inq.id} className={idx !== inquiries.length - 1 ? 'border-b border-[#ececec]' : ''}>
-                    <td className="px-6 py-4 font-medium text-gray-900">{inq.buyer_name}</td>
-                    <td className="px-6 py-4 flex items-center gap-2">
-                      <span className="text-lg">
-                        {inq.country === 'France' ? '🇫🇷' : inq.country === 'UAE' ? '🇦🇪' : inq.country === 'Sweden' ? '🇸🇪' : inq.country === 'UK' ? '🇬🇧' : '🇺🇸'}
-                      </span>
-                      {inq.country}
+                {inquiries.slice(0, 5).map((inq, idx) => (
+                  <tr key={inq.id} className={idx !== inquiries.slice(0, 5).length - 1 ? 'border-b border-[#ececec]' : ''}>
+                    <td className="px-6 py-4 font-medium text-gray-900">
+                      {inq.customer_name}
+                      {inq.company_name && <span className="block text-[10px] text-gray-400 font-normal">{inq.company_name}</span>}
                     </td>
-                    <td className="px-6 py-4 text-xs">
+                    <td className="px-6 py-4">
+                      <span className="flex items-center gap-1.5">
+                        <span className="text-base leading-none">{getFlagEmoji(inq.country)}</span>
+                        {inq.country}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-xs text-gray-500">
                       {new Date(inq.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider ${getStatusColor(inq.status)}`}>
-                        {inq.status}
+                      <span className={`text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${getStatusColor(inq.status)}`}>
+                        {inq.status.replace('_', ' ')}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <button className="text-xs font-bold text-[#3a081a] hover:underline">View Details</button>
+                      <Link href="/admin/dashboard/inquiries" className="text-xs font-bold text-[#3a081a] hover:underline">View Details</Link>
                     </td>
                   </tr>
                 ))}
@@ -141,7 +262,7 @@ export default async function DashboardPage() {
             </table>
           </div>
           <div className="p-3 border-t border-[#ececec] text-center bg-gray-50 rounded-b">
-            <button className="text-xs text-gray-500 font-medium hover:text-[#3a081a]">Show More Inquiries ▾</button>
+            <Link href="/admin/dashboard/inquiries" className="text-xs text-gray-500 font-medium hover:text-[#3a081a]">Show More Inquiries ▾</Link>
           </div>
         </div>
 
@@ -150,14 +271,20 @@ export default async function DashboardPage() {
           <div className="bg-white border border-[#ececec] rounded shadow-sm p-5 h-48 flex flex-col relative">
             <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Inquiry Volume (Month)</h3>
             <div className="flex-1 border-b border-l border-gray-200 flex items-end justify-between px-2 pt-4">
-              {/* Fake chart bars */}
-              <div className="w-8 bg-[#3a081a] opacity-30 h-12 rounded-t-sm"></div>
-              <div className="w-8 bg-[#3a081a] opacity-50 h-24 rounded-t-sm"></div>
-              <div className="w-8 bg-[#3a081a] opacity-80 h-20 rounded-t-sm"></div>
-              <div className="w-8 bg-[#3a081a] h-32 rounded-t-sm"></div>
+              {monthsList.map((m, idx) => {
+                const pct = (m.count / maxVolumeCount) * 100;
+                return (
+                  <div 
+                    key={idx} 
+                    className="w-8 bg-[#3a081a] rounded-t-sm transition-all duration-500" 
+                    style={{ height: `${Math.max(pct, 8)}%` }}
+                    title={`${m.count} Inquiries`}
+                  />
+                );
+              })}
             </div>
             <div className="flex justify-between px-3 mt-2 text-[10px] text-gray-400 font-bold uppercase">
-              <span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span>
+              {monthsList.map((m, idx) => <span key={idx}>{m.name}</span>)}
             </div>
           </div>
 
@@ -165,34 +292,24 @@ export default async function DashboardPage() {
             <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-6">Category Interest</h3>
             
             <div className="space-y-4">
-              <div>
-                <div className="flex justify-between text-xs font-semibold mb-1">
-                  <span>Polysilk Flora</span><span className="text-gray-500">52%</span>
+              {topCategories.map((cat, idx) => (
+                <div key={idx}>
+                  <div className="flex justify-between text-xs font-semibold mb-1">
+                    <span className="truncate max-w-[150px]">{cat.name}</span>
+                    <span className="text-gray-500">{cat.percentage}%</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-[#3a081a] transition-all duration-500" 
+                      style={{ width: `${cat.percentage}%`, opacity: idx === 0 ? 1 : idx === 1 ? 0.6 : 0.3 }}
+                    />
+                  </div>
                 </div>
-                <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#3a081a] w-[52%]"></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between text-xs font-semibold mb-1">
-                  <span>Luxury Candles</span><span className="text-gray-500">28%</span>
-                </div>
-                <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#3a081a] opacity-60 w-[28%]"></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between text-xs font-semibold mb-1">
-                  <span>Hand-woven Rattan</span><span className="text-gray-500">20%</span>
-                </div>
-                <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#3a081a] opacity-30 w-[20%]"></div>
-                </div>
-              </div>
+              ))}
             </div>
 
             <div className="mt-6 p-3 bg-red-50 text-[10px] text-[#3a081a] rounded leading-relaxed">
-              <strong>Insight:</strong> Polysilk inquiry volume is up by 15% in the European market this quarter, specifically in high-UV resistance lines.
+              <strong>Insight:</strong> {topCategories[0]?.name || 'Botanicals'} interest has spiked, driving the bulk of global inquiry shipments this quarter.
             </div>
           </div>
         </div>
@@ -208,7 +325,7 @@ export default async function DashboardPage() {
           <div className="flex gap-4">
             <div className="border border-gray-200 p-3 rounded">
               <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Active Shipments</p>
-              <p className="text-xl font-bold text-[#3a081a]">12 Units</p>
+              <p className="text-xl font-bold text-[#3a081a]">{activeQuotes} Open</p>
             </div>
             <div className="border border-gray-200 p-3 rounded">
               <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Avg Transit Time</p>

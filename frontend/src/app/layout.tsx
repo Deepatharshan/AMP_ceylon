@@ -17,15 +17,37 @@ export const metadata: Metadata = {
   description: "Global Bloom operates state-of-the-art facilities perfecting the art of botanical mimicry.",
 };
 
-export default function RootLayout({
+import { createClient } from '@/utils/supabase/server';
+import GlobalOffer from '@/components/GlobalOffer';
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let activeOffer = null;
+  try {
+    const supabase = await createClient();
+    const { data: offers } = await supabase
+      .from('offers')
+      .select('*')
+      .eq('is_active', true)
+      .eq('status', 'Active')
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    if (offers && offers.length > 0) {
+      activeOffer = offers[0];
+    }
+  } catch (err) {
+    console.error("Failed to load global offer", err);
+  }
+
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable}`}>
         {children}
+        {activeOffer && <GlobalOffer offer={activeOffer} />}
       </body>
     </html>
   );
