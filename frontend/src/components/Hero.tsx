@@ -1,4 +1,5 @@
 import { ChevronDown } from 'lucide-react';
+import Link from 'next/link';
 import styles from './Hero.module.css';
 import HeroText from '@/components/ui/hero-shutter-text';
 
@@ -26,8 +27,9 @@ export default function Hero() {
           bridging the gap between nature's transient beauty.
         </p>
         <div className={styles.actions}>
-          <button className={styles.btnPrimary}>View Catalog</button>
-          <button className={styles.btnSecondary}>Get Quote</button>
+          <Link href="/collections" className={styles.btnPrimary}>
+            VIEW CATALOG AND GET QUOTE
+          </Link>
         </div>
       </div>
       

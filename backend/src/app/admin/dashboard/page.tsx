@@ -3,6 +3,12 @@ import Image from 'next/image'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  if (!user) {
+    const { redirect } = await import('next/navigation');
+    redirect('/admin/login');
+  }
 
   // We attempt to fetch inquiries, but if the table doesn't exist yet, we fallback to mock data
   const { data: dbInquiries, error } = await supabase.from('inquiries').select('*').order('created_at', { ascending: false }).limit(5)

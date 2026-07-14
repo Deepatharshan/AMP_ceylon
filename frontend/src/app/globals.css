@@ -12,6 +12,7 @@
   --text-light: #ffffff;
   
   --border-color: #e5e5e5;
+  --banner-height: 0px;
 }
 
 html, body {

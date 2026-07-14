@@ -4,6 +4,8 @@ import { useActionState, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { saveProduct, lookupBarcode } from './actions';
 import { createClient } from '@/utils/supabase/client';
+import ImageCropperModal from '@/components/ImageCropperModal';
+import ProductPreviewModal from './ProductPreviewModal';
 
 interface Product {
   id?: string;
@@ -114,6 +116,10 @@ export default function ProductForm({ product }: { product?: Product }) {
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
   const [uploadError, setUploadError] = useState('');
   
+  // Crop & Preview States
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+  
   // Custom Toast State
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -167,41 +173,51 @@ export default function ProductForm({ product }: { product?: Product }) {
     }
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, slotIndex: number) => {
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, slotIndex: number) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploadingIndex(slotIndex);
     setUploadError('');
 
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      setCropImageSrc(reader.result?.toString() || null);
+    });
+    reader.readAsDataURL(file);
+    e.target.value = ''; // Reset input
+  };
+
+  const handleCropComplete = async (croppedBlob: Blob) => {
+    setCropImageSrc(null);
+    if (uploadingIndex === null) return;
+
     try {
       const supabase = createClient();
       
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.jpg`;
       const filePath = `products/${fileName}`;
 
-      // Upload file to Supabase storage bucket 'product-images'
-      const { data: uploadData, error: err } = await supabase.storage
+      const { error: err } = await supabase.storage
         .from('product-images')
-        .upload(filePath, file, {
+        .upload(filePath, croppedBlob, {
           cacheControl: '3600',
           upsert: false
         });
 
       if (err) throw err;
 
-      // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('product-images')
         .getPublicUrl(filePath);
 
       const updatedUrls = [...imageUrls];
-      updatedUrls[slotIndex] = publicUrl;
+      updatedUrls[uploadingIndex] = publicUrl;
       setImageUrls(updatedUrls);
+      showToast('Image cropped and uploaded successfully!');
     } catch (err: any) {
       console.error('Error uploading image:', err);
-      setUploadError(err.message || 'Error uploading file. Make sure bucket "product-images" exists and is public.');
+      setUploadError(err.message || 'Error uploading file.');
     } finally {
       setUploadingIndex(null);
     }
@@ -577,8 +593,8 @@ export default function ProductForm({ product }: { product?: Product }) {
                 className="accent-[#3a081a] w-4 h-4"
               />
               <div>
-                <p className="text-xs font-bold text-gray-800">Top Seller</p>
-                <p className="text-[10px] text-gray-500">Highlight in main catalog</p>
+                <p className="text-xs font-bold text-gray-800">Top Seller / Home Page</p>
+                <p className="text-[10px] text-gray-500">Showcase 6 products on Home</p>
               </div>
             </label>
 
@@ -711,6 +727,13 @@ export default function ProductForm({ product }: { product?: Product }) {
 
           <div className="space-y-4">
             <button 
+              type="button"
+              onClick={() => setShowPreviewModal(true)}
+              className="w-full bg-white border border-[#3a081a] text-[#3a081a] py-3 rounded font-bold text-sm hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            >
+              PREVIEW CUSTOMER VIEW
+            </button>
+            <button 
               type="submit" 
               disabled={isSaving}
               className="w-full bg-[#3a081a] text-white py-3 rounded font-bold text-sm hover:bg-[#4a0b22] transition-colors disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
@@ -785,6 +808,38 @@ export default function ProductForm({ product }: { product?: Product }) {
             ✕
           </button>
         </div>
+      )}
+
+      {/* Modals */}
+      {cropImageSrc && (
+        <ImageCropperModal
+          imageSrc={cropImageSrc}
+          onCropComplete={handleCropComplete}
+          onClose={() => {
+            setCropImageSrc(null);
+            setUploadingIndex(null);
+          }}
+        />
+      )}
+
+      {showPreviewModal && (
+        <ProductPreviewModal
+          productData={{
+            name,
+            description,
+            sku,
+            category,
+            price: parseFloat(price) || 0,
+            materials,
+            colors,
+            is_top_seller: isTopSeller,
+            is_new_collection: isNewCollection,
+            is_limited_product: isLimitedProduct,
+            imageUrls,
+            size
+          }}
+          onClose={() => setShowPreviewModal(false)}
+        />
       )}
     </div>
   );

@@ -207,7 +207,7 @@ export default function ProductDetailPage({
 
   return (
     <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
-      <div className="bg-[#3a081a] h-32 w-full relative">
+      <div className="bg-[#3a081a] w-full relative" style={{ height: 'calc(8rem + var(--banner-height, 0px))' }}>
         <Navbar />
       </div>
 

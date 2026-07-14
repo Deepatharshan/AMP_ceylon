@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { X, Copy, Check } from 'lucide-react';
@@ -12,6 +12,57 @@ export default function GlobalOffer({ offer }: { offer: any }) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const pathname = usePathname();
+  const bannerRef = useRef<HTMLDivElement>(null);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
+
+  // Scroll listener for hiding banner on scroll down
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        setHidden(true); // scrolling down
+      } else {
+        setHidden(false); // scrolling up
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // New useEffect to handle setting the banner height CSS variable
+  useEffect(() => {
+    if (!hasDismissed || isOpen || hidden) {
+      document.documentElement.style.setProperty('--banner-height', '0px');
+      return;
+    }
+    
+    let observer: ResizeObserver | null = null;
+    let timeout: NodeJS.Timeout;
+    
+    const observeHeight = () => {
+      const el = document.getElementById('global-offer-banner');
+      if (el) {
+        document.documentElement.style.setProperty('--banner-height', `${el.offsetHeight}px`);
+        observer = new ResizeObserver(() => {
+          document.documentElement.style.setProperty('--banner-height', `${el.offsetHeight}px`);
+        });
+        observer.observe(el);
+      } else {
+        timeout = setTimeout(observeHeight, 50);
+      }
+    };
+    
+    observeHeight();
+    
+    return () => {
+      if (observer) observer.disconnect();
+      clearTimeout(timeout);
+      document.documentElement.style.setProperty('--banner-height', '0px');
+    };
+  }, [hasDismissed, isOpen, hidden]);
 
   useEffect(() => {
     setIsClient(true);
@@ -147,9 +198,11 @@ export default function GlobalOffer({ offer }: { offer: any }) {
       <AnimatePresence>
         {hasDismissed && !isOpen && (
           <motion.div 
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="fixed bottom-0 left-0 right-0 z-[9000] bg-[#3a081a] text-white py-3 px-6 shadow-2xl flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8"
+            id="global-offer-banner"
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: hidden ? -100 : 0, opacity: hidden ? 0 : 1 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 left-0 right-0 z-[9000] bg-[#3a081a] text-white py-3 px-6 shadow-2xl flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8"
           >
             <p className="text-xs sm:text-sm font-medium text-center">
               <span className="font-bold mr-2 text-[#f4e6ea]">{offer.title}:</span>

@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { CATEGORIES, SPECIFICATIONS } from '@/lib/mock-data';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -20,7 +21,10 @@ interface Product {
   is_limited_product?: boolean;
 }
 
-export default function CollectionsPage() {
+function CollectionsMain() {
+  const searchParams = useSearchParams();
+  const categoryQuery = searchParams.get('category');
+  
   const [activeCategory, setActiveCategory] = useState("All Collections");
   const [products, setProducts] = useState<Product[]>([]);
   const [categoriesList, setCategoriesList] = useState<string[]>(CATEGORIES);
@@ -31,6 +35,14 @@ export default function CollectionsPage() {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3500);
   };
+
+  useEffect(() => {
+    if (categoryQuery) {
+      setActiveCategory(categoryQuery);
+    } else {
+      setActiveCategory("All Collections");
+    }
+  }, [categoryQuery]);
 
   useEffect(() => {
     async function loadProducts() {
@@ -94,7 +106,7 @@ export default function CollectionsPage() {
 
   return (
     <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
-      <div className="bg-[#3a081a] h-32 w-full relative">
+      <div className="bg-[#3a081a] w-full relative" style={{ height: 'calc(8rem + var(--banner-height, 0px))' }}>
         <Navbar />
       </div>
 
@@ -287,5 +299,19 @@ export default function CollectionsPage() {
 
       <Footer />
     </main>
+  );
+}
+
+export default function CollectionsPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
+        <div className="bg-[#3a081a] w-full relative" style={{ height: 'calc(8rem + var(--banner-height, 0px))' }}>
+          <Navbar />
+        </div>
+      </main>
+    }>
+      <CollectionsMain />
+    </Suspense>
   );
 }

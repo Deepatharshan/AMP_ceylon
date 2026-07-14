@@ -37,6 +37,12 @@ const getStatusColor = (status: string) => {
 
 export default async function DashboardPage() {
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  if (!user) {
+    const { redirect } = await import('next/navigation');
+    redirect('/admin/login');
+  }
 
   // Fetch inquiries with items and products
   const { data: dbInquiries } = await supabase

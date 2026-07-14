@@ -1,6 +1,6 @@
 .navbar {
   position: fixed;
-  top: 1.5rem;
+  top: calc(1.5rem + var(--banner-height, 0px));
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
@@ -19,7 +19,13 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
+  transition: transform 0.4s ease-in-out, background 0.3s ease, opacity 0.4s ease, top 0.3s ease;
+}
+
+.hidden {
+  transform: translateX(-50%) translateY(-150%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .logo {
@@ -85,4 +91,54 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.dropdownContainer {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  margin-bottom: -0.5rem;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  min-width: 220px;
+  padding: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdownContainer:hover .dropdownMenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dropdownItem {
+  color: #333 !important;
+  font-size: 0.85rem !important;
+  text-transform: none !important;
+  padding: 0.75rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500 !important;
+  transition: background-color 0.2s, color 0.2s !important;
+  border-bottom: none !important;
+}
+
+.dropdownItem:hover {
+  background-color: #f4f2ee;
+  color: var(--brand-maroon) !important;
+  opacity: 1 !important;
 }

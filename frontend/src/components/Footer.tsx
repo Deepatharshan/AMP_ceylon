@@ -1,4 +1,5 @@
 import { Mail, Phone, ShoppingCart } from 'lucide-react';
+import Link from 'next/link';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -24,7 +25,11 @@ export default function Footer() {
         <div className={styles.column}>
           <h4>Information</h4>
           <ul>
-            <li>Privacy Policy</li>
+            <li>
+              <Link href="/privacy-policy" className="hover:text-[#f4e6ea] transition-colors">
+                Privacy Policy
+              </Link>
+            </li>
             <li>Terms of Sales</li>
             <li>Global Export FAQs</li>
           </ul>

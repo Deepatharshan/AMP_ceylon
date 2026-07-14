@@ -29,19 +29,16 @@ export default function ManufacturingPage() {
 
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-        {/* Background Video */}
+        {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            className="object-cover w-full h-full"
-          >
-            <source src="/hero-video.mp4" type="video/mp4" />
-          </video>
+          <Image 
+            src="https://images.unsplash.com/photo-1563241598-646bc5683794?q=80&w=2000&auto=format&fit=crop"
+            alt="Manufacturing Facility Background"
+            fill
+            className="object-cover"
+          />
           {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-black/50"></div>
         </div>
         
         {/* Hero Content */}

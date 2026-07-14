@@ -11,9 +11,9 @@ const collections = [
     image: 'https://images.unsplash.com/photo-1562690868-60bbe7293e94?q=80&w=800&auto=format&fit=crop',
   },
   {
-    title: 'Home Fragrance',
-    category: 'Luxury Scent Profiles',
-    image: 'https://images.unsplash.com/photo-1602928321679-560bb453f190?q=80&w=800&auto=format&fit=crop',
+    title: 'Gift Products',
+    category: 'Floral Arrangements & Boxes',
+    image: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?q=80&w=800&auto=format&fit=crop',
   },
   {
     title: 'Seasonal Decor',

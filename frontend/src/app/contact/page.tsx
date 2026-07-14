@@ -3,8 +3,10 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Mail, Phone, MessageCircle, MapPin } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { WorldMap } from '@/components/ui/map';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -19,26 +21,30 @@ const staggerContainer = {
   }
 };
 
+const mapDots = [
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: -38.4161, lng: -63.6167, label: "Argentina" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 51.1657, lng: 10.4515, label: "Germany" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 35.8617, lng: 104.1954, label: "China" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: -25.2744, lng: 133.7751, label: "Australia" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 23.6850, lng: 90.3563, label: "Bangladesh" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 20.5937, lng: 78.9629, label: "India" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 50.5039, lng: 4.4699, label: "Belgium" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 47.5162, lng: 14.5501, label: "Austria" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 51.5074, lng: -0.1278, label: "London" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 37.0902, lng: -95.7129, label: "USA" } },
+];
+
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-[#faf9f8] text-gray-900 overflow-x-hidden selection:bg-[#3a081a] selection:text-white">
       <Navbar />
 
       {/* Hero Section (Map Background) */}
-      <section className="relative pt-32 pb-24 lg:pt-48 lg:pb-32 px-6 border-b border-[#f4f2ee] overflow-hidden">
-        {/* Abstract Map Background */}
-        <div className="absolute inset-0 w-full h-full opacity-30 pointer-events-none">
-          <Image 
-            src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2000&auto=format&fit=crop"
-            alt="Map Background"
-            fill
-            className="object-cover"
-          />
-        </div>
+      <section className="relative pt-32 pb-16 lg:pt-40 lg:pb-16 px-6 border-b border-[#f4f2ee] overflow-hidden bg-white">
         
-        <div className="container mx-auto max-w-6xl relative z-10">
+        <div className="container mx-auto max-w-6xl relative z-10 text-center flex flex-col items-center">
           <motion.div 
-            className="max-w-2xl"
+            className="max-w-3xl"
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
@@ -51,34 +57,17 @@ export default function ContactPage() {
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-[#3a081a]" 
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
-              Connecting Excellence Across Borders.
+              Connecting Excellence Across Borders
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-gray-600 text-base md:text-lg leading-relaxed mb-10 max-w-xl">
+            <motion.p variants={fadeUp} className="text-gray-600 text-base md:text-lg leading-relaxed mb-6">
               Our state-of-the-art facility in Export City is the heart of our global floral operations. Reach out to discuss wholesale opportunities and custom manufacturing.
             </motion.p>
-            
-            <motion.div variants={staggerContainer} className="flex flex-col sm:flex-row gap-8">
-              <motion.div variants={fadeUp} className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#f4e6ea] flex items-center justify-center shrink-0 text-[#3a081a]">
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                </div>
-                <div>
-                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">Address</h4>
-                  <p className="text-sm font-semibold text-[#3a081a]">INDUSTRY ZONE B, EXPORT CITY</p>
-                </div>
-              </motion.div>
-              
-              <motion.div variants={fadeUp} className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#f4e6ea] flex items-center justify-center shrink-0 text-[#3a081a]">
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                </div>
-                <div>
-                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">Email</h4>
-                  <p className="text-sm font-semibold text-[#3a081a]">WHOLESALE@AMP-FLORA.COM</p>
-                </div>
-              </motion.div>
-            </motion.div>
           </motion.div>
+        </div>
+
+        {/* Abstract Map Animation */}
+        <div className="w-full max-w-6xl mx-auto relative z-0 mt-4 opacity-90">
+          <WorldMap dots={mapDots} lineColor="#8a385a" showLabels={true} />
         </div>
       </section>
 
@@ -161,7 +150,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Global Sales Team */}
+      {/* Direct Contact & Branches */}
       <section className="py-24 px-6 bg-white">
         <div className="container mx-auto max-w-6xl">
           <motion.div 
@@ -171,85 +160,127 @@ export default function ContactPage() {
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
           >
-            <motion.p variants={fadeUp} className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">
-              Meet Our Experts
+            <motion.p variants={fadeUp} className="text-[10px] font-bold text-[#8a385a] uppercase tracking-widest mb-3">
+              Get in Touch
             </motion.p>
             <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl mb-4 text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>
-              Global Sales Team
+              Direct Contact & Branches
             </motion.h2>
             <motion.p variants={fadeUp} className="text-gray-600 text-sm">
-              Connect with our dedicated regional managers to discuss market-specific floral solutions and logistical support.
+              Connect with us instantly through our social channels or visit our regional branches.
             </motion.p>
           </motion.div>
 
-          <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-          >
-            {/* Team Member 1 */}
-            <motion.div variants={fadeUp} className="group">
-              <div className="relative w-full aspect-[4/5] rounded-lg overflow-hidden mb-5">
-                <Image 
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop" 
-                  alt="Jillian Vane" 
-                  fill 
-                  className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* Contact Details */}
+            <motion.div 
+              className="bg-[#faf9f8] p-10 rounded-xl border border-[#f4f2ee] shadow-sm flex flex-col justify-center"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h3 className="text-xl font-bold mb-8 text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>
+                Reach Us Digitally
+              </h3>
+              
+              <div className="flex flex-col gap-6">
+                <a href="mailto:info@amp-flora.com" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
+                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                    <Mail size={18} className="text-[#3a081a]" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Email</p>
+                    <p className="text-sm font-semibold">info@amp-flora.com</p>
+                  </div>
+                </a>
+                
+                <a href="tel:+94771234567" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
+                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                    <Phone size={18} className="text-[#3a081a]" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Phone</p>
+                    <p className="text-sm font-semibold">+94 77 123 4567</p>
+                  </div>
+                </a>
+
+                <a href="https://wa.me/94771234567" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
+                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                    <MessageCircle size={18} className="text-[#3a081a]" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">WhatsApp</p>
+                    <p className="text-sm font-semibold">+94 77 123 4567 💬</p>
+                  </div>
+                </a>
+
+                <div className="flex items-center gap-6 mt-4 pt-6 border-t border-gray-200">
+                  <a href="#" className="flex items-center gap-2 text-gray-600 hover:text-[#1877F2] transition-colors">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm font-semibold">@AMPCeylon</span>
+                  </a>
+                  <a href="#" className="flex items-center gap-2 text-gray-600 hover:text-[#E4405F] transition-colors">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
+                      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                    </svg>
+                    <span className="text-sm font-semibold">@amp.ceylon</span>
+                  </a>
+                </div>
               </div>
-              <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">North America</p>
-              <h4 className="text-lg font-bold text-[#3a081a] mb-1" style={{ fontFamily: 'var(--font-playfair)' }}>Jillian Vane</h4>
-              <p className="text-xs text-gray-500">jillian.v@amp-flora.com</p>
             </motion.div>
 
-            {/* Team Member 2 */}
-            <motion.div variants={fadeUp} className="group">
-              <div className="relative w-full aspect-[4/5] rounded-lg overflow-hidden mb-5">
-                <Image 
-                  src="/images/floral_gift_decoration.png" 
-                  alt="Elena Rossi" 
-                  fill 
-                  className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                />
+            {/* Branches */}
+            <motion.div 
+              className="bg-[#3a081a] p-10 rounded-xl text-white shadow-xl flex flex-col justify-center relative overflow-hidden"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="absolute top-0 right-0 p-8 opacity-10">
+                <MapPin size={120} />
               </div>
-              <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Europe & UK</p>
-              <h4 className="text-lg font-bold text-[#3a081a] mb-1" style={{ fontFamily: 'var(--font-playfair)' }}>Elena Rossi</h4>
-              <p className="text-xs text-gray-500">elena.r@amp-flora.com</p>
-            </motion.div>
+              
+              <h3 className="text-xl font-bold mb-8 relative z-10" style={{ fontFamily: 'var(--font-playfair)' }}>
+                Our Branches
+              </h3>
+              
+              <div className="flex flex-col gap-8 relative z-10">
+                <div className="flex gap-4">
+                  <div className="mt-1">
+                    <MapPin size={20} className="text-[#f4e6ea]" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-bold mb-2 tracking-wide text-[#f4e6ea]">Katunayake Branch</h4>
+                    <p className="text-sm text-white/70 leading-relaxed">
+                      123 Airport Road, Free Trade Zone,<br />
+                      Katunayake, Sri Lanka
+                    </p>
+                  </div>
+                </div>
 
-            {/* Team Member 3 */}
-            <motion.div variants={fadeUp} className="group">
-              <div className="relative w-full aspect-[4/5] rounded-lg overflow-hidden mb-5">
-                <Image 
-                  src="https://images.unsplash.com/photo-1598550874175-4d0ef436c909?q=80&w=600&auto=format&fit=crop" 
-                  alt="Chen Wei" 
-                  fill 
-                  className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                />
+                <div className="w-full h-px bg-white/10"></div>
+
+                <div className="flex gap-4">
+                  <div className="mt-1">
+                    <MapPin size={20} className="text-[#f4e6ea]" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-bold mb-2 tracking-wide text-[#f4e6ea]">Kandy Branch</h4>
+                    <p className="text-sm text-white/70 leading-relaxed">
+                      45 Hill Capital Avenue, Peradeniya Road,<br />
+                      Kandy, Sri Lanka
+                    </p>
+                  </div>
+                </div>
               </div>
-              <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Asia Pacific</p>
-              <h4 className="text-lg font-bold text-[#3a081a] mb-1" style={{ fontFamily: 'var(--font-playfair)' }}>Chen Wei</h4>
-              <p className="text-xs text-gray-500">chen.w@amp-flora.com</p>
             </motion.div>
-
-            {/* Team Member 4 */}
-            <motion.div variants={fadeUp} className="group">
-              <div className="relative w-full aspect-[4/5] rounded-lg overflow-hidden mb-5">
-                <Image 
-                  src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=600&auto=format&fit=crop" 
-                  alt="Amira Al-Fayed" 
-                  fill 
-                  className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                />
-              </div>
-              <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Middle East</p>
-              <h4 className="text-lg font-bold text-[#3a081a] mb-1" style={{ fontFamily: 'var(--font-playfair)' }}>Amira Al-Fayed</h4>
-              <p className="text-xs text-gray-500">amira.a@amp-flora.com</p>
-            </motion.div>
-
-          </motion.div>
+          </div>
         </div>
       </section>
 
