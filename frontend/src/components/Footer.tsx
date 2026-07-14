@@ -31,7 +31,11 @@ export default function Footer() {
               </Link>
             </li>
             <li>Terms of Sales</li>
-            <li>Global Export FAQs</li>
+            <li>
+              <Link href="/faq" className="hover:text-[#f4e6ea] transition-colors">
+                FAQs
+              </Link>
+            </li>
           </ul>
         </div>
         

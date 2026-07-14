@@ -61,7 +61,7 @@ export default function Navbar() {
     };
   }, []);
 
-  const isLightMode = pathname === '/contact' || pathname === '/privacy-policy';
+  const isLightMode = pathname === '/contact' || pathname === '/privacy-policy' || pathname === '/faq';
   
   return (
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''} ${hidden ? styles.hidden : ''} ${isLightMode && !scrolled ? styles.lightMode : ''}`}>
