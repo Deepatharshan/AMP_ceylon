@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function GlobalOffer({ offer }: { offer: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [hasDismissed, setHasDismissed] = useState(false); // Default false to prevent bottom banner flash
+  const [isPermanentlyHidden, setIsPermanentlyHidden] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const pathname = usePathname();
@@ -74,11 +75,15 @@ export default function GlobalOffer({ offer }: { offer: any }) {
     if (!offer) return;
     
     const dismissedKey = `dismissed_offer_${offer.id}`;
+    const bannerDismissedKey = `banner_dismissed_${offer.id}`;
     const activeOfferKey = 'active_offer';
     
     const isDismissed = localStorage.getItem(dismissedKey) === 'true';
+    const isBannerDismissed = localStorage.getItem(bannerDismissedKey) === 'true';
     const isClaimed = !!localStorage.getItem(activeOfferKey);
     
+    if (isBannerDismissed) setIsPermanentlyHidden(true);
+
     // If they already claimed it, or dismissed it, keep it dismissed.
     if (isDismissed || isClaimed) {
       setHasDismissed(true);
@@ -103,6 +108,11 @@ export default function GlobalOffer({ offer }: { offer: any }) {
   const handleClaim = () => {
     localStorage.setItem('active_offer', JSON.stringify(offer));
     setShowSuccess(true);
+  };
+
+  const handleBannerDismiss = () => {
+    setIsPermanentlyHidden(true);
+    localStorage.setItem(`banner_dismissed_${offer.id}`, 'true');
   };
 
   const handleSuccessOk = () => {
@@ -196,7 +206,7 @@ export default function GlobalOffer({ offer }: { offer: any }) {
 
       {/* Slim Persistent Banner (Only shows when modal is dismissed) */}
       <AnimatePresence>
-        {hasDismissed && !isOpen && (
+        {hasDismissed && !isOpen && !isPermanentlyHidden && (
           <motion.div 
             id="global-offer-banner"
             initial={{ y: -50, opacity: 0 }}
@@ -223,6 +233,14 @@ export default function GlobalOffer({ offer }: { offer: any }) {
                 className="text-[10px] font-bold uppercase tracking-widest bg-white text-[#3a081a] px-3 py-1.5 rounded hover:bg-gray-100 transition-colors whitespace-nowrap"
               >
                 Claim Now
+              </button>
+              {/* Close (X) Button */}
+              <button
+                onClick={handleBannerDismiss}
+                className="text-white/60 hover:text-white transition-colors ml-2"
+                aria-label="Hide banner"
+              >
+                <X size={16} />
               </button>
             </div>
           </motion.div>

@@ -36,7 +36,7 @@ export default function LoginPage({
         {/* Top Section */}
         <div className="relative z-20 flex flex-col gap-1">
           <span className="text-sm font-bold tracking-widest text-[#f5ebd3] uppercase" style={{ fontFamily: 'var(--font-inter)' }}>
-            Botanical Heritage
+            AMPceylon admin
           </span>
           <span className="text-[10px] tracking-widest text-white/50 uppercase font-semibold">
             Established 1994

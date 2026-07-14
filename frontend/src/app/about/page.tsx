@@ -11,7 +11,7 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className={styles.hero}>
         <img 
-          src="https://images.unsplash.com/photo-1507421884488-8255df599c9c?q=80&w=2000&auto=format&fit=crop" 
+          src="/aboutusheader.jpg" 
           alt="About Us Hero" 
           className={styles.heroImage} 
         />

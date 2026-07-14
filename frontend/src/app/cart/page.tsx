@@ -7,6 +7,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Tag } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 interface CartItem {
   id: string;
@@ -140,6 +142,45 @@ export default function CartPage() {
 
   const totalVarieties = cartItems.length;
   const totalVolume = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    
+    // Header
+    doc.setFontSize(22);
+    doc.setTextColor(58, 8, 26); // #3a081a
+    doc.text('AMP Ceylon', 14, 22);
+    
+    doc.setFontSize(14);
+    doc.setTextColor(100, 100, 100);
+    doc.text('Export Manifest & Quote Request', 14, 32);
+    
+    doc.setFontSize(10);
+    doc.text(`Date Generated: ${new Date().toLocaleString()}`, 14, 40);
+    
+    // Total summary
+    doc.text(`Total Varieties: ${totalVarieties}   |   Total Volume: ${totalVolume} Units`, 14, 48);
+
+    // Table
+    const tableColumn = ["Product Name", "SKU", "Category", "Quantity"];
+    const tableRows = cartItems.map(item => [
+      item.name,
+      item.sku,
+      item.category.toUpperCase(),
+      item.quantity.toString()
+    ]);
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 55,
+      theme: 'grid',
+      headStyles: { fillColor: [58, 8, 26], textColor: 255 },
+      alternateRowStyles: { fillColor: [249, 249, 249] },
+    });
+
+    doc.save('AMP_Ceylon_Export_Manifest.pdf');
+  };
 
   return (
     <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
@@ -294,7 +335,7 @@ export default function CartPage() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => window.print()}
+                  onClick={generatePDF}
                   className="border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors py-2 px-4 rounded text-xs font-semibold uppercase tracking-wider flex items-center gap-2 cursor-pointer"
                 >
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
