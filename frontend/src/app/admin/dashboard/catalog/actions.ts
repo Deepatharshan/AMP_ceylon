@@ -98,7 +98,14 @@ export async function lookupBarcode(code: string) {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 3000);
       
-      const res = await fetch(`${lanApiUrl}/products/${code}`, { signal: controller.signal });
+      const normalizedCode = code.trim();
+      // Prevent path traversal and enforce valid barcode characters (including slash and space)
+      if (normalizedCode.includes('..') || !/^[A-Za-z0-9._/ -]{1,128}$/.test(normalizedCode)) {
+        return { success: false, message: 'Invalid barcode format' };
+      }
+      
+      const requestUrl = new URL(`/products/${encodeURIComponent(normalizedCode)}`, lanApiUrl);
+      const res = await fetch(requestUrl.toString(), { signal: controller.signal });
       clearTimeout(timeoutId);
 
       if (res.ok) {
