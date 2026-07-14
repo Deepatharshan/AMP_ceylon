@@ -1,0 +1,303 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.heroImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7; /* Darken slightly to ensure text is readable */
+}
+
+.heroTitle {
+  position: relative;
+  z-index: 10;
+  font-family: var(--font-playfair), serif;
+  font-size: 4rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+@media (min-width: 768px) {
+  .heroTitle {
+    font-size: 6rem;
+  }
+}
+
+/* Shared Layout for Two-Column Sections */
+.section {
+  padding: 6rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.twoColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .twoColumn {
+    flex-direction: row;
+    gap: 10%;
+  }
+}
+
+.columnLeft {
+  flex: 0 0 35%;
+}
+
+.columnRight {
+  flex: 1;
+}
+
+.sectionHeading {
+  font-family: var(--font-playfair), serif;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  position: sticky;
+  top: 150px;
+}
+
+/* Services List (Top) */
+.serviceList {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.serviceItem {
+  display: flex;
+  align-items: flex-start;
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.serviceItem:first-child {
+  padding-top: 0;
+}
+
+.serviceNumber {
+  font-family: var(--font-inter), sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  width: 50px;
+  color: var(--brand-maroon);
+}
+
+.serviceContent {
+  flex: 1;
+}
+
+.serviceTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.serviceDesc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Team Grid Section */
+.teamSection {
+  padding: 6rem 2rem;
+  background-color: var(--text-primary); /* Dark background for contrast, like reference */
+  color: #fff;
+}
+
+.teamHeading {
+  font-family: var(--font-playfair), serif;
+  font-size: 3rem;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .teamGrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.teamMember {
+  position: relative;
+  aspect-ratio: 3/5;
+  overflow: hidden;
+  cursor: pointer;
+  background: #222;
+}
+
+.teamMember img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease, filter 0.5s ease;
+  filter: grayscale(100%);
+}
+
+.teamMember:hover img {
+  transform: scale(1.05);
+  filter: grayscale(0%);
+}
+
+.teamInfo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.teamMember:hover .teamInfo {
+  opacity: 1;
+}
+
+.teamRole {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fca5a5; /* lighter red/maroon for dark background visibility */
+  margin-bottom: 0.25rem;
+}
+
+.teamName {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.teamSocials {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.teamSocials a {
+  transition: color 0.2s;
+}
+
+.teamSocials a:hover {
+  color: #fca5a5;
+}
+
+/* Capabilities Grid (Bottom) */
+.capabilitiesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem 2rem;
+}
+
+@media (min-width: 768px) {
+  .capabilitiesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.capItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.capTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.capDesc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.whyChooseUs {
+  background-color: #faf9f8;
+  border-top: 1px solid #f4f2ee;
+}
+
+.preTitle {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #8a385a;
+  margin-bottom: 1rem;
+}
+
+.sectionDesc {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 90%;
+}
+
+.iconWrapper {
+  width: 56px;
+  height: 56px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3a081a;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.capItem:hover .iconWrapper {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  color: #8a385a;
+}

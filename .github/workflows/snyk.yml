@@ -1,0 +1,59 @@
+name: "Snyk Security Scan"
+
+on:
+  push:
+    branches: [ "develop", "main" ]
+  pull_request:
+    branches: [ "develop", "main" ]
+  workflow_dispatch:
+
+jobs:
+  snyk:
+    permissions:
+      contents: read
+      security-events: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Install Snyk CLI
+      - name: Install Snyk
+        run: npm install -g snyk
+
+      # Run Snyk Auth and Test on Frontend
+      - name: Run Snyk to check for vulnerabilities in Frontend
+        continue-on-error: true # Prevents the pipeline from completely failing if vulnerabilities are found, allowing SARIF upload
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          cd frontend
+          npm install --package-lock-only
+          snyk test --sarif-file-output=../snyk-frontend.sarif
+
+      # Run Snyk Auth and Test on Backend
+      - name: Run Snyk to check for vulnerabilities in Backend
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          cd backend
+          npm install --package-lock-only
+          snyk test --sarif-file-output=../snyk-backend.sarif
+
+      # Upload Snyk results to GitHub Code Scanning
+      - name: Upload result to GitHub Code Scanning (Frontend)
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          file: snyk-frontend.sarif
+          category: snyk-frontend
+
+      - name: Upload result to GitHub Code Scanning (Backend)
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          file: snyk-backend.sarif
+          category: snyk-backend

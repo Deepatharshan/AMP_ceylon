@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fdfbf9;
+  --foreground: #333333;
+  
+  --brand-maroon: #4a0b22;
+  --brand-maroon-dark: #3a081a;
+  
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-light: #ffffff;
+  
+  --border-color: #e5e5e5;
+  --banner-height: 0px;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: var(--background);
+  color: var(--foreground);
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-playfair), serif;
+  font-weight: 400;
+  margin: 0;
+}
+
+p, span, a, li, input, button {
+  font-family: var(--font-inter), sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Reusable Animation Classes */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }

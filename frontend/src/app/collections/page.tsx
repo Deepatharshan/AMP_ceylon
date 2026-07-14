@@ -1,0 +1,317 @@
+'use client';
+
+import { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
+import { CATEGORIES, SPECIFICATIONS } from '@/lib/mock-data';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { createClient } from '@/utils/supabase/client';
+
+interface Product {
+  id: string;
+  name: string;
+  sku: string;
+  image_url?: string;
+  category: string;
+  description?: string;
+  is_top_seller?: boolean;
+  is_new_collection?: boolean;
+  is_limited_product?: boolean;
+}
+
+function CollectionsMain() {
+  const searchParams = useSearchParams();
+  const categoryQuery = searchParams.get('category');
+  
+  const [activeCategory, setActiveCategory] = useState("All Collections");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categoriesList, setCategoriesList] = useState<string[]>(CATEGORIES);
+  const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
+  };
+
+  useEffect(() => {
+    if (categoryQuery) {
+      setActiveCategory(categoryQuery);
+    } else {
+      setActiveCategory("All Collections");
+    }
+  }, [categoryQuery]);
+
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const supabase = createClient();
+        
+        // Fetch categories
+        const { data: catData } = await supabase
+          .from('categories')
+          .select('name')
+          .order('name', { ascending: true });
+        
+        if (catData && catData.length > 0) {
+          setCategoriesList(["All Collections", ...catData.map(c => c.name)]);
+        }
+
+        const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+        if (error) throw error;
+        if (data) {
+          // Map to fit page format
+          const mapped = data.map(item => ({
+            id: item.id,
+            name: item.name,
+            sku: item.sku,
+            image_url: item.image_url,
+            category: item.category,
+            description: item.description || '',
+            is_top_seller: item.is_top_seller,
+            is_new_collection: item.is_new_collection,
+            is_limited_product: item.is_limited_product
+          }));
+          setProducts(mapped);
+        }
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadProducts();
+  }, []);
+
+  const addToCart = (product: Product) => {
+    if (typeof window === 'undefined') return;
+    const cart = JSON.parse(localStorage.getItem('inquiry_cart') || '[]');
+    const exists = cart.find((item: any) => item.id === product.id);
+    if (exists) {
+      exists.quantity = (exists.quantity || 1) + 100;
+    } else {
+      cart.push({ ...product, quantity: 100 });
+    }
+    localStorage.setItem('inquiry_cart', JSON.stringify(cart));
+    window.dispatchEvent(new Event('cart-updated'));
+    showToast(`Added ${product.name} to your Inquiry Cart!`);
+  };
+
+  const filteredProducts = activeCategory === "All Collections" 
+    ? products 
+    : products.filter(p => p.category === activeCategory);
+
+  return (
+    <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
+      <div className="bg-[#3a081a] w-full relative" style={{ height: 'calc(8rem + var(--banner-height, 0px))' }}>
+        <Navbar />
+      </div>
+
+      <div className="container mx-auto px-6 py-16 max-w-7xl">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-gray-200 pb-12 mb-12">
+          <div className="max-w-2xl">
+            <p className="text-[#4a0b22] text-xs font-bold uppercase tracking-widest mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
+              The Export Collection
+            </p>
+            <h1 className="text-5xl text-[#3a081a] mb-6" style={{ fontFamily: 'var(--font-playfair)' }}>
+              Our Collections
+            </h1>
+            <p className="text-gray-600 leading-relaxed text-sm">
+              Designed in-house by our master florists, our collections represent the pinnacle of artificial botanical artistry. Each arrangement is meticulously hand-crafted using premium polyesters and artisanal resins to replicate the delicate texture and organic movement of nature.
+            </p>
+          </div>
+          
+          <div className="flex gap-8 mt-8 md:mt-0 text-center">
+            <div>
+              <div className="text-[#3a081a] font-bold text-xl">437</div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider">Designs</div>
+            </div>
+            <div>
+              <div className="text-[#3a081a] font-bold text-xl">Export</div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider">Quality</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content Layout */}
+        <div className="flex flex-col lg:flex-row gap-12">
+          
+          {/* Left Sidebar */}
+          <div className="w-full lg:w-64 flex-shrink-0 space-y-12">
+            
+            {/* Categories */}
+            <div>
+              <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" style={{ fontFamily: 'var(--font-inter)' }}>
+                Categories
+              </h3>
+              <ul className="space-y-2 mt-4">
+                {categoriesList.map(category => (
+                  <li key={category}>
+                    <button
+                      onClick={() => setActiveCategory(category)}
+                      className={`block w-[calc(100%+1.5rem)] text-left -ml-3 px-3 py-2 text-sm rounded-md transition-all ${
+                        activeCategory === category 
+                          ? 'bg-[#3a081a] text-white font-medium shadow-sm' 
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-[#3a081a]'
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Specifications */}
+            <div>
+              <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-6" style={{ fontFamily: 'var(--font-inter)' }}>
+                Specifications
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {SPECIFICATIONS.map(spec => (
+                  <span key={spec} className="bg-[#e8ece3] text-[#4a5d3c] text-xs px-3 py-1.5 rounded-sm font-medium">
+                    {spec}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Promo Box */}
+            <div className="bg-[#f2f1ef] p-6 text-sm text-gray-700">
+              <p className="font-bold mb-2 text-[#3a081a]">Turn-key OEM</p>
+              <p className="mb-4">Looking for proprietary designs for your retail chain?</p>
+              <a href="#" className="text-[#3a081a] font-bold underline decoration-1 underline-offset-4 hover:text-[#4a0b22]">
+                Contact B2B Manager
+              </a>
+            </div>
+          </div>
+
+          {/* Right Product Grid */}
+          <div className="flex-1">
+            {/* Toolbar */}
+            <div className="flex justify-between items-center mb-8 border-b border-gray-100 pb-4">
+              <p className="text-sm text-gray-500">
+                Showing {filteredProducts.length} items in <span className="font-semibold text-gray-800">{activeCategory}</span>
+              </p>
+              <div className="flex items-center gap-4">
+                <select className="bg-transparent text-sm text-gray-600 font-medium outline-none cursor-pointer">
+                  <option>Newest Arrivals</option>
+                  <option>Price: Low to High</option>
+                  <option>Price: High to Low</option>
+                </select>
+                <div className="w-8 h-8 bg-gray-100 flex items-center justify-center text-gray-500 cursor-pointer">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                </div>
+              </div>
+            </div>
+
+            {/* Grid */}
+            {filteredProducts.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-12">
+                {filteredProducts.map(product => (
+                  <Link 
+                    href={`/product/${product.id}`}
+                    key={product.id} 
+                    className="group flex flex-col bg-white border border-[#ececec] p-4 rounded shadow-sm hover:shadow transition-shadow cursor-pointer"
+                  >
+                    <div className="relative aspect-square mb-6 overflow-hidden bg-gray-100 rounded">
+                      <Image 
+                        src={product.image_url || 'https://images.unsplash.com/photo-1562690868-60bbe7293e94?q=80&w=800&auto=format&fit=crop'} 
+                        alt={product.name}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-102"
+                      />
+                      {/* Banner tags overlay */}
+                      <div className="absolute top-2 left-2 flex flex-col gap-1.5 z-10">
+                        {product.is_top_seller && (
+                          <span className="bg-[#3a081a] text-[#f5ebd3] text-[8px] font-bold px-2 py-0.5 uppercase tracking-wider rounded shadow-sm">
+                            Top Seller
+                          </span>
+                        )}
+                        {product.is_new_collection && (
+                          <span className="bg-emerald-600 text-white text-[8px] font-bold px-2 py-0.5 uppercase tracking-wider rounded shadow-sm">
+                            New Collection
+                          </span>
+                        )}
+                        {product.is_limited_product && (
+                          <span className="bg-amber-600 text-white text-[8px] font-bold px-2 py-0.5 uppercase tracking-wider rounded shadow-sm">
+                            Limited Edition
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-col flex-1">
+                      <h4 className="font-bold text-base text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>
+                        {product.name}
+                      </h4>
+                      <p className="text-xs text-gray-500 line-clamp-3 mb-4 flex-1">
+                        {product.description || "Premium botanical arrangement handcrafted for export quality and high-grade aesthetic durability."}
+                      </p>
+                      <div className="w-full bg-[#3a081a] text-white py-2 px-4 rounded text-xs font-semibold uppercase tracking-wider hover:bg-[#4a0b22] text-center transition-colors mt-auto">
+                        Inquire Now
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="py-20 text-center text-gray-500">
+                <p>No items found in {activeCategory}.</p>
+              </div>
+            )}
+
+            {/* Pagination */}
+            {filteredProducts.length > 0 && (
+              <div className="flex justify-center mt-16 gap-2">
+                <button className="w-8 h-8 flex items-center justify-center border border-gray-200 text-gray-400 hover:border-gray-400 text-sm">&lt;</button>
+                <button className="w-8 h-8 flex items-center justify-center bg-[#3a081a] text-white text-sm">1</button>
+                <button className="w-8 h-8 flex items-center justify-center border border-gray-200 text-gray-600 hover:border-gray-400 text-sm">2</button>
+                <button className="w-8 h-8 flex items-center justify-center border border-gray-200 text-gray-600 hover:border-gray-400 text-sm">3</button>
+                <button className="w-8 h-8 flex items-center justify-center border border-gray-200 text-gray-400 hover:border-gray-400 text-sm">&gt;</button>
+              </div>
+            )}
+          </div>
+
+        </div>
+      </div>
+
+      {/* Custom Toast Notification */}
+      {toast && (
+        <div className="fixed bottom-6 right-6 z-50 max-w-sm w-full bg-white border border-gray-100 rounded-lg shadow-2xl p-4 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-green-50 text-green-600 border border-green-200 font-bold text-sm shrink-0">
+            ✓
+          </div>
+          <div className="flex-1 text-xs text-gray-600 font-medium">
+            {toast.message}
+          </div>
+          <button 
+            onClick={() => setToast(null)}
+            className="text-gray-400 hover:text-gray-600 p-0.5 cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      <Footer />
+    </main>
+  );
+}
+
+export default function CollectionsPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
+        <div className="bg-[#3a081a] w-full relative" style={{ height: 'calc(8rem + var(--banner-height, 0px))' }}>
+          <Navbar />
+        </div>
+      </main>
+    }>
+      <CollectionsMain />
+    </Suspense>
+  );
+}

@@ -1,0 +1,90 @@
+.footer {
+  width: 100%;
+  background-color: var(--brand-maroon-dark);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.linksSection {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  padding: 6rem 0 3rem 0;
+}
+
+.column {
+  flex: 1;
+  padding: 0 1rem;
+}
+
+.logo {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.column h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 1.5rem;
+  color: rgba(255,255,255,0.7);
+  font-family: var(--font-inter), sans-serif;
+}
+
+.column p, .column ul {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.8;
+}
+
+.column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.column ul li {
+  margin-bottom: 0.8rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.column ul li:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.socialIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.socialIcon:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+.bottomBar {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.8rem;
+}

@@ -1,0 +1,68 @@
+.flowerSection {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* Will be animated by GSAP */
+  background-color: #fce4ec; 
+}
+
+.flowerContainer {
+  position: relative;
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  position: absolute;
+  top: 10%;
+  font-size: 3rem;
+  color: #333;
+  z-index: 10;
+}
+
+.flowerItem {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.flowerImage {
+  width: 45%;
+  height: 80%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #555;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.flowerInfo {
+  width: 45%;
+  padding: 2rem;
+}
+
+.flowerInfo h3 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.flowerInfo p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}

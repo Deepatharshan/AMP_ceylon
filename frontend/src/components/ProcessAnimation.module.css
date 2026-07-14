@@ -1,0 +1,162 @@
+.process {
+  padding: 8rem 10%;
+  background-color: var(--background);
+  text-align: center;
+  overflow: hidden;
+}
+
+.preTitle {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--brand-maroon);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 3rem;
+  color: var(--text-primary);
+  margin-bottom: 5rem;
+}
+
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Center vertical line */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background-color: var(--border-color);
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.stepWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6rem;
+  position: relative;
+  width: 100%;
+}
+
+.stepWrapper:last-child {
+  margin-bottom: 0;
+}
+
+/* Alternating layout (Left vs Right) */
+.stepWrapper:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.stepContent {
+  width: 42%;
+  text-align: right;
+  opacity: 0;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Odd items (1, 3, 5) slide in from left */
+.stepWrapper:nth-child(odd) .stepContent {
+  transform: translateX(-50px);
+}
+
+/* Even items (2, 4, 6) slide in from right */
+.stepWrapper:nth-child(even) .stepContent {
+  text-align: left;
+  transform: translateX(50px);
+}
+
+/* Trigger animation when visible class is added */
+.stepWrapper.visible .stepContent {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animatedLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background-color: var(--brand-maroon);
+  /* The transform origin ensures it scales from top to bottom */
+  transform-origin: top;
+  z-index: 2;
+  /* We don't use translateX(-50%) here because Framer Motion overwrites transform in style tag.
+     Instead we'll wrap it or use left: calc(50% - 1px) */
+  left: calc(50% - 1px);
+}
+
+.circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 3px solid var(--border-color);
+  color: var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  transition: all 0.5s ease-out;
+}
+
+/* Color the circle when visible */
+.stepWrapper.visible .circle {
+  background-color: var(--brand-maroon);
+  border-color: var(--brand-maroon);
+  color: white;
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 10px 20px rgba(74, 11, 34, 0.2);
+}
+
+.stepEmpty {
+  width: 42%;
+}
+
+.stepTitle {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.8rem;
+  color: var(--text-primary);
+  margin-bottom: 0.8rem;
+}
+
+.stepDescription {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .timeline::before {
+    left: 35px;
+  }
+  .stepWrapper, .stepWrapper:nth-child(even) {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+  .circle {
+    left: 35px;
+  }
+  .stepContent, .stepWrapper:nth-child(even) .stepContent {
+    width: calc(100% - 90px);
+    margin-left: 90px;
+    text-align: left;
+    transform: translateX(30px);
+  }
+  .stepEmpty {
+    display: none;
+  }
+}
