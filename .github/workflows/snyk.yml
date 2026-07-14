@@ -47,13 +47,13 @@ jobs:
 
       # Upload Snyk results to GitHub Code Scanning
       - name: Upload result to GitHub Code Scanning (Frontend)
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           file: snyk-frontend.sarif
           category: snyk-frontend
 
       - name: Upload result to GitHub Code Scanning (Backend)
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           file: snyk-backend.sarif
           category: snyk-backend
