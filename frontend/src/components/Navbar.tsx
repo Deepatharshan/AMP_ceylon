@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, Menu, X, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { createClient } from '@/utils/supabase/client';
 import styles from './Navbar.module.css';
@@ -11,6 +11,7 @@ import styles from './Navbar.module.css';
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const lastScrollY = React.useRef(0);
   const [cartCount, setCartCount] = useState(0);
   const [animationTrigger, setAnimationTrigger] = useState(0);
@@ -61,11 +62,21 @@ export default function Navbar() {
     };
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
   const isLightMode = pathname === '/contact' || pathname === '/privacy-policy' || pathname === '/faq';
   
   return (
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''} ${hidden ? styles.hidden : ''} ${isLightMode && !scrolled ? styles.lightMode : ''}`}>
-      <div className={styles.logo}>AMP Ceylon</div>
+      <Link href="/" className={`${styles.logo} flex items-center gap-3`}>
+        <div className="w-10 h-10 min-w-10 flex items-center justify-center bg-white rounded-full shadow-md border border-gray-100 overflow-hidden">
+          <img src="/logo.jpg" alt="AMP Ceylon Logo" className="w-full h-full object-contain" />
+        </div>
+        <span>AMP Ceylon</span>
+      </Link>
       <div className={styles.navLinks}>
         <Link href="/" className={pathname === '/' ? styles.active : ''}>Home</Link>
         <Link href="/about" className={pathname === '/about' ? styles.active : ''}>About Us</Link>
@@ -106,7 +117,44 @@ export default function Navbar() {
             )}
           </motion.div>
         </Link>
+        <button 
+          className={`${styles.mobileMenuBtn} ${(scrolled || isLightMode) ? 'text-[#333]' : 'text-white'}`}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle mobile menu"
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className={styles.mobileMenuOverlay}>
+          <div className={styles.mobileNavLinks}>
+            <Link href="/" className={pathname === '/' ? styles.active : ''}>Home</Link>
+            <Link href="/about" className={pathname === '/about' ? styles.active : ''}>About Us</Link>
+            
+            <div className={styles.mobileDropdownContainer}>
+              <div className="flex items-center gap-2 mb-2 text-sm uppercase tracking-wider font-semibold opacity-50">
+                Catalog <ChevronDown size={14} />
+              </div>
+              <div className="flex flex-col gap-3 pl-4 border-l border-white/20">
+                {categories.map((cat, idx) => (
+                  <Link 
+                    key={idx} 
+                    href={`/collections?category=${encodeURIComponent(cat)}`} 
+                    className={styles.mobileDropdownItem}
+                  >
+                    {cat}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <Link href="/manufacturing" className={pathname === '/manufacturing' ? styles.active : ''}>Manufacturing</Link>
+            <Link href="/contact" className={pathname === '/contact' ? styles.active : ''}>Contact</Link>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

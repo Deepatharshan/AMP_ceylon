@@ -20,32 +20,36 @@ export default function PotCustomizationSection() {
   const potRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: `+=${pots.length * 100}%`,
-        pin: true,
-        scrub: 1,
-      }
-    });
-
-    pots.forEach((pot, index) => {
-      tl.to(potRef.current, {
-        backgroundColor: pot.color,
-        border: pot.border || 'none',
-        backdropFilter: pot.backdropFilter || 'none',
-        backgroundImage: pot.backgroundImage || 'none',
-        duration: 1,
-        ease: 'none',
-        onStart: () => {
-          if (potRef.current) potRef.current.innerText = pot.name;
-        },
-        onReverseComplete: () => {
-          if (potRef.current && index > 0) {
-            potRef.current.innerText = pots[index - 1].name;
-          }
+    const mm = gsap.matchMedia();
+    
+    mm.add("(min-width: 769px)", () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: `+=${pots.length * 100}%`,
+          pin: true,
+          scrub: 1,
         }
+      });
+
+      pots.forEach((pot, index) => {
+        tl.to(potRef.current, {
+          backgroundColor: pot.color,
+          border: pot.border || 'none',
+          backdropFilter: pot.backdropFilter || 'none',
+          backgroundImage: pot.backgroundImage || 'none',
+          duration: 1,
+          ease: 'none',
+          onStart: () => {
+            if (potRef.current) potRef.current.innerText = pot.name;
+          },
+          onReverseComplete: () => {
+            if (potRef.current && index > 0) {
+              potRef.current.innerText = pots[index - 1].name;
+            }
+          }
+        });
       });
     });
 

@@ -20,55 +20,59 @@ export default function SeasonalShippingSection() {
   const [currentSeason, setCurrentSeason] = useState(seasons[0]);
 
   useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: '+=400%', // 4 seasons + packing + shipping
-        pin: true,
-        scrub: 1,
-      }
-    });
-
-    // 1. Cycle through seasons
-    seasons.forEach((season, index) => {
-      tl.to(sectionRef.current, {
-        duration: 1,
-        onStart: () => setCurrentSeason(season),
-        onReverseComplete: () => {
-          if (index > 0) setCurrentSeason(seasons[index - 1]);
+    const mm = gsap.matchMedia();
+    
+    mm.add("(min-width: 769px)", () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: '+=400%', // 4 seasons + packing + shipping
+          pin: true,
+          scrub: 1,
         }
       });
-    });
 
-    // 2. Packing animation
-    tl.to(boxRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: 'bounce.out'
-    });
+      // 1. Cycle through seasons
+      seasons.forEach((season, index) => {
+        tl.to(sectionRef.current, {
+          duration: 1,
+          onStart: () => setCurrentSeason(season),
+          onReverseComplete: () => {
+            if (index > 0) setCurrentSeason(seasons[index - 1]);
+          }
+        });
+      });
 
-    // 3. Move box into lorry
-    tl.to([productRef.current, boxRef.current], {
-      x: '30vw',
-      scale: 0.5,
-      duration: 1,
-      ease: 'power2.inOut'
-    });
-    
-    // 4. Lorry drives in
-    tl.to(lorryRef.current, {
-      right: '20%',
-      duration: 1,
-      ease: 'power2.out'
-    }, '<'); // Play at same time as box moving
+      // 2. Packing animation
+      tl.to(boxRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'bounce.out'
+      });
 
-    // 5. Lorry drives away
-    tl.to([lorryRef.current, productRef.current, boxRef.current], {
-      x: '-150vw',
-      duration: 1.5,
-      ease: 'power1.in'
+      // 3. Move box into lorry
+      tl.to([productRef.current, boxRef.current], {
+        x: '30vw',
+        scale: 0.5,
+        duration: 1,
+        ease: 'power2.inOut'
+      });
+      
+      // 4. Lorry drives in
+      tl.to(lorryRef.current, {
+        right: '20%',
+        duration: 1,
+        ease: 'power2.out'
+      }, '<'); // Play at same time as box moving
+
+      // 5. Lorry drives away
+      tl.to([lorryRef.current, productRef.current, boxRef.current], {
+        x: '-150vw',
+        duration: 1.5,
+        ease: 'power1.in'
+      });
     });
 
   }, { scope: sectionRef });

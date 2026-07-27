@@ -40,7 +40,7 @@ export function WorldMap({
       radius: 0.22,
       color: theme === "dark" ? "#FFFF7F40" : "#00000040",
       shape: "circle",
-      backgroundColor: theme === "dark" ? "black" : "white",
+      backgroundColor: "transparent",
     }),
     [map, theme]
   );
@@ -67,10 +67,10 @@ export function WorldMap({
   const fullCycleDuration = totalAnimationTime + pauseTime;
 
   return (
-    <div className="w-full aspect-[2/1] md:aspect-[2.5/1] lg:aspect-[2/1] dark:bg-black bg-transparent rounded-lg relative font-sans overflow-hidden">
+    <div className="w-full aspect-[2/1] md:aspect-[2.5/1] lg:aspect-[2/1] bg-transparent rounded-lg relative font-sans overflow-hidden">
       <Image
         src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-        className="h-full w-full [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] pointer-events-none select-none object-cover"
+        className="h-full w-full pointer-events-none select-none object-cover"
         alt="world map"
         height="495"
         width="1056"
