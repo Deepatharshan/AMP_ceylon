@@ -27,7 +27,7 @@ export default function Hero() {
         </p>
         <div className={styles.actions}>
           <Link href="/collections" className={styles.btnPrimary}>
-            VIEW CATALOG AND GET QUOTE
+            VIEW CATALOG
           </Link>
         </div>
       </div>
