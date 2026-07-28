@@ -80,13 +80,13 @@ export default function AboutPage() {
         >
           <motion.div variants={fadeUp}>
             <h2 className="font-playfair text-4xl mb-8 text-white uppercase tracking-wider">Our Vision</h2>
-            <p className="text-gray-300 text-lg leading-relaxed">
+            <p className="text-gray-300 text-lg leading-relaxed mt-6">
               To be a globally recognized manufacturer of innovative decorative products, delivering excellence through creativity, quality, and responsible manufacturing.
             </p>
           </motion.div>
           <motion.div variants={fadeUp}>
             <h2 className="font-playfair text-4xl mb-8 text-white uppercase tracking-wider">Our Mission</h2>
-            <ul className="text-gray-300 text-lg leading-relaxed space-y-4">
+            <ul className="text-gray-300 text-lg leading-relaxed space-y-4 mt-6">
               {[
                 "To manufacture products that exceed customer expectations in quality, design, and value.",
                 "To build long-term partnerships through trust, reliability, and exceptional service.",
@@ -122,7 +122,7 @@ export default function AboutPage() {
             
             <motion.div variants={fadeUp} className="mb-14">
               <h3 className="text-2xl font-semibold mb-8 text-gray-900 font-playfair tracking-wide">Artificial Decorative Products</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                 {[
                   'Pre-made Floral Arrangements',
                   'Artificial Flowers & Foliage',
@@ -145,7 +145,7 @@ export default function AboutPage() {
 
             <motion.div variants={fadeUp}>
               <h3 className="text-2xl font-semibold mb-8 text-gray-900 font-playfair tracking-wide">Manufacturing Excellence</h3>
-              <p className="text-gray-700 leading-relaxed mb-6">
+              <p className="text-gray-700 leading-relaxed mb-6 mt-6">
                 Our modern production facilities combine advanced manufacturing technology with experienced craftsmanship to ensure consistent quality, efficient production, and timely delivery.
               </p>
               <h4 className="font-semibold text-gray-900 mb-4 uppercase text-sm tracking-wider">Our Strengths Include:</h4>
