@@ -79,13 +79,13 @@ export default function AboutPage() {
           viewport={{ once: true, margin: "-100px" }}
         >
           <motion.div variants={fadeUp}>
-            <h2 className="font-playfair text-4xl mb-6 text-white uppercase tracking-wider">Our Vision</h2>
+            <h2 className="font-playfair text-4xl mb-8 text-white uppercase tracking-wider">Our Vision</h2>
             <p className="text-gray-300 text-lg leading-relaxed">
               To be a globally recognized manufacturer of innovative decorative products, delivering excellence through creativity, quality, and responsible manufacturing.
             </p>
           </motion.div>
           <motion.div variants={fadeUp}>
-            <h2 className="font-playfair text-4xl mb-6 text-white uppercase tracking-wider">Our Mission</h2>
+            <h2 className="font-playfair text-4xl mb-8 text-white uppercase tracking-wider">Our Mission</h2>
             <ul className="text-gray-300 text-lg leading-relaxed space-y-4">
               {[
                 "To manufacture products that exceed customer expectations in quality, design, and value.",
@@ -120,8 +120,8 @@ export default function AboutPage() {
           </motion.div>
           <div className={styles.columnRight}>
             
-            <motion.div variants={fadeUp} className="mb-12">
-              <h3 className="text-2xl font-semibold mb-6 text-gray-900 font-playfair tracking-wide">Artificial Decorative Products</h3>
+            <motion.div variants={fadeUp} className="mb-14">
+              <h3 className="text-2xl font-semibold mb-8 text-gray-900 font-playfair tracking-wide">Artificial Decorative Products</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {[
                   'Pre-made Floral Arrangements',
@@ -144,7 +144,7 @@ export default function AboutPage() {
             </motion.div>
 
             <motion.div variants={fadeUp}>
-              <h3 className="text-2xl font-semibold mb-4 text-gray-900 font-playfair tracking-wide">Manufacturing Excellence</h3>
+              <h3 className="text-2xl font-semibold mb-8 text-gray-900 font-playfair tracking-wide">Manufacturing Excellence</h3>
               <p className="text-gray-700 leading-relaxed mb-6">
                 Our modern production facilities combine advanced manufacturing technology with experienced craftsmanship to ensure consistent quality, efficient production, and timely delivery.
               </p>
@@ -235,7 +235,7 @@ export default function AboutPage() {
           <motion.div variants={fadeUp}>
             <ShieldCheck size={48} className="text-[#8a385a] mx-auto mb-6" strokeWidth={1} />
           </motion.div>
-          <motion.h2 variants={fadeUp} className="font-playfair text-4xl text-gray-900 mb-8 uppercase tracking-wide">
+          <motion.h2 variants={fadeUp} className="font-playfair text-4xl text-gray-900 mb-10 uppercase tracking-wide">
             Our Commitment
           </motion.h2>
           <motion.p variants={fadeUp} className="text-xl text-gray-700 leading-relaxed italic">

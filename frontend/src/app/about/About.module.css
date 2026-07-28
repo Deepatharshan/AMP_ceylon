@@ -82,6 +82,7 @@
   color: var(--text-primary);
   position: sticky;
   top: 150px;
+  margin-bottom: 2rem;
 }
 
 /* Services List (Top) */
