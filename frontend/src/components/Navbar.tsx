@@ -173,7 +173,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-4 ml-auto md:ml-0">
-          <Link href="/cart" className="relative flex items-center p-1 text-white hover:text-gray-200 transition-colors shrink-0">
+          <Link href="/cart" className="relative flex items-center p-1 !text-white hover:!text-gray-200 transition-colors shrink-0">
             <motion.div
               key={animationTrigger}
               initial={{ scale: 1, y: 0 }}
@@ -181,7 +181,7 @@ export default function Navbar() {
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="relative flex items-center"
             >
-              <ShoppingBag size={20} />
+              <ShoppingBag size={20} color="white" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
                   {cartCount}
@@ -190,11 +190,11 @@ export default function Navbar() {
             </motion.div>
           </Link>
           
-          <button className="md:hidden flex items-center justify-center w-8 h-8 text-gray-300 focus:outline-none" onClick={toggleMenu} aria-label={isOpen ? 'Close Menu' : 'Open Menu'}>
+          <button className="md:hidden flex items-center justify-center w-8 h-8 !text-white focus:outline-none" onClick={toggleMenu} aria-label={isOpen ? 'Close Menu' : 'Open Menu'}>
             {isOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <svg className="w-6 h-6" fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                <svg className="w-6 h-6" fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             )}
           </button>
         </div>
