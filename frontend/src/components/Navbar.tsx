@@ -152,13 +152,13 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-[rgba(20,20,20,0.95)] backdrop-blur-xl border border-[#333] rounded-xl overflow-hidden shadow-2xl flex flex-col py-2"
+                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-[rgba(20,20,20,0.95)] backdrop-blur-xl border border-[#333] rounded-xl overflow-hidden shadow-2xl flex flex-col py-2 text-white"
                 >
                   {categories.map((cat, idx) => (
                     <Link 
                       key={idx} 
                       href={`/collections?category=${encodeURIComponent(cat)}`} 
-                      className="px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
+                      className="px-4 py-2 text-sm !text-white font-medium hover:bg-white/10 transition-colors"
                     >
                       {cat}
                     </Link>
