@@ -115,19 +115,17 @@ export default function ContactPage() {
                   Our state-of-the-art manufacturing facility is strategically located to ensure rapid global distribution and optimized logistics.
                 </p>
                 
-                {/* Embedded Map / Image */}
+                {/* Embedded Map */}
                 <div className="w-full h-48 bg-gray-200 rounded-lg overflow-hidden relative mt-auto">
-                  <Image 
-                    src="https://images.unsplash.com/photo-1569336415962-a4bd9f69c07b?q=80&w=800&auto=format&fit=crop"
-                    alt="Factory Location Map"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
-                    <div className="w-8 h-8 rounded-full bg-[#3a081a] text-white flex items-center justify-center shadow-xl animate-bounce">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                    </div>
-                  </div>
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.0203534570076!2d79.88219467576579!3d7.123565092881263!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2f200508a8d05%3A0x67fa2a8dbadbb0fa!2sKatunayake%20Export%20Processing%20Zone!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk" 
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0 }} 
+                    allowFullScreen={false} 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
                 </div>
               </div>
 
