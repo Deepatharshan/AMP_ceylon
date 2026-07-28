@@ -13,7 +13,7 @@ const AnimatedNavLink = ({ href, children, isActive }: { href: string; children:
   const textSizeClass = 'text-sm uppercase tracking-wider';
 
   return (
-    <Link href={href} className={`group relative inline-block overflow-hidden h-5 flex items-center ${textSizeClass}`}>
+    <Link href={href} className={`group relative inline-block overflow-hidden h-5 flex items-center shrink-0 whitespace-nowrap ${textSizeClass}`}>
       <div className="flex flex-col transition-transform duration-300 ease-out transform group-hover:-translate-y-1/2">
         <span className={defaultTextColor}>{children}</span>
         <span className={hoverTextColor}>{children}</span>
@@ -112,7 +112,7 @@ export default function Navbar() {
       <div className="w-9 h-9 min-w-9 flex items-center justify-center bg-white rounded-full overflow-hidden">
         <img src="/logo.jpg" alt="AMP Ceylon Logo" className="w-full h-full object-contain" />
       </div>
-      <span className="font-playfair font-bold text-white tracking-wide text-lg hidden lg:block">AMP Ceylon</span>
+      <span className="font-playfair font-bold text-white tracking-wide text-lg hidden lg:block whitespace-nowrap shrink-0">AMP Ceylon</span>
     </Link>
   );
 
@@ -158,7 +158,7 @@ export default function Navbar() {
                     <Link 
                       key={idx} 
                       href={`/collections?category=${encodeURIComponent(cat)}`} 
-                      className="px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                      className="px-4 py-2 text-sm text-gray-100 hover:text-white hover:bg-white/10 transition-colors"
                     >
                       {cat}
                     </Link>
@@ -173,7 +173,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-4 ml-auto md:ml-0">
-          <Link href="/cart" className="relative flex items-center p-1 text-gray-300 hover:text-white transition-colors">
+          <Link href="/cart" className="relative flex items-center p-1 text-white hover:text-gray-200 transition-colors shrink-0">
             <motion.div
               key={animationTrigger}
               initial={{ scale: 1, y: 0 }}
