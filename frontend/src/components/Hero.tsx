@@ -23,8 +23,7 @@ export default function Hero() {
           <HeroText text="BOTANICALS" />
         </div>
         <p className={styles.subtitle}>
-          Global Bloom operates state-of-the-art facilities perfecting the art of botanical mimicry,<br />
-          bridging the gap between nature's transient beauty.
+          Perfecting the art of botanical mimicry.
         </p>
         <div className={styles.actions}>
           <Link href="/collections" className={styles.btnPrimary}>
