@@ -131,16 +131,10 @@ export default function Navbar() {
   );
 
   return (
-    <div className={`fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none transition-all duration-500 ease-in-out ${isAtTop ? 'pt-0' : 'pt-6'} ${hidden && !isAtTop ? '-translate-y-[150%] opacity-0' : 'translate-y-0 opacity-100'}`}>
-      <motion.header 
-        layout
-        transition={{ layout: { duration: 0.5, ease: "easeInOut" } }}
-        className={`pointer-events-auto flex flex-col items-center
-                   transition-colors duration-500 ease-in-out
-                   ${headerShapeClass}
-                   ${isAtTop 
-                     ? 'w-full max-w-none border-b border-[#222] bg-[rgba(10,10,10,0.95)] backdrop-blur-md px-6 md:px-12 py-4' 
-                     : 'w-[calc(100%-2rem)] max-w-5xl sm:w-auto border border-[#333] bg-[rgba(15,15,15,0.85)] backdrop-blur-md px-4 py-3'}`}
+    <div className={`fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none transition-transform duration-500 ease-in-out ${hidden ? '-translate-y-[150%] opacity-0' : 'translate-y-0 opacity-100'}`}>
+      <header 
+        className={`pointer-events-auto flex flex-col items-center w-full
+                   border-b border-[#222] bg-[rgba(10,10,10,0.95)] backdrop-blur-md px-6 md:px-12 py-4`}
       >
 
       <div className="flex items-center justify-between w-full gap-x-8 sm:gap-x-12">
@@ -249,7 +243,7 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-      </motion.header>
+      </header>
     </div>
   );
 }
