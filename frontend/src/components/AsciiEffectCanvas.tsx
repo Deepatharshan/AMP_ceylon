@@ -146,17 +146,19 @@ export default function AsciiEffectCanvas({ config, imageUrl }: { config: any, i
           if (config.renderMode === 'dither') {
             const bayerVal = bayerMatrix[x % 4][y % 4];
             
-            if (invertLuma > bayerVal) {
-               // Use density as a probability check per cell, or combined with luminance
-               if (invertLuma > (1 - densityThreshold)) {
-                 ctx.fillStyle = config.tint || `rgb(${r},${g},${b})`;
-                 const drawSize = cellSize * (config.coverage / 100);
-                 const offset = (cellSize - drawSize) / 2;
-                 ctx.fillRect(px + offset, py + offset, drawSize, drawSize);
-               }
+            // Adjust threshold with density if needed, but for now just use bayer
+            const scaledBayer = bayerVal * (100 / Math.max(1, config.density));
+            
+            if (invertLuma > (bayerVal * (1 - densityThreshold))) {
+               const useTint = config.tint && config.tintOpacity > 0;
+               ctx.fillStyle = useTint ? config.tint : `rgb(${r},${g},${b})`;
+               const drawSize = cellSize * (config.coverage / 100);
+               const offset = (cellSize - drawSize) / 2;
+               ctx.fillRect(px + offset, py + offset, drawSize, drawSize);
             }
           } else {
-             ctx.fillStyle = config.tint || `rgb(${r},${g},${b})`;
+             const useTint = config.tint && config.tintOpacity > 0;
+             ctx.fillStyle = useTint ? config.tint : `rgb(${r},${g},${b})`;
              const drawSize = cellSize * invertLuma * (config.coverage / 100);
              const offset = (cellSize - drawSize) / 2;
              ctx.fillRect(px + offset, py + offset, drawSize, drawSize);
