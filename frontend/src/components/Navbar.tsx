@@ -200,27 +200,38 @@ export default function Navbar() {
         </div>
       </div>
 
-      <div className={`md:hidden flex flex-col items-center w-full transition-all ease-in-out duration-300 overflow-hidden
-                       ${isOpen ? 'max-h-[1000px] opacity-100 pt-6 pb-2' : 'max-h-0 opacity-0 pt-0 pb-0 pointer-events-none'}`}>
-        <nav className="flex flex-col items-center space-y-5 text-base w-full">
-          <Link href="/" className="text-gray-300 hover:text-white uppercase tracking-widest text-sm transition-colors w-full text-center">Home</Link>
-          <Link href="/about" className="text-gray-300 hover:text-white uppercase tracking-widest text-sm transition-colors w-full text-center">About Us</Link>
-          
-          <div className="flex flex-col items-center w-full">
-            <div className="text-gray-500 uppercase tracking-widest text-xs mb-3 font-semibold">Catalog</div>
-            <div className="flex flex-col items-center space-y-3 w-full border-l-2 border-[#333] ml-4">
-              {categories.map((cat, idx) => (
-                <Link key={idx} href={`/collections?category=${encodeURIComponent(cat)}`} className="text-white hover:text-gray-200 transition-colors w-full text-center text-sm">
-                  {cat}
-                </Link>
-              ))}
-            </div>
-          </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden flex flex-col items-center w-full overflow-hidden"
+          >
+            <div className="pt-6 pb-2 w-full">
+              <nav className="flex flex-col items-center space-y-6 text-base w-full">
+                <Link href="/" className="!text-white hover:text-gray-200 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Home</Link>
+                <Link href="/about" className="!text-white hover:text-gray-200 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">About Us</Link>
+                
+                <div className="flex flex-col items-center w-full">
+                  <div className="!text-white uppercase tracking-widest text-xs mb-4 font-semibold opacity-70">Catalog</div>
+                  <div className="flex flex-col items-center space-y-4 w-full">
+                    {categories.map((cat, idx) => (
+                      <Link key={idx} href={`/collections?category=${encodeURIComponent(cat)}`} className="!text-white hover:text-gray-200 transition-colors w-full text-center text-sm font-medium">
+                        {cat}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
 
-          <Link href="/manufacturing" className="text-gray-300 hover:text-white uppercase tracking-widest text-sm transition-colors w-full text-center">Manufacturing</Link>
-          <Link href="/contact" className="text-gray-300 hover:text-white uppercase tracking-widest text-sm transition-colors w-full text-center">Contact</Link>
-        </nav>
-      </div>
+                <Link href="/manufacturing" className="!text-white hover:text-gray-200 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Manufacturing</Link>
+                <Link href="/contact" className="!text-white hover:text-gray-200 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Contact</Link>
+              </nav>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
