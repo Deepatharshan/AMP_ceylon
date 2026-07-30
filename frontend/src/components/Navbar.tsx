@@ -24,7 +24,8 @@ const AnimatedNavLink = ({ href, children, isActive }: { href: string; children:
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [headerShapeClass, setHeaderShapeClass] = useState('rounded-full');
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [headerShapeClass, setHeaderShapeClass] = useState('rounded-none');
   const shapeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   const [hidden, setHidden] = useState(false);
@@ -67,6 +68,12 @@ export default function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
+      if (currentScrollY < 20) {
+        setIsAtTop(true);
+      } else {
+        setIsAtTop(false);
+      }
+
       if (currentScrollY > lastScrollY.current && currentScrollY > 150) {
         setHidden(true); // scrolling down
       } else {
@@ -90,16 +97,16 @@ export default function Navbar() {
       clearTimeout(shapeTimeoutRef.current);
     }
     if (isOpen) {
-      setHeaderShapeClass('rounded-2xl');
+      setHeaderShapeClass(isAtTop ? 'rounded-none' : 'rounded-2xl');
     } else {
       shapeTimeoutRef.current = setTimeout(() => {
-        setHeaderShapeClass('rounded-full');
+        setHeaderShapeClass(isAtTop ? 'rounded-none' : 'rounded-full');
       }, 300);
     }
     return () => {
       if (shapeTimeoutRef.current) clearTimeout(shapeTimeoutRef.current);
     };
-  }, [isOpen]);
+  }, [isOpen, isAtTop]);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -117,14 +124,14 @@ export default function Navbar() {
   );
 
   return (
-    <header className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-50
+    <header className={`fixed left-1/2 transform -translate-x-1/2 z-50
                        flex flex-col items-center
-                       pl-4 pr-8 py-3 backdrop-blur-md
+                       transition-all duration-500 ease-in-out
                        ${headerShapeClass}
-                       border border-[#333] bg-[rgba(15,15,15,0.75)]
-                       w-[calc(100%-2rem)] max-w-5xl sm:w-auto
-                       transition-all duration-400 ease-in-out
-                       ${hidden ? '-translate-y-[150%] opacity-0' : 'translate-y-0 opacity-100'}`}>
+                       ${isAtTop 
+                         ? 'top-0 w-full max-w-none border-b border-[#222] bg-[rgba(10,10,10,0.95)] backdrop-blur-md px-6 md:px-12 py-4' 
+                         : 'top-6 w-[calc(100%-2rem)] max-w-5xl sm:w-auto border border-[#333] bg-[rgba(15,15,15,0.85)] backdrop-blur-md px-4 py-3'}
+                       ${hidden && !isAtTop ? '-translate-y-[150%] opacity-0' : 'translate-y-0 opacity-100'}`}>
 
       <div className="flex items-center justify-between w-full gap-x-8 sm:gap-x-12">
         <div className="flex items-center">
