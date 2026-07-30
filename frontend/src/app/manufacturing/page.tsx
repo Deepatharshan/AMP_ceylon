@@ -6,6 +6,59 @@ import Link from 'next/link';
 
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import AsciiEffectCanvas from '@/components/AsciiEffectCanvas';
+
+const asciiConfig = {
+  "renderMode": "dither",
+  "bgMode": "none",
+  "bgBlur": 12,
+  "bgOpacity": 90,
+  "cellSize": 9,
+  "coverage": 100,
+  "invert": false,
+  "styleBlend": "source-over",
+  "charSet": "standard",
+  "customChars": "",
+  "brightness": 0,
+  "contrast": 158,
+  "edgeEmphasis": 0,
+  "density": 20,
+  "toneCurve": [{"x":0,"y":0},{"x":1,"y":1}],
+  "tint": "#3ca6ff",
+  "tintOpacity": 0,
+  "overlayBlend": "multiply",
+  "saturation": 100,
+  "grayscale": 0,
+  "blurType": "off",
+  "blurAmount": 35,
+  "blurAngle": 0,
+  "directionalBothSides": false,
+  "tiltFocus": 35,
+  "tiltPosition": 50,
+  "tiltFeather": 15,
+  "lensFocus": 40,
+  "blurCenterX": 50,
+  "blurCenterY": 50,
+  "progressivePosition": 55,
+  "progressiveReverse": false,
+  "pfx": {
+    "vignette": {"enabled": false, "intensity": 38},
+    "scanLines": {"enabled": false, "intensity": 40},
+    "chromatic": {"enabled": false, "intensity": 15},
+    "bloom": {"enabled": false, "intensity": 25},
+    "filmGrain": {"enabled": false, "intensity": 30},
+    "glitch": {"enabled": false, "intensity": 20},
+    "pixelate": {"enabled": false, "intensity": 15},
+    "halftone": {"enabled": false, "intensity": 20},
+    "filmDust": {"enabled": false, "intensity": 20}
+  },
+  "animated": true,
+  "animStyle": "pulse",
+  "animSpeed": {"enabled": true, "intensity": 100},
+  "animIntensity": {"enabled": true, "intensity": 60},
+  "lights": {"enabled": false, "points": []},
+  "mask": {"enabled": false, "tool": "freehand", "brushSize": 30, "showOverlay": true, "invert": false, "dataUrl": null, "shapes": []}
+};
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -29,16 +82,14 @@ export default function ManufacturingPage() {
 
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-        {/* Background Image */}
-        <div className="absolute inset-0 w-full h-full">
-          <Image 
-            src="https://images.unsplash.com/photo-1563241598-646bc5683794?q=80&w=2000&auto=format&fit=crop"
-            alt="Manufacturing Facility Background"
-            fill
-            className="object-cover"
+        {/* Background Image / ASCII Canvas */}
+        <div className="absolute inset-0 w-full h-full bg-black">
+          <AsciiEffectCanvas 
+            config={asciiConfig} 
+            imageUrl="https://images.unsplash.com/photo-1563241598-646bc5683794?q=80&w=2000&auto=format&fit=crop" 
           />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/50"></div>
+          {/* Dark Overlay for text readability */}
+          <div className="absolute inset-0 bg-black/60 pointer-events-none"></div>
         </div>
         
         {/* Hero Content */}
