@@ -78,7 +78,7 @@ export default function CategoryShowcase({
             >
               <Image 
                 src={featuredImage} 
-                alt={title}
+                alt={title || 'Featured Category'}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 40vw"
