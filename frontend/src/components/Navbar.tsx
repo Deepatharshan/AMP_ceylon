@@ -122,11 +122,11 @@ export default function Navbar() {
   }, [pathname]);
 
   const logoElement = (
-    <Link href="/" className="flex items-center gap-4 mr-4">
-      <div className="w-12 h-12 min-w-12 flex items-center justify-center">
+    <Link href="/" className="flex items-center gap-3 mr-4">
+      <div className="w-10 h-10 min-w-10 flex items-center justify-center">
         <img src="/amplogo.png" alt="AMP Ceylon Logo" className="w-full h-full object-contain" />
       </div>
-      <span className="font-playfair font-bold text-white tracking-wide text-lg hidden lg:block whitespace-nowrap shrink-0">AMP Ceylon</span>
+      <span className="font-playfair font-bold text-white tracking-wide text-base hidden lg:block whitespace-nowrap shrink-0">AMP Ceylon</span>
     </Link>
   );
 
@@ -134,7 +134,7 @@ export default function Navbar() {
     <div className={`fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none transition-transform duration-500 ease-in-out ${hidden ? '-translate-y-[150%] opacity-0' : 'translate-y-0 opacity-100'}`}>
       <header 
         className={`pointer-events-auto flex flex-col items-center w-full
-                   border-b border-[#4a0b22] bg-[#3a081a] backdrop-blur-md px-6 md:px-12 py-4`}
+                   border-b border-[#4a0b22] bg-[#3a081a] backdrop-blur-md px-6 md:px-12 py-2.5`}
       >
 
       <div className="flex items-center justify-between w-full gap-x-8 sm:gap-x-12">

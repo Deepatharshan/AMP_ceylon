@@ -106,7 +106,7 @@ function CollectionsMain() {
 
   return (
     <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
-      <div className="bg-transparent w-full relative" style={{ height: 'calc(8rem + var(--banner-height, 0px))' }}>
+      <div className="bg-transparent w-full relative" style={{ height: 'calc(5rem + var(--banner-height, 0px))' }}>
         <Navbar />
       </div>
 
@@ -306,7 +306,7 @@ export default function CollectionsPage() {
   return (
     <Suspense fallback={
       <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
-        <div className="bg-transparent w-full relative" style={{ height: 'calc(8rem + var(--banner-height, 0px))' }}>
+        <div className="bg-transparent w-full relative" style={{ height: 'calc(5rem + var(--banner-height, 0px))' }}>
           <Navbar />
         </div>
       </main>
