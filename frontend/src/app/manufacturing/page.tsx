@@ -86,7 +86,7 @@ export default function ManufacturingPage() {
         <div className="absolute inset-0 w-full h-full bg-black">
           <AsciiEffectCanvas 
             config={asciiConfig} 
-            imageUrl="https://images.unsplash.com/photo-1563241598-646bc5683794?q=80&w=2000&auto=format&fit=crop" 
+            imageUrl="https://21st.dev/ascii-editor/demos/generated/ref-029.webp" 
           />
           {/* Dark Overlay for text readability */}
           <div className="absolute inset-0 bg-black/60 pointer-events-none"></div>

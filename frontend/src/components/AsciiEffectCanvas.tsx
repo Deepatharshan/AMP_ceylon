@@ -146,22 +146,28 @@ export default function AsciiEffectCanvas({ config, imageUrl }: { config: any, i
           if (config.renderMode === 'dither') {
             const bayerVal = bayerMatrix[x % 4][y % 4];
             
-            // Adjust threshold with density if needed, but for now just use bayer
-            const scaledBayer = bayerVal * (100 / Math.max(1, config.density));
+            // A common way density modifies dither is by scaling the threshold or luma
+            // Let's use a standard bayer check. The higher the luma, the more likely it passes.
+            // density 20 might mean we scale the luma up or down. Let's just use a solid multiplier to match the visual.
+            const adjustedLuma = invertLuma * (config.density / 10); // tweak to match visual density
             
-            if (invertLuma > (bayerVal * (1 - densityThreshold))) {
+            if (adjustedLuma > bayerVal) {
                const useTint = config.tint && config.tintOpacity > 0;
                ctx.fillStyle = useTint ? config.tint : `rgb(${r},${g},${b})`;
-               const drawSize = cellSize * (config.coverage / 100);
-               const offset = (cellSize - drawSize) / 2;
-               ctx.fillRect(px + offset, py + offset, drawSize, drawSize);
+               
+               // Draw a dot (circle) instead of a full square to create the gaps seen in the screenshot
+               const radius = (cellSize * (config.coverage / 100)) * 0.45; // slightly smaller than half cell for gaps
+               ctx.beginPath();
+               ctx.arc(px + cellSize/2, py + cellSize/2, radius, 0, Math.PI * 2);
+               ctx.fill();
             }
           } else {
              const useTint = config.tint && config.tintOpacity > 0;
              ctx.fillStyle = useTint ? config.tint : `rgb(${r},${g},${b})`;
-             const drawSize = cellSize * invertLuma * (config.coverage / 100);
-             const offset = (cellSize - drawSize) / 2;
-             ctx.fillRect(px + offset, py + offset, drawSize, drawSize);
+             const radius = (cellSize * invertLuma * (config.coverage / 100)) * 0.45;
+             ctx.beginPath();
+             ctx.arc(px + cellSize/2, py + cellSize/2, Math.max(0, radius), 0, Math.PI * 2);
+             ctx.fill();
           }
         }
       }
