@@ -108,9 +108,9 @@ export default function Navbar() {
   }, [pathname]);
 
   const logoElement = (
-    <Link href="/" className="flex items-center gap-3 mr-4">
-      <div className="w-9 h-9 min-w-9 flex items-center justify-center">
-        <img src="/amplogo.png" alt="AMP Ceylon Logo" className="w-full h-full object-contain scale-[1.75]" />
+    <Link href="/" className="flex items-center gap-4 mr-4">
+      <div className="w-12 h-12 min-w-12 flex items-center justify-center">
+        <img src="/amplogo.png" alt="AMP Ceylon Logo" className="w-full h-full object-contain scale-[2.5]" />
       </div>
       <span className="font-playfair font-bold text-white tracking-wide text-lg hidden lg:block whitespace-nowrap shrink-0">AMP Ceylon</span>
     </Link>
