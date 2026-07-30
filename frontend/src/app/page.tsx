@@ -1,6 +1,5 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import FeaturedCategories from '@/components/FeaturedCategories';
 import Heritage from '@/components/Heritage';
 import FeaturedProducts from '@/components/FeaturedProducts';
 import Curation from '@/components/Curation';
@@ -15,7 +14,6 @@ export default function Home() {
     <main style={{ width: '100%', overflowX: 'hidden' }}>
       <Navbar />
       <Hero />
-      <FeaturedCategories />
       <Heritage />
       <StatsSection />
       <FeaturedProducts />

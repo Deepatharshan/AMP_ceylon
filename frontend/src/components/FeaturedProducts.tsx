@@ -1,9 +1,8 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import styles from './FeaturedProducts.module.css';
 import { createClient } from '@/utils/supabase/server';
 import ScrollFadeWrapper from './ScrollFadeWrapper';
-import { ShirtParallaxCard } from '@/components/ui/shirt-parallax-card';
+import CategoryShowcase from './CategoryShowcase';
 
 export default async function FeaturedProducts() {
   const supabase = await createClient();
@@ -73,7 +72,7 @@ export default async function FeaturedProducts() {
   }
 
   return (
-    <section className={styles.curation} style={{ backgroundColor: '#fff' }}>
+    <section className={styles.curation} style={{ backgroundColor: '#fff', paddingTop: '40px', paddingBottom: '40px' }}>
       <ScrollFadeWrapper className={styles.header}>
         <div>
           <p className={styles.preTitle}>Our Products</p>
@@ -84,23 +83,19 @@ export default async function FeaturedProducts() {
         </Link>
       </ScrollFadeWrapper>
 
-      <div className={styles.grid}>
-        {productsToDisplay.map((product, index) => {
-          const imageUrl = product.image_urls?.[0] || product.image_url || 'https://images.unsplash.com/photo-1562690868-60bbe7293e94?q=80&w=800&auto=format&fit=crop';
-          
-          return (
-            <ScrollFadeWrapper key={product.id} className="flex justify-center" delay={(index + 1) * 100}>
-              <ShirtParallaxCard
-                id={product.id}
-                title={product.name}
-                description={product.description || 'Premium quality product from AMP Ceylon.'}
-                price={`$${Number(product.price).toFixed(2)}`}
-                imageUrl={imageUrl}
-              />
-            </ScrollFadeWrapper>
-          );
-        })}
-      </div>
+      <ScrollFadeWrapper delay={200} className="w-full">
+        <CategoryShowcase
+          categoryLink="/collections"
+          featuredImage={productsToDisplay[0]?.image_urls?.[0] || productsToDisplay[0]?.image_url || 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=1600&auto=format&fit=crop'}
+          products={productsToDisplay.map(p => ({
+            id: p.id,
+            name: p.name,
+            image: p.image_urls?.[0] || p.image_url || '/placeholder-product.jpg',
+            price: p.price,
+            slug: p.id
+          }))}
+        />
+      </ScrollFadeWrapper>
     </section>
   );
 }

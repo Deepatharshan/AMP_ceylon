@@ -15,9 +15,9 @@ export interface ShowcaseProduct {
 }
 
 interface CategoryShowcaseProps {
-  title: string;
-  description: string;
-  categoryLink: string;
+  title?: string;
+  description?: string;
+  categoryLink?: string;
   featuredImage: string;
   products: ShowcaseProduct[];
 }
@@ -31,27 +31,33 @@ export default function CategoryShowcase({
 }: CategoryShowcaseProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  // Take only up to 3 products for the showcase row
-  const displayProducts = products.slice(0, 3);
+  // Take only up to 5 products for the showcase row
+  const displayProducts = products.slice(0, 5);
 
   return (
-    <section className="py-20 px-6 md:px-12 bg-white w-full mx-auto overflow-hidden">
+    <section className="py-4 md:py-8 px-0 w-full mx-auto overflow-hidden">
       <div className="max-w-[1600px] mx-auto">
-        {/* Header Section */}
-        <div className="mb-10 max-w-2xl">
-          <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-gray-900 mb-4 font-inter">
-            {title}
-          </h2>
-          <p className="text-gray-700 font-medium leading-relaxed mb-8 text-sm md:text-base">
-            {description}
-          </p>
-          <Link 
-            href={categoryLink}
-            className="inline-flex items-center justify-center bg-[#282c34] hover:bg-black text-white px-8 py-3 rounded shadow-sm text-sm font-semibold tracking-wide transition-colors"
-          >
-            Shop Now
-          </Link>
-        </div>
+        {/* Header Section (Optional) */}
+        {title && (
+          <div className="mb-10 max-w-2xl">
+            <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-gray-900 mb-4 font-inter">
+              {title}
+            </h2>
+            {description && (
+              <p className="text-gray-700 font-medium leading-relaxed mb-8 text-sm md:text-base">
+                {description}
+              </p>
+            )}
+            {categoryLink && (
+              <Link 
+                href={categoryLink}
+                className="inline-flex items-center justify-center bg-[#282c34] hover:bg-black text-white px-8 py-3 rounded shadow-sm text-sm font-semibold tracking-wide transition-colors"
+              >
+                Shop Now
+              </Link>
+            )}
+          </div>
+        )}
 
         {/* Gallery Section */}
         <div className="relative w-full flex items-center group">
@@ -78,9 +84,11 @@ export default function CategoryShowcase({
                 sizes="(max-width: 768px) 100vw, 40vw"
               />
               <div className="absolute bottom-6 left-6 right-6 flex justify-center">
-                <Link href={categoryLink} className="inline-block border border-white/70 text-white hover:bg-white hover:text-black px-6 py-2 backdrop-blur-sm transition-all text-xs font-bold tracking-widest uppercase">
-                  Shop Collection
-                </Link>
+                {categoryLink && (
+                  <Link href={categoryLink} className="inline-block border border-white/70 text-white hover:bg-white hover:text-black px-6 py-2 backdrop-blur-sm transition-all text-xs font-bold tracking-widest uppercase">
+                    Shop Collection
+                  </Link>
+                )}
               </div>
             </motion.div>
 
