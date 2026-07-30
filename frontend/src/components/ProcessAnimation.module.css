@@ -143,6 +143,9 @@
   .timeline::before {
     left: 35px;
   }
+  .animatedLine {
+    left: 34px;
+  }
   .stepWrapper, .stepWrapper:nth-child(even) {
     flex-direction: row;
     justify-content: flex-start;
