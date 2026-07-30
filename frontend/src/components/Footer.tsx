@@ -7,7 +7,14 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.linksSection}>
         <div className={styles.column} style={{ flex: 1.5 }}>
-          <h3 className={styles.logo}>AMP pvt ltd</h3>
+          <div className="flex items-center gap-3 mb-4">
+            <img 
+              src="/amplogo.png" 
+              alt="AMP Ceylon Logo" 
+              className="w-14 h-14 object-contain mix-blend-screen opacity-90" 
+            />
+            <h3 className={styles.logo} style={{ marginBottom: 0 }}>AMP pvt ltd</h3>
+          </div>
           <p>
             Premium manufacturers and global exporter of high-grade artificial flowers, botanical decor, and luxury gift items.
           </p>
