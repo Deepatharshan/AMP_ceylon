@@ -27,6 +27,7 @@ export default function Navbar() {
   const [isAtTop, setIsAtTop] = useState(true);
   const [headerShapeClass, setHeaderShapeClass] = useState('rounded-none');
   const shapeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const wasOpen = useRef(false);
   
   const [hidden, setHidden] = useState(false);
   const lastScrollY = useRef(0);
@@ -99,10 +100,16 @@ export default function Navbar() {
     if (isOpen) {
       setHeaderShapeClass(isAtTop ? 'rounded-none' : 'rounded-2xl');
     } else {
-      shapeTimeoutRef.current = setTimeout(() => {
+      if (wasOpen.current) {
+        shapeTimeoutRef.current = setTimeout(() => {
+          setHeaderShapeClass(isAtTop ? 'rounded-none' : 'rounded-full');
+        }, 300);
+      } else {
         setHeaderShapeClass(isAtTop ? 'rounded-none' : 'rounded-full');
-      }, 300);
+      }
     }
+    wasOpen.current = isOpen;
+    
     return () => {
       if (shapeTimeoutRef.current) clearTimeout(shapeTimeoutRef.current);
     };
@@ -124,14 +131,17 @@ export default function Navbar() {
   );
 
   return (
-    <header className={`fixed left-1/2 transform -translate-x-1/2 z-50
-                       flex flex-col items-center
-                       transition-all duration-500 ease-in-out
-                       ${headerShapeClass}
-                       ${isAtTop 
-                         ? 'top-0 w-full max-w-none border-b border-[#222] bg-[rgba(10,10,10,0.95)] backdrop-blur-md px-6 md:px-12 py-4' 
-                         : 'top-6 w-[calc(100%-2rem)] max-w-5xl sm:w-auto border border-[#333] bg-[rgba(15,15,15,0.85)] backdrop-blur-md px-4 py-3'}
-                       ${hidden && !isAtTop ? '-translate-y-[150%] opacity-0' : 'translate-y-0 opacity-100'}`}>
+    <div className={`fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none transition-all duration-500 ease-in-out ${isAtTop ? 'pt-0' : 'pt-6'} ${hidden && !isAtTop ? '-translate-y-[150%] opacity-0' : 'translate-y-0 opacity-100'}`}>
+      <motion.header 
+        layout
+        transition={{ layout: { duration: 0.5, ease: "easeInOut" } }}
+        className={`pointer-events-auto flex flex-col items-center
+                   transition-colors duration-500 ease-in-out
+                   ${headerShapeClass}
+                   ${isAtTop 
+                     ? 'w-full max-w-none border-b border-[#222] bg-[rgba(10,10,10,0.95)] backdrop-blur-md px-6 md:px-12 py-4' 
+                     : 'w-[calc(100%-2rem)] max-w-5xl sm:w-auto border border-[#333] bg-[rgba(15,15,15,0.85)] backdrop-blur-md px-4 py-3'}`}
+      >
 
       <div className="flex items-center justify-between w-full gap-x-8 sm:gap-x-12">
         <div className="flex items-center">
@@ -239,6 +249,7 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+      </motion.header>
+    </div>
   );
 }
