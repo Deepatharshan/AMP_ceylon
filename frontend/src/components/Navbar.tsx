@@ -134,7 +134,7 @@ export default function Navbar() {
     <div className={`fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none transition-transform duration-500 ease-in-out ${hidden ? '-translate-y-[150%] opacity-0' : 'translate-y-0 opacity-100'}`}>
       <header 
         className={`pointer-events-auto flex flex-col items-center w-full
-                   border-b border-[#222] bg-[rgba(10,10,10,0.95)] backdrop-blur-md px-6 md:px-12 py-4`}
+                   border-b border-[#4a0b22] bg-[#3a081a] backdrop-blur-md px-6 md:px-12 py-4`}
       >
 
       <div className="flex items-center justify-between w-full gap-x-8 sm:gap-x-12">
@@ -163,7 +163,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-[rgba(20,20,20,0.95)] backdrop-blur-xl border border-[#333] rounded-xl overflow-hidden shadow-2xl flex flex-col py-2 text-white"
+                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-[#3a081a] backdrop-blur-xl border border-[#4a0b22] rounded-xl overflow-hidden shadow-2xl flex flex-col py-2 text-white"
                 >
                   {categories.map((cat, idx) => (
                     <Link 
