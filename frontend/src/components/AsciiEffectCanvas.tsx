@@ -52,9 +52,10 @@ export default function AsciiEffectCanvas({ config, imageUrl }: { config: any, i
     let startTime = Date.now();
     let offCanvas: HTMLCanvasElement;
     let offCtx: CanvasRenderingContext2D | null = null;
-    let imgData: Uint8ClampedArray;
+    let cellCache: { x: number, y: number, px: number, py: number, r: number, g: number, b: number, baseLuma: number }[] = [];
     let cachedWidth = 0;
     let cachedHeight = 0;
+    let cellSize = config.cellSize || 9;
 
     const resizeAndDraw = () => {
       if (!containerRef.current) return;
@@ -66,12 +67,14 @@ export default function AsciiEffectCanvas({ config, imageUrl }: { config: any, i
         canvas.height = height;
         cachedWidth = width;
         cachedHeight = height;
+        cellSize = config.cellSize || 9;
 
         // Cache offscreen sampling canvas when resized
         offCanvas = document.createElement('canvas');
         offCanvas.width = width;
         offCanvas.height = height;
         offCtx = offCanvas.getContext('2d');
+        
         if (offCtx) {
           const imgRatio = imageLoaded.width / imageLoaded.height;
           const canvasRatio = width / height;
@@ -86,11 +89,38 @@ export default function AsciiEffectCanvas({ config, imageUrl }: { config: any, i
           }
 
           offCtx.drawImage(imageLoaded, drawX, drawY, drawW, drawH);
-          imgData = offCtx.getImageData(0, 0, width, height).data;
+          const imgData = offCtx.getImageData(0, 0, width, height).data;
+
+          // Pre-calculate all cell data heavily to save CPU during requestAnimationFrame
+          const cols = Math.floor(width / cellSize);
+          const rows = Math.floor(height / cellSize);
+          cellCache = [];
+
+          for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+              const px = x * cellSize;
+              const py = y * cellSize;
+              const cx = Math.floor(px + cellSize / 2);
+              const cy = Math.floor(py + cellSize / 2);
+              
+              if (cx >= width || cy >= height) continue;
+              
+              const idx = (cy * width + cx) * 4;
+              const origR = imgData[idx];
+              const origG = imgData[idx + 1];
+              const origB = imgData[idx + 2];
+
+              const adj = adjustColor(origR, origG, origB, config.contrast, config.brightness, config.saturation);
+              const luma = (0.299 * adj.r + 0.587 * adj.g + 0.114 * adj.b) / 255;
+              const baseLuma = config.invert ? 1 - luma : luma;
+
+              cellCache.push({ x, y, px, py, r: adj.r, g: adj.g, b: adj.b, baseLuma });
+            }
+          }
         }
       }
 
-      if (!offCtx || !imgData) return;
+      if (!offCtx || cellCache.length === 0) return;
 
       const now = Date.now();
       const elapsed = now - startTime;
@@ -100,10 +130,6 @@ export default function AsciiEffectCanvas({ config, imageUrl }: { config: any, i
       if (config.bgMode !== 'none') {
          ctx.fillRect(0, 0, width, height);
       }
-
-      const cellSize = config.cellSize || 9;
-      const cols = Math.floor(width / cellSize);
-      const rows = Math.floor(height / cellSize);
 
       const speed = (config.animSpeed?.intensity || 100) / 1000;
       const animIntensity = (config.animIntensity?.intensity || 60) / 100;
@@ -115,60 +141,36 @@ export default function AsciiEffectCanvas({ config, imageUrl }: { config: any, i
         ctx.filter = 'none';
       }
 
-      // Pre-calculate density threshold
-      const densityThreshold = config.density / 100;
+      const densityMultiplier = config.density / 10;
+      const useTint = config.tint && config.tintOpacity > 0;
+      const ditherMode = config.renderMode === 'dither';
+      
+      // Calculate drawing dimensions once
+      const drawSize = cellSize * (config.coverage / 100) * 0.75; // optimized square size representing a dot
+      const offset = (cellSize - drawSize) / 2;
 
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < cols; x++) {
-          const px = x * cellSize;
-          const py = y * cellSize;
+      // Ultra-fast render loop: just looping array, basic math, and fillRect
+      for (let i = 0; i < cellCache.length; i++) {
+        const cell = cellCache[i];
+        
+        let invertLuma = cell.baseLuma;
+        if (config.animated) {
+           invertLuma = Math.max(0, Math.min(1, invertLuma + pulse - (animIntensity / 2)));
+        }
 
-          const cx = Math.floor(px + cellSize / 2);
-          const cy = Math.floor(py + cellSize / 2);
+        ctx.fillStyle = useTint ? config.tint : `rgb(${cell.r},${cell.g},${cell.b})`;
+
+        if (ditherMode) {
+          const bayerVal = bayerMatrix[cell.x % 4][cell.y % 4];
+          const adjustedLuma = invertLuma * densityMultiplier;
           
-          if (cx >= width || cy >= height) continue;
-          
-          const idx = (cy * width + cx) * 4;
-          let r = imgData[idx];
-          let g = imgData[idx + 1];
-          let b = imgData[idx + 2];
-
-          const adj = adjustColor(r, g, b, config.contrast, config.brightness, config.saturation);
-          r = adj.r; g = adj.g; b = adj.b;
-
-          const luma = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-          let invertLuma = config.invert ? 1 - luma : luma;
-          
-          if (config.animated) {
-             invertLuma = Math.max(0, Math.min(1, invertLuma + pulse - (animIntensity / 2)));
+          if (adjustedLuma > bayerVal) {
+             ctx.fillRect(cell.px + offset, cell.py + offset, drawSize, drawSize);
           }
-
-          if (config.renderMode === 'dither') {
-            const bayerVal = bayerMatrix[x % 4][y % 4];
-            
-            // A common way density modifies dither is by scaling the threshold or luma
-            // Let's use a standard bayer check. The higher the luma, the more likely it passes.
-            // density 20 might mean we scale the luma up or down. Let's just use a solid multiplier to match the visual.
-            const adjustedLuma = invertLuma * (config.density / 10); // tweak to match visual density
-            
-            if (adjustedLuma > bayerVal) {
-               const useTint = config.tint && config.tintOpacity > 0;
-               ctx.fillStyle = useTint ? config.tint : `rgb(${r},${g},${b})`;
-               
-               // Draw a dot (circle) instead of a full square to create the gaps seen in the screenshot
-               const radius = (cellSize * (config.coverage / 100)) * 0.45; // slightly smaller than half cell for gaps
-               ctx.beginPath();
-               ctx.arc(px + cellSize/2, py + cellSize/2, radius, 0, Math.PI * 2);
-               ctx.fill();
-            }
-          } else {
-             const useTint = config.tint && config.tintOpacity > 0;
-             ctx.fillStyle = useTint ? config.tint : `rgb(${r},${g},${b})`;
-             const radius = (cellSize * invertLuma * (config.coverage / 100)) * 0.45;
-             ctx.beginPath();
-             ctx.arc(px + cellSize/2, py + cellSize/2, Math.max(0, radius), 0, Math.PI * 2);
-             ctx.fill();
-          }
+        } else {
+           const dynamicSize = drawSize * invertLuma;
+           const dynamicOffset = (cellSize - dynamicSize) / 2;
+           ctx.fillRect(cell.px + dynamicOffset, cell.py + dynamicOffset, dynamicSize, dynamicSize);
         }
       }
 
