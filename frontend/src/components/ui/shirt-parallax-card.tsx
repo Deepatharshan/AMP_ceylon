@@ -82,8 +82,7 @@ export function ShirtParallaxCard({
               </CardHeader>
               <CardContent className="p-0">
                 <p className="text-sm text-gray-600 line-clamp-2">{description}</p>
-                <div className="flex items-center justify-between mt-4">
-                  <p className="text-lg font-bold text-[#3a081a]">{price}</p>
+                <div className="flex items-center justify-end mt-4">
                   <Button className="bg-[#3a081a] hover:bg-[#5a0c28] text-white transition-colors">
                     View
                   </Button>
