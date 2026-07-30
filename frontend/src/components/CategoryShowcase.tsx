@@ -31,8 +31,8 @@ export default function CategoryShowcase({
 }: CategoryShowcaseProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  // Take only up to 5 products for the showcase row
-  const displayProducts = products.slice(0, 5);
+  // Take up to 6 products for the showcase row
+  const displayProducts = products.slice(0, 6);
 
   return (
     <section className="py-4 md:py-8 px-0 w-full mx-auto overflow-hidden">
@@ -67,31 +67,7 @@ export default function CategoryShowcase({
             <ArrowLeft size={16} className="text-gray-400" />
           </button>
 
-          <div className="flex w-full h-[450px] md:h-[550px] gap-2 md:gap-4 overflow-x-auto md:overflow-visible snap-x">
-            
-            {/* Main Featured Image */}
-            <motion.div 
-              className="relative h-full overflow-hidden shrink-0 w-[70vw] md:w-auto snap-center"
-              layout
-              animate={{ flex: hoveredIndex === null ? 3 : 2 }}
-              transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-            >
-              <Image 
-                src={featuredImage} 
-                alt={title || 'Featured Category'}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 40vw"
-              />
-              <div className="absolute bottom-6 left-6 right-6 flex justify-center">
-                {categoryLink && (
-                  <Link href={categoryLink} className="inline-block border border-white/70 text-white hover:bg-white hover:text-black px-6 py-2 backdrop-blur-sm transition-all text-xs font-bold tracking-widest uppercase">
-                    Shop Collection
-                  </Link>
-                )}
-              </div>
-            </motion.div>
-
+          <div className="flex w-full h-[450px] md:h-[550px] gap-4 md:gap-6 overflow-x-auto md:overflow-visible snap-x">
             {/* Expandable Product Cards */}
             {displayProducts.map((product, idx) => {
               const isHovered = hoveredIndex === idx;
@@ -118,8 +94,20 @@ export default function CategoryShowcase({
                       sizes="(max-width: 768px) 50vw, 20vw"
                     />
                     
-                    {/* Overlay that appears on hover */}
-                    <div className={`absolute inset-0 bg-black/10 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+                    {/* Gradient Overlay for text readability */}
+                    <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-60'}`} />
+                    
+                    {/* Product Details */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white flex flex-col justify-end">
+                      <h3 className={`font-semibold text-lg md:text-xl truncate transition-all duration-300 ${isHovered ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0 md:opacity-100 md:translate-y-0'}`}>
+                        {product.name}
+                      </h3>
+                      <div className={`overflow-hidden transition-all duration-300 ${isHovered ? 'max-h-20 opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
+                        <span className="text-xs uppercase tracking-widest border border-white/40 px-6 py-2 hover:bg-white hover:text-black transition-colors inline-block">
+                          View
+                        </span>
+                      </div>
+                    </div>
                   </Link>
                 </motion.div>
               );
