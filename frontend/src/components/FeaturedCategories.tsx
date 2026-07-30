@@ -30,11 +30,11 @@ export default async function FeaturedCategories() {
           title={`SHOP ${cat.name}`}
           description={`Explore our premium collection of ${cat.name}. From classic essentials to the latest trends, find everything you need to elevate your style.`}
           categoryLink={`/collections?category=${encodeURIComponent(cat.name)}`}
-          featuredImage={products[0].images[0]} // Fallback to first product image if no category image exists
+          featuredImage={products[0].images?.[0] || '/placeholder-product.jpg'} // Fallback to first product image if no category image exists
           products={products.map(p => ({
             id: p.id,
             name: p.name,
-            image: p.images[0],
+            image: p.images?.[0] || '/placeholder-product.jpg',
             price: p.price,
             slug: p.id
           }))}
