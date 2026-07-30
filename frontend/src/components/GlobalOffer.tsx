@@ -204,47 +204,9 @@ export default function GlobalOffer({ offer }: { offer: any }) {
         )}
       </AnimatePresence>
 
-      {/* Slim Persistent Banner (Only shows when modal is dismissed) */}
+      {/* Slim Persistent Banner (Removed as per request to remove the maroon border) */}
       <AnimatePresence>
-        {hasDismissed && !isOpen && !isPermanentlyHidden && (
-          <motion.div 
-            id="global-offer-banner"
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: hidden ? -100 : 0, opacity: hidden ? 0 : 1 }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-0 left-0 right-0 z-[9000] bg-[#3a081a] text-white py-3 px-6 shadow-2xl flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8"
-          >
-            <p className="text-xs sm:text-sm font-medium text-center">
-              <span className="font-bold mr-2 text-[#f4e6ea]">{offer.title}:</span>
-              {offer.description.substring(0, 50)}...
-            </p>
-            <div className="flex items-center gap-4">
-              <span className="bg-white/20 px-2 py-1 rounded text-[10px] font-bold tracking-wider">
-                {getDiscountText()}
-              </span>
-              <button 
-                onClick={() => setIsOpen(true)}
-                className="text-[10px] font-bold uppercase tracking-widest underline decoration-white/30 underline-offset-4 hover:decoration-white transition-colors whitespace-nowrap"
-              >
-                View Details
-              </button>
-              <button 
-                onClick={handleClaim}
-                className="text-[10px] font-bold uppercase tracking-widest bg-white text-[#3a081a] px-3 py-1.5 rounded hover:bg-gray-100 transition-colors whitespace-nowrap"
-              >
-                Claim Now
-              </button>
-              {/* Close (X) Button */}
-              <button
-                onClick={handleBannerDismiss}
-                className="text-white/60 hover:text-white transition-colors ml-2"
-                aria-label="Hide banner"
-              >
-                <X size={16} />
-              </button>
-            </div>
-          </motion.div>
-        )}
+        {/* Banner disabled */}
       </AnimatePresence>
 
       {/* Success Notification Modal */}
