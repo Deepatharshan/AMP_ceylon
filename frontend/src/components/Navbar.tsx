@@ -173,13 +173,13 @@ export default function Navbar() {
                   <div className="max-w-7xl mx-auto px-6 py-10 flex gap-12">
                     {/* Categories Column */}
                     <div className="w-1/4 shrink-0">
-                      <h4 className="text-xs font-bold uppercase tracking-widest text-white/50 mb-6">Collections</h4>
-                      <ul className="flex flex-col gap-3">
+                      <h4 className="text-sm font-bold uppercase tracking-widest !text-white/90 mb-6">Collections</h4>
+                      <ul className="flex flex-col gap-4">
                         {categories.map((cat, idx) => (
                           <li key={idx}>
                             <Link 
                               href={`/collections?category=${encodeURIComponent(cat)}`} 
-                              className="text-sm font-medium text-white hover:text-[#f4e6ea] transition-colors"
+                              className="text-base font-medium !text-white hover:!text-gray-200 transition-colors"
                             >
                               {cat}
                             </Link>
