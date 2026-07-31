@@ -164,8 +164,41 @@ export default function CartPage() {
   const totalVarieties = cartItems.length;
   const totalVolume = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  const generatePDF = () => {
+  const generatePDF = async () => {
     const doc = new jsPDF();
+    
+    // Add watermark
+    try {
+      const img = new window.Image();
+      img.src = '/amplogo.png';
+      await new Promise((resolve) => {
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+
+      if (img.width > 0) {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.globalAlpha = 0.08; // 8% opacity for watermark
+          ctx.drawImage(img, 0, 0);
+          const dataUrl = canvas.toDataURL('image/png');
+          
+          // Center the watermark
+          const pdfWidth = doc.internal.pageSize.getWidth();
+          const pdfHeight = doc.internal.pageSize.getHeight();
+          const logoSize = 140; // Size of the logo in mm
+          const x = (pdfWidth - logoSize) / 2;
+          const y = (pdfHeight - logoSize) / 2;
+          
+          doc.addImage(dataUrl, 'PNG', x, y, logoSize, logoSize);
+        }
+      }
+    } catch (e) {
+      console.error('Could not load watermark', e);
+    }
     
     // Header
     doc.setFontSize(22);
