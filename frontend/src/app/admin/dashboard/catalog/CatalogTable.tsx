@@ -81,6 +81,9 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
   const [products, setProducts] = useState(initialProducts);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+
   
   // View Details Modal States
   const [viewProduct, setViewProduct] = useState<Product | null>(null);
@@ -232,6 +235,13 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
     return matchesSearch && matchesCategory;
   });
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, selectedCategory]);
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   const categories = Array.from(new Set([
     ...products.map(p => p.category),
     ...dbCategories.map(c => c.name)
@@ -285,8 +295,8 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
+            {paginatedProducts.length > 0 ? (
+              paginatedProducts.map((product) => (
                 <tr key={product.id} className="border-b border-[#ececec] hover:bg-gray-50/50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="relative w-12 h-12 bg-gray-100 rounded border border-gray-200 overflow-hidden flex items-center justify-center">
@@ -398,8 +408,29 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
           </tbody>
         </table>
       </div>
-      <div className="p-4 border-t border-[#ececec] bg-gray-50/50 flex justify-between items-center text-xs text-gray-500 rounded-b">
-        <span>Showing {filteredProducts.length} of {products.length} results</span>
+      <div className="p-4 border-t border-[#ececec] bg-gray-50/50 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 rounded-b gap-4">
+        <span>Showing {paginatedProducts.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to {Math.min(currentPage * itemsPerPage, filteredProducts.length)} of {filteredProducts.length} results</span>
+        {totalPages > 1 && (
+          <div className="flex items-center gap-1">
+            <button 
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1.5 border border-gray-200 rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
+            >
+              Previous
+            </button>
+            <span className="px-3 py-1.5 font-medium text-gray-700">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button 
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1.5 border border-gray-200 rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Product Details Preview Modal */}

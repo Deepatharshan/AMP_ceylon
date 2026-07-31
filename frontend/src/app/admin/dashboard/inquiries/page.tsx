@@ -33,6 +33,8 @@ export default function InquiriesDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
   
   // Detail Modal state
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
@@ -432,6 +434,13 @@ export default function InquiriesDashboardPage() {
     return matchesSearch && matchesStatus;
   });
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, statusFilter]);
+
+  const totalPages = Math.ceil(filteredInquiries.length / itemsPerPage);
+  const paginatedInquiries = filteredInquiries.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   // Real Stats Calculations
   const now = new Date();
   const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -528,8 +537,8 @@ export default function InquiriesDashboardPage() {
                 <tr>
                   <td colSpan={7} className="px-6 py-12 text-center text-gray-500 animate-pulse">Loading inquiries...</td>
                 </tr>
-              ) : filteredInquiries.length > 0 ? (
-                filteredInquiries.map((inq) => {
+              ) : paginatedInquiries.length > 0 ? (
+                paginatedInquiries.map((inq) => {
                   const firstItem = inq.inquiry_items?.[0];
                   const itemText = firstItem 
                     ? `${firstItem.products?.name || 'Product'} (${firstItem.quantity} Units)` 
@@ -632,6 +641,31 @@ export default function InquiriesDashboardPage() {
               )}
             </tbody>
           </table>
+        </div>
+        
+        <div className="p-4 border-t border-[#ececec] bg-gray-50/50 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 rounded-b gap-4">
+          <span>Showing {paginatedInquiries.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to {Math.min(currentPage * itemsPerPage, filteredInquiries.length)} of {filteredInquiries.length} results</span>
+          {totalPages > 1 && (
+            <div className="flex items-center gap-1">
+              <button 
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1.5 border border-gray-200 rounded bg-white disabled:opacity-50 hover:bg-gray-50 transition-colors"
+              >
+                Previous
+              </button>
+              <span className="px-3 py-1.5 font-medium text-gray-700">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button 
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1.5 border border-gray-200 rounded bg-white disabled:opacity-50 hover:bg-gray-50 transition-colors"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
