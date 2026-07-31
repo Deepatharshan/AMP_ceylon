@@ -35,6 +35,7 @@ export default function Navbar() {
   const [cartCount, setCartCount] = useState(0);
   const [animationTrigger, setAnimationTrigger] = useState(0);
   const [categories, setCategories] = useState<string[]>(["All Collections"]);
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   
   const pathname = usePathname();
@@ -55,12 +56,17 @@ export default function Navbar() {
     async function loadCategories() {
       try {
         const supabase = createClient();
-        const { data } = await supabase.from('categories').select('name').order('name', { ascending: true });
-        if (data && data.length > 0) {
-          setCategories(["All Collections", ...data.map(c => c.name)]);
+        const { data: catData } = await supabase.from('categories').select('name').order('name', { ascending: true });
+        if (catData && catData.length > 0) {
+          setCategories(["All Collections", ...catData.map(c => c.name)]);
+        }
+        
+        const { data: prodData } = await supabase.from('products').select('*').limit(3);
+        if (prodData) {
+          setFeaturedProducts(prodData);
         }
       } catch (err) {
-        console.error('Failed to load categories', err);
+        console.error('Failed to load data for navbar', err);
       }
     }
     
@@ -133,7 +139,7 @@ export default function Navbar() {
   return (
     <div className={`fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none transition-transform duration-500 ease-in-out ${hidden ? '-translate-y-[150%] opacity-0' : 'translate-y-0 opacity-100'}`}>
       <header 
-        className={`pointer-events-auto flex flex-col items-center w-full
+        className={`pointer-events-auto flex flex-col items-center w-full relative
                    border-b border-[#4a0b22] bg-[#3a081a] backdrop-blur-md px-6 md:px-12 py-2.5`}
       >
 
@@ -147,7 +153,6 @@ export default function Navbar() {
           <AnimatedNavLink href="/about" isActive={pathname === '/about'}>About Us</AnimatedNavLink>
           
           <div 
-            className="relative"
             onMouseEnter={() => setIsDropdownOpen(true)}
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
@@ -159,21 +164,51 @@ export default function Navbar() {
             <AnimatePresence>
               {isDropdownOpen && (
                 <motion.div 
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-[#3a081a] backdrop-blur-xl border border-[#4a0b22] rounded-xl overflow-hidden shadow-2xl flex flex-col py-2 text-white"
+                  className="absolute top-full left-0 w-full bg-[#3a081a] border-t border-[#4a0b22] shadow-2xl overflow-hidden"
                 >
-                  {categories.map((cat, idx) => (
-                    <Link 
-                      key={idx} 
-                      href={`/collections?category=${encodeURIComponent(cat)}`} 
-                      className="px-4 py-2 text-sm !text-white font-medium hover:bg-white/10 transition-colors"
-                    >
-                      {cat}
-                    </Link>
-                  ))}
+                  <div className="max-w-7xl mx-auto px-6 py-10 flex gap-12">
+                    {/* Categories Column */}
+                    <div className="w-1/4 shrink-0">
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-white/50 mb-6">Collections</h4>
+                      <ul className="flex flex-col gap-3">
+                        {categories.map((cat, idx) => (
+                          <li key={idx}>
+                            <Link 
+                              href={`/collections?category=${encodeURIComponent(cat)}`} 
+                              className="text-sm font-medium text-white hover:text-[#f4e6ea] transition-colors"
+                            >
+                              {cat}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    {/* Featured Products Grid */}
+                    <div className="flex-1 grid grid-cols-3 gap-6">
+                      {featuredProducts.map(product => (
+                        <Link 
+                          key={product.id} 
+                          href={`/product/${product.id}`}
+                          className="group block relative rounded-lg overflow-hidden bg-[#2a0512] aspect-[4/3]"
+                        >
+                          <img 
+                            src={product.image_url || (product.image_urls && product.image_urls[0]) || ''} 
+                            alt={product.name}
+                            className="w-full h-full object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6">
+                            <span className="text-xs font-bold uppercase tracking-wider text-white/70 mb-1">{product.category}</span>
+                            <h3 className="text-white font-playfair text-lg font-bold truncate">{product.name}</h3>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
