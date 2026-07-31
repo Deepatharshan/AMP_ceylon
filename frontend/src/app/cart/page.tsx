@@ -38,18 +38,39 @@ export default function CartPage() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const loadCart = () => {
+      const loadCart = async () => {
         const items = JSON.parse(localStorage.getItem('inquiry_cart') || '[]');
         setCartItems(items);
         
-        const offer = localStorage.getItem('active_offer');
-        if (offer) {
-          setActiveOffer(JSON.parse(offer));
+        const offerStr = localStorage.getItem('active_offer');
+        if (offerStr) {
+          try {
+            const parsedOffer = JSON.parse(offerStr);
+            const supabase = createClient();
+            
+            // Validate offer against database
+            const { data, error } = await supabase
+              .from('offers')
+              .select('id, is_active, status')
+              .eq('id', parsedOffer.id)
+              .single();
+              
+            if (error || !data || !data.is_active || data.status !== 'Active') {
+              // Offer is deleted, expired, or inactive
+              localStorage.removeItem('active_offer');
+              setActiveOffer(null);
+            } else {
+              setActiveOffer(parsedOffer);
+            }
+          } catch (err) {
+            localStorage.removeItem('active_offer');
+            setActiveOffer(null);
+          }
         }
+        setLoading(false);
       };
       
       loadCart();
-      setLoading(false);
     }
   }, []);
 
