@@ -8,12 +8,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/utils/supabase/client';
 
 const AnimatedNavLink = ({ href, children, isActive }: { href: string; children: React.ReactNode, isActive?: boolean }) => {
-  const defaultTextColor = isActive ? 'text-white font-semibold' : 'text-gray-300';
-  const hoverTextColor = 'text-white';
-  const textSizeClass = 'text-sm uppercase tracking-wider';
+  const defaultTextColor = isActive ? 'text-white font-bold' : 'text-gray-300 font-semibold';
+  const hoverTextColor = 'text-white font-bold';
+  const textSizeClass = 'text-base font-playfair uppercase tracking-widest';
 
   return (
-    <Link href={href} className={`group relative inline-block overflow-hidden h-5 flex items-center shrink-0 whitespace-nowrap ${textSizeClass}`}>
+    <Link href={href} className={`group relative inline-block overflow-hidden h-6 flex items-center shrink-0 whitespace-nowrap ${textSizeClass}`}>
       <div className="flex flex-col transition-transform duration-300 ease-out transform group-hover:-translate-y-1/2">
         <span className={defaultTextColor}>{children}</span>
         <span className={hoverTextColor}>{children}</span>
@@ -132,7 +132,7 @@ export default function Navbar() {
       <div className="w-12 h-12 min-w-[3rem] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
         <img src="/amplogo.png" alt="AMP Ceylon Logo" className="w-full h-full object-contain" />
       </div>
-      <span className="font-playfair font-bold text-white tracking-wide text-lg hidden lg:block whitespace-nowrap shrink-0 transition-opacity group-hover:opacity-90">AMP Ceylon</span>
+      <span className="font-playfair font-bold uppercase text-white tracking-[0.15em] text-xl hidden lg:block whitespace-nowrap shrink-0 transition-opacity group-hover:opacity-90">AMP CEYLON</span>
     </Link>
   );
 
