@@ -140,7 +140,7 @@ export default function AboutPage() {
                 <img 
                   src="/current-owner.jpeg" 
                   alt="Current Owner of AMP Ceylon" 
-                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => { e.currentTarget.src = 'https://placehold.co/400x400?text=Current+Owner' }}
                 />
               </div>
