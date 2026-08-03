@@ -13,7 +13,7 @@ export default function Hero() {
         className={styles.heroVideo}
       >
         {/* Replace this src with your actual video file in the public folder */}
-        <source src="/hero-video.mp4" type="video/mp4" />
+        <source src="/newheader.mov" />
       </video>
       
       <div className={styles.scrollIndicator}>
