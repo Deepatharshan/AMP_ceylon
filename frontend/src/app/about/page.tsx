@@ -138,7 +138,7 @@ export default function AboutPage() {
             <motion.div variants={fadeUp} className="flex flex-col items-center text-center group">
               <div className="w-64 h-64 mb-8 overflow-hidden rounded-full border-[3px] border-[#8a385a]/20 shadow-lg relative bg-gray-50">
                 <img 
-                  src="/current-owner.jpg" 
+                  src="/current-owner.jpeg" 
                   alt="Current Owner of AMP Ceylon" 
                   className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => { e.currentTarget.src = 'https://placehold.co/400x400?text=Current+Owner' }}
