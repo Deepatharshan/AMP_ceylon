@@ -245,7 +245,7 @@ export default function ContactPage() {
               </div>
               
               <h3 className="text-xl font-bold mb-8 relative z-10" style={{ fontFamily: 'var(--font-playfair)' }}>
-                Our Address
+                Our Facilities
               </h3>
               
               <div className="flex flex-col gap-8 relative z-10">
@@ -258,6 +258,20 @@ export default function ContactPage() {
                     <p className="text-sm text-white/70 leading-relaxed">
                       Ring Road 3, Phase 2, Export Processing Zone,<br />
                       Katunayake, Sri Lanka
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-full h-px bg-white/10"></div>
+
+                <div className="flex gap-4">
+                  <div className="mt-1">
+                    <MapPin size={20} className="text-[#f4e6ea]" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-bold mb-2 tracking-wide text-[#f4e6ea]">AMP Ceylon Lebanon Factory</h4>
+                    <p className="text-sm text-white/70 leading-relaxed">
+                      Thawalanthenna, Waththeyama
                     </p>
                   </div>
                 </div>
