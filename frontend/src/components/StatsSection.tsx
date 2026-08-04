@@ -70,14 +70,14 @@ export default function StatsSection() {
       
       <div className={`${styles.statItem} fade-in delay-200 ${isVisible ? 'visible' : ''}`}>
         <div className={styles.statNumber}>
-          <Counter end={20} suffix="+" />
+          <Counter end={50} suffix="+" />
         </div>
         <div className={styles.statLabel}>Countries</div>
       </div>
       
       <div className={`${styles.statItem} fade-in delay-300 ${isVisible ? 'visible' : ''}`}>
         <div className={styles.statNumber}>
-          <Counter end={45000} suffix="+" />
+          <Counter end={50000} suffix="+" />
         </div>
         <div className={styles.statLabel}>Products</div>
       </div>
