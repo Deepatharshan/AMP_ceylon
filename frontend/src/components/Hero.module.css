@@ -1,8 +1,7 @@
 .hero {
   position: relative;
   width: 100%;
-  height: calc(100vh - 70px);
-  margin-top: 70px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
