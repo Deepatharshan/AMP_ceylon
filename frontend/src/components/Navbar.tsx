@@ -129,7 +129,7 @@ export default function Navbar() {
 
   const logoElement = (
     <Link href="/" className="flex items-center gap-3 mr-4 group">
-      <div className="w-16 h-16 min-w-[4rem] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+      <div className="w-20 h-20 min-w-[5rem] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
         <img src="/amplogo.png" alt="AMP Ceylon Logo" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" />
       </div>
     </Link>
