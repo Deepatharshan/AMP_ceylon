@@ -8,8 +8,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/utils/supabase/client';
 
 const AnimatedNavLink = ({ href, children, isActive }: { href: string; children: React.ReactNode, isActive?: boolean }) => {
-  const defaultTextColor = isActive ? 'text-white font-bold' : 'text-gray-300 font-semibold';
-  const hoverTextColor = 'text-white font-bold';
+  const defaultTextColor = isActive ? 'text-[#3a081a] font-bold' : 'text-[#3a081a]/80 font-semibold';
+  const hoverTextColor = 'text-[#3a081a] font-bold';
   const textSizeClass = 'text-base font-playfair uppercase tracking-widest';
 
   return (
@@ -129,10 +129,10 @@ export default function Navbar() {
 
   const logoElement = (
     <Link href="/" className="flex items-center gap-3 mr-4 group">
-      <div className="w-12 h-12 min-w-[3rem] flex items-center justify-center rounded-full border-2 border-white/80 overflow-hidden transition-transform duration-300 group-hover:scale-105 shadow-md">
-        <img src="/logo.jpg" alt="AMP Ceylon Logo" className="w-full h-full object-cover" />
+      <div className="w-12 h-12 min-w-[3rem] flex items-center justify-center rounded-full border-2 border-[#3a081a]/20 overflow-hidden transition-transform duration-300 group-hover:scale-105 shadow-md">
+        <img src="/logo.jpg" alt="AMP Ceylon Logo" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
       </div>
-      <span className="font-playfair font-bold uppercase text-white tracking-[0.15em] text-xl hidden lg:block whitespace-nowrap shrink-0 transition-opacity group-hover:opacity-90">AMP CEYLON</span>
+      <span className="font-playfair font-bold uppercase text-[#3a081a] tracking-[0.15em] text-xl hidden lg:block whitespace-nowrap shrink-0 transition-opacity group-hover:opacity-90">AMP CEYLON</span>
     </Link>
   );
 
@@ -140,7 +140,7 @@ export default function Navbar() {
     <div className={`fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none transition-transform duration-500 ease-in-out ${hidden ? '-translate-y-[150%] opacity-0' : 'translate-y-0 opacity-100'}`}>
       <header 
         className={`pointer-events-auto flex flex-col items-center w-full relative
-                   border-b border-[#4a0b22] bg-[#3a081a] backdrop-blur-md px-6 md:px-12 py-2.5`}
+                   border-b border-gray-200 bg-[#faf9f6] backdrop-blur-md px-6 md:px-12 py-2.5`}
       >
 
       <div className="flex items-center justify-between w-full gap-x-8 sm:gap-x-12">
@@ -158,7 +158,7 @@ export default function Navbar() {
           >
             <div className="flex items-center gap-1 cursor-pointer py-2">
               <AnimatedNavLink href="/collections" isActive={pathname === '/collections'}>Catalog</AnimatedNavLink>
-              <ChevronDown size={14} className="text-gray-300" />
+              <ChevronDown size={14} className="text-[#3a081a]/80" />
             </div>
             
             <AnimatePresence>
@@ -219,7 +219,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-4 ml-auto md:ml-0">
-          <Link href="/cart" className="relative flex items-center p-1 !text-white hover:!text-gray-200 transition-colors shrink-0">
+          <Link href="/cart" className="relative flex items-center p-1 !text-[#3a081a] hover:!text-[#3a081a]/80 transition-colors shrink-0">
             <motion.div
               key={animationTrigger}
               initial={{ scale: 1, y: 0 }}
@@ -227,7 +227,7 @@ export default function Navbar() {
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="relative flex items-center"
             >
-              <ShoppingBag size={20} color="white" />
+              <ShoppingBag size={20} color="#3a081a" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
                   {cartCount}
@@ -236,11 +236,11 @@ export default function Navbar() {
             </motion.div>
           </Link>
           
-          <button className="md:hidden flex items-center justify-center w-8 h-8 !text-white focus:outline-none" onClick={toggleMenu} aria-label={isOpen ? 'Close Menu' : 'Open Menu'}>
+          <button className="md:hidden flex items-center justify-center w-8 h-8 !text-[#3a081a] focus:outline-none" onClick={toggleMenu} aria-label={isOpen ? 'Close Menu' : 'Open Menu'}>
             {isOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <svg className="w-6 h-6" fill="none" stroke="#3a081a" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             ) : (
-                <svg className="w-6 h-6" fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                <svg className="w-6 h-6" fill="none" stroke="#3a081a" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             )}
           </button>
         </div>
@@ -256,23 +256,23 @@ export default function Navbar() {
             className="md:hidden flex flex-col items-center w-full overflow-hidden"
           >
             <div className="pt-6 pb-2 w-full">
-              <nav className="flex flex-col items-center space-y-6 text-base w-full">
-                <Link href="/" className="!text-white hover:text-gray-200 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Home</Link>
-                <Link href="/about" className="!text-white hover:text-gray-200 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">About Us</Link>
+              <nav className="flex flex-col items-center space-y-6 text-base w-full bg-[#faf9f6] text-[#3a081a]">
+                <Link href="/" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Home</Link>
+                <Link href="/about" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">About Us</Link>
                 
                 <div className="flex flex-col items-center w-full">
-                  <div className="!text-white uppercase tracking-widest text-xs mb-4 font-semibold opacity-70">Catalog</div>
+                  <div className="!text-[#3a081a] uppercase tracking-widest text-xs mb-4 font-semibold opacity-70">Catalog</div>
                   <div className="flex flex-col items-center space-y-4 w-full">
                     {categories.map((cat, idx) => (
-                      <Link key={idx} href={`/collections?category=${encodeURIComponent(cat)}`} className="!text-white hover:text-gray-200 transition-colors w-full text-center text-sm font-medium">
+                      <Link key={idx} href={`/collections?category=${encodeURIComponent(cat)}`} className="!text-[#3a081a] hover:opacity-80 transition-colors w-full text-center text-sm font-medium">
                         {cat}
                       </Link>
                     ))}
                   </div>
                 </div>
 
-                <Link href="/manufacturing" className="!text-white hover:text-gray-200 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Manufacturing</Link>
-                <Link href="/contact" className="!text-white hover:text-gray-200 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Contact</Link>
+                <Link href="/manufacturing" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Manufacturing</Link>
+                <Link href="/contact" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Contact</Link>
               </nav>
             </div>
           </motion.div>
