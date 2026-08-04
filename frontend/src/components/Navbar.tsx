@@ -168,18 +168,18 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -5 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-full left-0 w-full bg-[#3a081a] border-t border-[#4a0b22] shadow-2xl overflow-hidden"
+                  className="absolute top-full left-0 w-full bg-[#faf9f6] border-t border-gray-200 shadow-2xl overflow-hidden"
                 >
                   <div className="max-w-7xl mx-auto px-6 py-10 flex gap-12">
                     {/* Categories Column */}
                     <div className="w-1/4 shrink-0">
-                      <h4 className="text-sm font-bold uppercase tracking-widest !text-white/90 mb-6">Collections</h4>
+                      <h4 className="text-sm font-bold uppercase tracking-widest !text-[#3a081a]/90 mb-6">Collections</h4>
                       <ul className="flex flex-col gap-4">
                         {categories.map((cat, idx) => (
                           <li key={idx}>
                             <Link 
                               href={`/collections?category=${encodeURIComponent(cat)}`} 
-                              className="text-base font-medium !text-white hover:!text-gray-200 transition-colors"
+                              className="text-base font-medium !text-[#3a081a] hover:opacity-70 transition-opacity"
                             >
                               {cat}
                             </Link>
@@ -194,7 +194,7 @@ export default function Navbar() {
                         <Link 
                           key={product.id} 
                           href={`/product/${product.id}`}
-                          className="group block relative rounded-lg overflow-hidden bg-[#2a0512] aspect-[4/3]"
+                          className="group block relative rounded-lg overflow-hidden bg-gray-200 aspect-[4/3]"
                         >
                           <img 
                             src={product.image_url || (product.image_urls && product.image_urls[0]) || ''} 
