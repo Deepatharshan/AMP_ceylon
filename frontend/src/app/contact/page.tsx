@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, Phone, MessageCircle, MapPin } from 'lucide-react';
+import { Mail, Phone, MessageCircle, MapPin, Globe } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { WorldMap } from '@/components/ui/map';
@@ -183,33 +183,33 @@ export default function ContactPage() {
               </h3>
               
               <div className="flex flex-col gap-6">
-                <a href="mailto:info@amp-flora.com" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
+                <a href="mailto:udeshjv.ampsl@gmail.com" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
                     <Mail size={18} className="text-[#3a081a]" />
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Email</p>
-                    <p className="text-sm font-semibold">info@amp-flora.com</p>
+                    <p className="text-sm font-semibold">udeshjv.ampsl@gmail.com</p>
                   </div>
                 </a>
                 
-                <a href="tel:+94771234567" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
+                <a href="tel:+94112251026" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
                     <Phone size={18} className="text-[#3a081a]" />
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Phone</p>
-                    <p className="text-sm font-semibold">+94 77 123 4567</p>
+                    <p className="text-sm font-semibold">+94-11-2251026, +94-77-767-6336</p>
                   </div>
                 </a>
 
-                <a href="https://wa.me/94771234567" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
+                <a href="https://www.ampceylon.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                    <MessageCircle size={18} className="text-[#3a081a]" />
+                    <Globe size={18} className="text-[#3a081a]" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">WhatsApp</p>
-                    <p className="text-sm font-semibold">+94 77 123 4567 💬</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Website</p>
+                    <p className="text-sm font-semibold">www.ampceylon.com</p>
                   </div>
                 </a>
 
@@ -218,7 +218,7 @@ export default function ContactPage() {
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-sm font-semibold">@AMPCeylon</span>
+                    <span className="text-sm font-semibold">AMP Ceylon flower Arrangements</span>
                   </a>
                   <a href="#" className="flex items-center gap-2 text-gray-600 hover:text-[#E4405F] transition-colors">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
@@ -245,7 +245,7 @@ export default function ContactPage() {
               </div>
               
               <h3 className="text-xl font-bold mb-8 relative z-10" style={{ fontFamily: 'var(--font-playfair)' }}>
-                Our Branches
+                Our Address
               </h3>
               
               <div className="flex flex-col gap-8 relative z-10">
@@ -254,25 +254,10 @@ export default function ContactPage() {
                     <MapPin size={20} className="text-[#f4e6ea]" />
                   </div>
                   <div>
-                    <h4 className="text-base font-bold mb-2 tracking-wide text-[#f4e6ea]">Katunayake Branch</h4>
+                    <h4 className="text-base font-bold mb-2 tracking-wide text-[#f4e6ea]">Head Office & Factory</h4>
                     <p className="text-sm text-white/70 leading-relaxed">
-                      123 Airport Road, Free Trade Zone,<br />
+                      Ring Road 3, Phase 2, Export Processing Zone,<br />
                       Katunayake, Sri Lanka
-                    </p>
-                  </div>
-                </div>
-
-                <div className="w-full h-px bg-white/10"></div>
-
-                <div className="flex gap-4">
-                  <div className="mt-1">
-                    <MapPin size={20} className="text-[#f4e6ea]" />
-                  </div>
-                  <div>
-                    <h4 className="text-base font-bold mb-2 tracking-wide text-[#f4e6ea]">Kandy Branch</h4>
-                    <p className="text-sm text-white/70 leading-relaxed">
-                      45 Hill Capital Avenue, Peradeniya Road,<br />
-                      Kandy, Sri Lanka
                     </p>
                   </div>
                 </div>
