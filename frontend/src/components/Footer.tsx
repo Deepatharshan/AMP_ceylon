@@ -56,13 +56,17 @@ export default function Footer() {
         
         <div className={styles.column}>
           <h4>Connect</h4>
-          <div className={styles.socialIcons}>
-            <div className={styles.socialIcon}><Mail size={18} /></div>
-            <div className={styles.socialIcon}><Phone size={18} /></div>
+          <div className="flex gap-4 mb-6">
+            <a href="mailto:udeshjv.ampsl@gmail.com" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#3a081a] transition-all">
+              <Mail size={18} />
+            </a>
+            <a href="tel:+94112251026" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#3a081a] transition-all">
+              <Phone size={18} />
+            </a>
           </div>
-          <p style={{ fontSize: '0.8rem' }}>
-            Headquarters: 123 Botanical Ave,<br />
-            Colombo, Sri Lanka
+          <p className="text-sm text-[#f4e6ea]/70 leading-relaxed">
+            <strong>Head Office:</strong> Ring Road 3, Phase 2, EPZ, Katunayake<br />
+            <span className="block mt-2"><strong>Lebanon Factory:</strong> Thawalanthenna, Waththeyama</span>
           </p>
         </div>
       </div>
