@@ -120,37 +120,39 @@ export default function AboutPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-4xl mx-auto">
-            {/* Founder */}
-            <motion.div variants={fadeUp} className="flex flex-col items-center text-center group">
-              <div className="w-64 h-64 mb-8 overflow-hidden rounded-full border-[3px] border-[#8a385a]/20 shadow-lg relative bg-gray-50">
-                <img 
-                  src="/founder.jpg" 
-                  alt="Founder of AMP Ceylon" 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  onError={(e) => { e.currentTarget.src = 'https://placehold.co/400x400?text=Founder' }}
-                />
-              </div>
-              <h3 className="font-playfair text-2xl font-bold text-gray-900 mb-2 uppercase tracking-wide">Founder</h3>
-              <p className="text-[#8a385a] font-medium tracking-wider uppercase text-sm mb-4">AMP Ceylon</p>
-              <p className="text-gray-600 leading-relaxed max-w-sm">
-                The visionary who established AMP Ceylon in 1984, laying the foundation for excellence, quality, and our international reputation.
-              </p>
-            </motion.div>
-
-            {/* Current Owner */}
+            {/* Managing Director (formerly Current Owner) */}
             <motion.div variants={fadeUp} className="flex flex-col items-center text-center group">
               <div className="w-64 h-64 mb-8 overflow-hidden rounded-full border-[3px] border-[#8a385a]/20 shadow-lg relative bg-gray-50">
                 <img 
                   src="/current-owner.jpeg" 
-                  alt="Current Owner of AMP Ceylon" 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  onError={(e) => { e.currentTarget.src = 'https://placehold.co/400x400?text=Current+Owner' }}
+                  alt="Mr. J.V. Udesh - Managing Director" 
+                  className="w-full h-full object-cover object-[center_15%] transition-transform duration-500 group-hover:scale-105"
+                  onError={(e) => { e.currentTarget.src = 'https://placehold.co/400x400?text=Managing+Director' }}
                 />
               </div>
-              <h3 className="font-playfair text-2xl font-bold text-gray-900 mb-2 uppercase tracking-wide">Current Owner</h3>
-              <p className="text-[#8a385a] font-medium tracking-wider uppercase text-sm mb-4">AMP Ceylon</p>
+              <h3 className="font-playfair text-2xl font-bold text-gray-900 mb-1 uppercase tracking-wide">Managing Director</h3>
+              <p className="text-gray-900 font-bold tracking-wider text-sm mb-1">Mr. J.V. Udesh</p>
+              <p className="text-[#8a385a] font-medium tracking-wider uppercase text-xs mb-4">AMP Ceylon</p>
               <p className="text-gray-600 leading-relaxed max-w-sm">
                 Leading the company forward with modern innovations and sustainable practices while maintaining our core values and global standards.
+              </p>
+            </motion.div>
+
+            {/* Consultant (formerly Founder) */}
+            <motion.div variants={fadeUp} className="flex flex-col items-center text-center group">
+              <div className="w-64 h-64 mb-8 overflow-hidden rounded-full border-[3px] border-[#8a385a]/20 shadow-lg relative bg-gray-50">
+                <img 
+                  src="/founder.jpg" 
+                  alt="Ms. Nancy Liu - Consultant" 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  onError={(e) => { e.currentTarget.src = 'https://placehold.co/400x400?text=Consultant' }}
+                />
+              </div>
+              <h3 className="font-playfair text-2xl font-bold text-gray-900 mb-1 uppercase tracking-wide">Consultant</h3>
+              <p className="text-gray-900 font-bold tracking-wider text-sm mb-1">Ms. Nancy Liu</p>
+              <p className="text-[#8a385a] font-medium tracking-wider uppercase text-xs mb-4">AMP Ceylon</p>
+              <p className="text-gray-600 leading-relaxed max-w-sm">
+                The visionary who established AMP Ceylon in 1984, laying the foundation for excellence, quality, and our international reputation.
               </p>
             </motion.div>
           </div>
