@@ -35,7 +35,7 @@ export default function Curation() {
           <p className={styles.preTitle}>Collections</p>
           <h2 className={styles.title}>Curation of Excellence</h2>
         </div>
-        <Link href="#" className={styles.exploreLink}>
+        <Link href="/collections" className={styles.exploreLink}>
           Explore Full Catalog →
         </Link>
       </div>
