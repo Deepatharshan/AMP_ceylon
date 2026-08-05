@@ -142,26 +142,24 @@ export default function ManufacturingPage() {
       </section>
 
       {/* Quick Stats Banner */}
-      <section className="bg-[#3a081a] text-white py-16 px-6 relative z-10 -mt-16 mx-6 rounded-2xl shadow-2xl mb-16">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-              <h3 className="text-3xl md:text-5xl font-bold mb-2 text-[#f4e6ea]">25,000+</h3>
-              <p className="text-xs md:text-sm text-white/70 uppercase tracking-widest font-semibold">Sq. Meters Space</p>
-            </motion.div>
-            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.1 }}>
-              <h3 className="text-3xl md:text-5xl font-bold mb-2 text-[#f4e6ea]">100</h3>
-              <p className="text-xs md:text-sm text-white/70 uppercase tracking-widest font-semibold">TEU's Yearly Capacity</p>
-            </motion.div>
-            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.2 }}>
-              <h3 className="text-3xl md:text-5xl font-bold mb-2 text-[#f4e6ea]">5,000+</h3>
-              <p className="text-xs md:text-sm text-white/70 uppercase tracking-widest font-semibold">SKU Collection</p>
-            </motion.div>
-            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.3 }}>
-              <h3 className="text-3xl md:text-5xl font-bold mb-2 text-[#f4e6ea]">100%</h3>
-              <p className="text-xs md:text-sm text-white/70 uppercase tracking-widest font-semibold">Exclusive Designs</p>
-            </motion.div>
-          </div>
+      <section className="bg-[#3a081a] text-white py-12 md:py-16 px-6 relative z-10 -mt-12 md:-mt-16 mx-4 md:mx-auto max-w-5xl rounded-2xl shadow-2xl mb-16 md:mb-24">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 text-center divide-x-0 md:divide-x divide-white/10">
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="flex flex-col items-center justify-center">
+            <h3 className="text-3xl md:text-4xl lg:text-5xl mb-3 text-[#f4e6ea]" style={{ fontFamily: 'var(--font-playfair)' }}>25,000+</h3>
+            <p className="text-[10px] md:text-xs text-white/60 uppercase tracking-[0.2em] font-medium max-w-[120px] leading-relaxed">Sq. Meters Space</p>
+          </motion.div>
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.1 }} className="flex flex-col items-center justify-center">
+            <h3 className="text-3xl md:text-4xl lg:text-5xl mb-3 text-[#f4e6ea]" style={{ fontFamily: 'var(--font-playfair)' }}>100</h3>
+            <p className="text-[10px] md:text-xs text-white/60 uppercase tracking-[0.2em] font-medium max-w-[120px] leading-relaxed">TEU's Yearly Capacity</p>
+          </motion.div>
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex flex-col items-center justify-center">
+            <h3 className="text-3xl md:text-4xl lg:text-5xl mb-3 text-[#f4e6ea]" style={{ fontFamily: 'var(--font-playfair)' }}>5,000+</h3>
+            <p className="text-[10px] md:text-xs text-white/60 uppercase tracking-[0.2em] font-medium max-w-[120px] leading-relaxed">SKU Collection</p>
+          </motion.div>
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.3 }} className="flex flex-col items-center justify-center">
+            <h3 className="text-3xl md:text-4xl lg:text-5xl mb-3 text-[#f4e6ea]" style={{ fontFamily: 'var(--font-playfair)' }}>100%</h3>
+            <p className="text-[10px] md:text-xs text-white/60 uppercase tracking-[0.2em] font-medium max-w-[120px] leading-relaxed">Exclusive Designs</p>
+          </motion.div>
         </div>
       </section>
 
