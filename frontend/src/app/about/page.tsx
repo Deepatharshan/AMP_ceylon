@@ -126,7 +126,7 @@ export default function AboutPage() {
                 <img 
                   src="/current-owner.jpeg" 
                   alt="Mr. J.V. Udesh - Managing Director" 
-                  className="w-full h-full object-cover object-[center_40%] transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover object-[center_30%] transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => { e.currentTarget.src = 'https://placehold.co/400x400?text=Managing+Director' }}
                 />
               </div>
@@ -152,7 +152,7 @@ export default function AboutPage() {
               <p className="text-gray-900 font-bold tracking-wider text-sm mb-1">Ms. Nancy Liu</p>
               <p className="text-[#8a385a] font-medium tracking-wider uppercase text-xs mb-4">AMP Ceylon</p>
               <p className="text-gray-600 leading-relaxed max-w-sm">
-                The visionary who established AMP Ceylon in 1984, laying the foundation for excellence, quality, and our international reputation.
+                Providing expert strategic guidance and invaluable industry insights, drawing upon decades of experience to ensure AMP Ceylon's continued global excellence.
               </p>
             </motion.div>
           </div>
