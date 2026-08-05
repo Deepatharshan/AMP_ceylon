@@ -115,8 +115,8 @@ export default function ManufacturingPage() {
                 viewport={{ once: true, margin: "-50px" }}
               >
                 <Image 
-                  src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Artisan painting floral components" 
+                  src="/images/artisan_arranging_flowers.jpg" 
+                  alt="Artisan arranging floral components" 
                   fill
                   className="object-cover"
                 />
@@ -129,7 +129,7 @@ export default function ManufacturingPage() {
                 viewport={{ once: true, margin: "-50px" }}
               >
                 <Image 
-                  src="https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=1000&auto=format&fit=crop" 
+                  src="/images/meticulous_floral_assembly.jpg" 
                   alt="Meticulous assembly process" 
                   fill
                   className="object-cover"
