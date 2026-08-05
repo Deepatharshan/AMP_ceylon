@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { X, Copy, Check } from 'lucide-react';
+import { X, Copy, Check, Gift } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function GlobalOffer({ offer }: { offer: any }) {
@@ -246,6 +246,22 @@ export default function GlobalOffer({ offer }: { offer: any }) {
               </button>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* Minimized Floating Widget */}
+      <AnimatePresence>
+        {hasDismissed && !isOpen && !showSuccess && (
+          <motion.button
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            onClick={() => setIsOpen(true)}
+            className="fixed bottom-8 left-8 z-50 flex items-center justify-center p-4 rounded-full bg-[#3a081a] text-white shadow-xl hover:scale-110 hover:shadow-2xl transition-all duration-300"
+            aria-label="View Offer"
+          >
+            <Gift size={24} className="animate-pulse" />
+          </motion.button>
         )}
       </AnimatePresence>
     </>
