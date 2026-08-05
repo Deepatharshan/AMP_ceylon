@@ -424,20 +424,10 @@ export default function ProductForm({ product }: { product?: Product }) {
                   required
                   className="px-4 py-2 border border-gray-200 rounded text-sm focus:outline-none focus:border-[#3a081a] text-black w-full bg-white cursor-pointer"
                 >
-                  {dbCategories.length > 0 ? (
-                    dbCategories.map(cat => (
-                      <option key={cat.id} value={cat.name}>{cat.name}</option>
-                    ))
-                  ) : (
-                    <>
-                      <option value="Floral Arrangements">Floral Arrangements</option>
-                      <option value="Acrylic Flowers">Acrylic Flowers</option>
-                      <option value="Plants & Foliage">Plants & Foliage</option>
-                      <option value="Candles & Scent">Candles & Scent</option>
-                      <option value="Rattan & Woven">Rattan & Woven</option>
-                      <option value="Holiday Decor">Holiday Decor</option>
-                    </>
-                  )}
+                  <option value="" disabled>Select a category</option>
+                  {dbCategories.map(cat => (
+                    <option key={cat.id} value={cat.name}>{cat.name}</option>
+                  ))}
                 </select>
               </div>
 
