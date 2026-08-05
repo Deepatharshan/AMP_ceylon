@@ -63,13 +63,7 @@ export default async function DashboardPage() {
     .from('products')
     .select('category, sku');
 
-  const inquiries = dbInquiries && dbInquiries.length > 0 ? dbInquiries : [
-    { id: 'inq-1', customer_name: "L'Art de Vivre", company_name: "L'Art Group", country: "France", created_at: "2024-10-24T10:00:00Z", status: "quoted" },
-    { id: 'inq-2', customer_name: "Dubai Luxe Hotels", company_name: "Luxe Group", country: "UAE", created_at: "2024-10-23T14:30:00Z", status: "pending" },
-    { id: 'inq-3', customer_name: "Nordic Floral Design", company_name: "Nordic AB", country: "Sweden", created_at: "2024-10-22T09:15:00Z", status: "reply_sent" },
-    { id: 'inq-4', customer_name: "Bloom & Willow", company_name: "Bloom Ltd", country: "United Kingdom", created_at: "2024-10-21T16:45:00Z", status: "quoted" },
-    { id: 'inq-5', customer_name: "Garden State Co.", company_name: "Garden Co", country: "USA", created_at: "2024-10-20T11:20:00Z", status: "pending" },
-  ];
+  const inquiries = dbInquiries || [];
 
   // 1. Total Inquiries
   const totalInquiries = inquiries.length;
