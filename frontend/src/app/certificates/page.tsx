@@ -115,9 +115,10 @@ export default function CertificatesPage() {
                 href="/AMFORI%20BSCI%20AUDIT%20REPORT%202024-2026.pdf" 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-white bg-[#3a081a] hover:bg-[#2a0512] transition-colors px-6 py-3 rounded-full relative z-10"
+                className="inline-flex items-center gap-2 text-sm font-semibold !text-white bg-[#3a081a] hover:bg-[#2a0512] transition-colors px-6 py-3 rounded-full relative z-10"
+                style={{ color: '#ffffff' }}
               >
-                <Download size={16} /> View Certificate (PDF)
+                <Download size={16} /> <span style={{ color: '#ffffff' }}>View Certificate (PDF)</span>
               </a>
             </motion.div>
 
