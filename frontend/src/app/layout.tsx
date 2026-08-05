@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 
 import { createClient } from '@/utils/supabase/server';
 import GlobalOffer from '@/components/GlobalOffer';
+import ScrollToTop from '@/components/ScrollToTop';
 
 export default async function RootLayout({
   children,
@@ -48,6 +49,7 @@ export default async function RootLayout({
       <body className={`${inter.variable} ${playfair.variable}`}>
         {children}
         {activeOffer && <GlobalOffer offer={activeOffer} />}
+        <ScrollToTop />
       </body>
     </html>
   );

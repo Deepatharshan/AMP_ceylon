@@ -8,7 +8,6 @@ import StatsSection from '@/components/StatsSection';
 import Testimonials from '@/components/Testimonials';
 import CTA from '@/components/CTA';
 import Footer from '@/components/Footer';
-import ScrollToTop from '@/components/ScrollToTop';
 
 export default function Home() {
   return (
@@ -23,7 +22,6 @@ export default function Home() {
       <Testimonials />
       <CTA />
       <Footer />
-      <ScrollToTop />
     </main>
   );
 }
