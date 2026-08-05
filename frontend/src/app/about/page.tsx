@@ -120,13 +120,13 @@ export default function AboutPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-4xl mx-auto">
-            {/* Managing Director (formerly Current Owner) */}
+            {/* Managing Director */}
             <motion.div variants={fadeUp} className="flex flex-col items-center text-center group">
-              <div className="w-64 h-64 mb-8 flex items-center justify-center rounded-full border-[3px] border-[#8a385a]/20 shadow-lg bg-gray-50 overflow-hidden">
+              <div className="w-64 h-64 mb-8 overflow-hidden rounded-full border-[3px] border-[#8a385a]/20 shadow-lg relative bg-[#f4f4f4]">
                 <img 
                   src="/current-owner.jpeg" 
                   alt="Mr. J.V. Udesh - Managing Director" 
-                  className="w-[90%] h-[90%] object-cover object-[center_top] rounded-full transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover object-[center_70%] transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => { e.currentTarget.src = 'https://placehold.co/400x400?text=Managing+Director' }}
                 />
               </div>
@@ -138,13 +138,13 @@ export default function AboutPage() {
               </p>
             </motion.div>
 
-            {/* Consultant (formerly Founder) */}
+            {/* Consultant */}
             <motion.div variants={fadeUp} className="flex flex-col items-center text-center group">
-              <div className="w-64 h-64 mb-8 flex items-center justify-center rounded-full border-[3px] border-[#8a385a]/20 shadow-lg bg-gray-50 overflow-hidden">
+              <div className="w-64 h-64 mb-8 overflow-hidden rounded-full border-[3px] border-[#8a385a]/20 shadow-lg relative bg-[#f4f4f4]">
                 <img 
                   src="/founder.jpg" 
                   alt="Ms. Nancy Liu - Consultant" 
-                  className="w-[90%] h-[90%] object-cover object-[center_top] rounded-full transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => { e.currentTarget.src = 'https://placehold.co/400x400?text=Consultant' }}
                 />
               </div>
