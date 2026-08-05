@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 import { createClient } from '@/utils/supabase/server';
 import GlobalOffer from '@/components/GlobalOffer';
 import ScrollToTop from '@/components/ScrollToTop';
+import WhatsAppButton from '@/components/WhatsAppButton';
 
 export default async function RootLayout({
   children,
@@ -50,6 +51,7 @@ export default async function RootLayout({
         {children}
         {activeOffer && <GlobalOffer offer={activeOffer} />}
         <ScrollToTop />
+        <WhatsAppButton />
       </body>
     </html>
   );
