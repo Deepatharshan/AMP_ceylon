@@ -275,64 +275,84 @@ export default function ManufacturingPage() {
         </div>
       </section>
 
-      {/* Global Reach & Exhibitions */}
-      <section className="py-24 px-6 mb-24">
+      {/* Global Presence */}
+      <section className="py-24 md:py-32 bg-white px-6">
         <div className="container mx-auto max-w-6xl">
-          <motion.div 
-            className="relative rounded-2xl overflow-hidden min-h-[600px] flex items-center bg-gray-900"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            {/* Background Image */}
-            <Image 
-              src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2000&auto=format&fit=crop"
-              alt="Global Trade Show Exhibition"
-              fill
-              className="object-cover opacity-60"
-            />
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
             
-            {/* Content Box */}
-            <div className="relative z-10 w-full md:w-[500px] bg-white/95 backdrop-blur-md p-10 md:p-16 m-6 md:ml-16 rounded-xl shadow-2xl">
+            {/* Text Content */}
+            <motion.div 
+              className="lg:w-1/3"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <motion.p variants={fadeUp} className="text-[10px] font-bold text-[#8a385a] uppercase tracking-widest mb-3">
+                Global Presence
+              </motion.p>
+              <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold mb-6" style={{ fontFamily: 'var(--font-playfair)' }}>
+                Trade Shows & Exhibitions
+              </motion.h2>
+              <motion.p variants={fadeUp} className="text-sm text-gray-600 leading-relaxed mb-8">
+                We proudly showcase our premium floral collections at major international trade shows. From Europe to the Middle East, our botanical creations have left a lasting impression on buyers and distributors worldwide.
+              </motion.p>
+              
+              <motion.div variants={staggerContainer} className="flex flex-wrap gap-2">
+                {[
+                  "Hong Kong Showroom",
+                  "Ambiente Frankfurt",
+                  "Dubai World Trade Centre",
+                  "Canton Fair",
+                  "Maison&Objet Paris"
+                ].map((pill, i) => (
+                  <motion.span key={i} variants={fadeUp} className="bg-[#fcf5f7] text-[#8a385a] text-[11px] font-semibold px-3 py-1.5 rounded-sm border border-[#f5e1e6]">
+                    {pill}
+                  </motion.span>
+                ))}
+              </motion.div>
+            </motion.div>
+
+            {/* Photo Grid */}
+            <div className="lg:w-2/3 grid grid-cols-2 gap-4 md:gap-6 pb-8">
               <motion.div 
-                variants={staggerContainer}
-                initial="hidden"
-                whileInView="visible"
+                className="relative h-[200px] md:h-[300px] rounded-xl overflow-hidden shadow-lg"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <motion.p variants={fadeUp} className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">
-                  Global Presence
-                </motion.p>
-                <motion.h2 variants={fadeUp} className="text-3xl font-bold mb-6" style={{ fontFamily: 'var(--font-playfair)' }}>
-                  Trade Shows & Exhibitions
-                </motion.h2>
-                <motion.p variants={fadeUp} className="text-sm text-gray-600 leading-relaxed mb-8">
-                  We proudly showcase our premium floral collections at major international trade shows. From Europe to the Middle East, our botanical creations have left a lasting impression on buyers and distributors worldwide.
-                </motion.p>
-                
-                <motion.div variants={staggerContainer} className="flex flex-wrap gap-2 mb-10">
-                  {[
-                    "Ambiente Frankfurt",
-                    "Dubai World Trade Centre",
-                    "Canton Fair",
-                    "Maison&Objet Paris",
-                    "Exporting to 40+ Countries"
-                  ].map((pill, i) => (
-                    <motion.span key={i} variants={fadeUp} className="bg-[#fcf5f7] text-[#8a385a] text-[11px] font-semibold px-3 py-1.5 rounded-sm border border-[#f5e1e6]">
-                      {pill}
-                    </motion.span>
-                  ))}
-                </motion.div>
-
-                <motion.div variants={fadeUp}>
-                  <Link href="#" className="inline-block bg-[#3a081a] !text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded hover:bg-[#250510] transition-colors">
-                    View Event Calendar
-                  </Link>
-                </motion.div>
+                <Image src="/Honkhongshowroom.jpg" alt="Hong Kong Showroom" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+              </motion.div>
+              <motion.div 
+                className="relative h-[200px] md:h-[300px] rounded-xl overflow-hidden shadow-lg translate-y-8 md:translate-y-12"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Image src="/exibition1.jpg" alt="Exhibition Showcase" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+              </motion.div>
+              <motion.div 
+                className="relative h-[200px] md:h-[300px] rounded-xl overflow-hidden shadow-lg"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                <Image src="/exibition3.jpg" alt="Exhibition Details" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+              </motion.div>
+              <motion.div 
+                className="relative h-[200px] md:h-[300px] rounded-xl overflow-hidden shadow-lg translate-y-8 md:translate-y-12"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                viewport={{ once: true }}
+              >
+                <Image src="/exibition4.jpg" alt="Exhibition Arrangements" fill className="object-cover hover:scale-105 transition-transform duration-700" />
               </motion.div>
             </div>
-          </motion.div>
+
+          </div>
         </div>
       </section>
 
