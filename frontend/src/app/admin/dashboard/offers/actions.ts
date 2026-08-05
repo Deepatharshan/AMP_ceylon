@@ -70,6 +70,7 @@ export async function createOffer(formData: FormData) {
   }
 
   revalidatePath('/admin/dashboard/offers');
+  revalidatePath('/', 'layout');
   revalidatePath('/');
 }
 
@@ -83,6 +84,7 @@ export async function deleteOffer(id: string) {
   }
 
   revalidatePath('/admin/dashboard/offers');
+  revalidatePath('/', 'layout');
   revalidatePath('/');
 }
 
@@ -148,6 +150,7 @@ export async function updateOffer(id: string, formData: FormData) {
   }
 
   revalidatePath('/admin/dashboard/offers');
+  revalidatePath('/', 'layout');
   revalidatePath('/');
 }
 
