@@ -314,41 +314,41 @@ export default function ManufacturingPage() {
             </motion.div>
 
             {/* Photo Grid */}
-            <div className="lg:w-2/3 grid grid-cols-2 gap-4 md:gap-6 pb-8">
+            <div className="lg:w-2/3 grid grid-cols-2 gap-4 md:gap-6 pb-8 items-start">
               <motion.div 
-                className="relative h-[200px] md:h-[300px] rounded-xl overflow-hidden shadow-lg"
+                className="relative w-full rounded-xl overflow-hidden shadow-lg"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <Image src="/Honkhongshowroom.jpg" alt="Hong Kong Showroom" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+                <Image src="/Honkhongshowroom.jpg" alt="Hong Kong Showroom" width={600} height={800} className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700 bg-gray-50" />
               </motion.div>
               <motion.div 
-                className="relative h-[200px] md:h-[300px] rounded-xl overflow-hidden shadow-lg translate-y-8 md:translate-y-12"
+                className="relative w-full rounded-xl overflow-hidden shadow-lg translate-y-8 md:translate-y-12"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
                 viewport={{ once: true }}
               >
-                <Image src="/exibition1.jpg" alt="Exhibition Showcase" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+                <Image src="/exibition1.jpg" alt="Exhibition Showcase" width={600} height={800} className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700 bg-gray-50" />
               </motion.div>
               <motion.div 
-                className="relative h-[200px] md:h-[300px] rounded-xl overflow-hidden shadow-lg"
+                className="relative w-full rounded-xl overflow-hidden shadow-lg"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                <Image src="/exibition3.jpg" alt="Exhibition Details" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+                <Image src="/exibition3.jpg" alt="Exhibition Details" width={600} height={800} className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700 bg-gray-50" />
               </motion.div>
               <motion.div 
-                className="relative h-[200px] md:h-[300px] rounded-xl overflow-hidden shadow-lg translate-y-8 md:translate-y-12"
+                className="relative w-full rounded-xl overflow-hidden shadow-lg translate-y-8 md:translate-y-12"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
                 viewport={{ once: true }}
               >
-                <Image src="/exibition4.jpg" alt="Exhibition Arrangements" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+                <Image src="/exibition4.jpg" alt="Exhibition Arrangements" width={600} height={800} className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700 bg-gray-50" />
               </motion.div>
             </div>
 
