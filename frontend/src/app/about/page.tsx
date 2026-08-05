@@ -80,9 +80,12 @@ export default function AboutPage() {
         >
           <motion.div variants={fadeUp}>
             <h2 className="font-playfair text-4xl mb-8 text-white uppercase tracking-wider">Our Vision</h2>
-            <p className="text-gray-300 text-lg leading-relaxed mt-6">
-              To be a globally recognized manufacturer of innovative decorative products, delivering excellence through creativity, quality, and responsible manufacturing.
-            </p>
+            <div className="flex items-start gap-3 mt-6">
+              <CheckCircle2 className="mt-1 flex-shrink-0 text-[#fca5a5]" size={20} />
+              <p className="text-gray-300 text-lg leading-relaxed">
+                To be a globally recognized manufacturer of innovative decorative products, delivering excellence through creativity, quality, and responsible manufacturing.
+              </p>
+            </div>
           </motion.div>
           <motion.div variants={fadeUp}>
             <h2 className="font-playfair text-4xl mb-8 text-white uppercase tracking-wider">Our Mission</h2>
