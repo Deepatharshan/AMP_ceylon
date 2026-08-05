@@ -27,46 +27,8 @@ export default function ManufacturingPage() {
     <div className="bg-[#fcfbf9] min-h-screen text-[#3a081a]">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-        {/* Background Image */}
-        <div className="absolute inset-0 w-full h-full">
-          <Image 
-            src="https://images.unsplash.com/photo-1563241598-646bc5683794?q=80&w=2000&auto=format&fit=crop"
-            alt="Manufacturing Facility Background"
-            fill
-            className="object-cover"
-          />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/50"></div>
-        </div>
-        
-        {/* Hero Content */}
-        <div className="relative z-10 text-center px-6 container mx-auto max-w-5xl">
-          <motion.p 
-            variants={fadeUp} 
-            initial="hidden" 
-            animate="visible"
-            className="text-white text-xs md:text-sm font-bold uppercase tracking-[0.3em] mb-6"
-            style={{ fontFamily: 'var(--font-inter)' }}
-          >
-            Our Facility & Process
-          </motion.p>
-          <motion.h1 
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-4xl md:text-6xl lg:text-7xl text-white leading-tight"
-            style={{ fontFamily: 'var(--font-playfair)' }}
-          >
-            25,000+ m² of Industrial <br /> Excellence
-          </motion.h1>
-        </div>
-      </section>
-
       {/* Chapter 1: Artisanal Craftsmanship */}
-      <section className="py-24 md:py-32 px-6">
+      <section className="pt-32 pb-24 md:pt-40 md:pb-32 px-6">
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
             
