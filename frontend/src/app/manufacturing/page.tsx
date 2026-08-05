@@ -141,6 +141,30 @@ export default function ManufacturingPage() {
         </div>
       </section>
 
+      {/* Quick Stats Banner */}
+      <section className="bg-[#3a081a] text-white py-16 px-6 relative z-10 -mt-16 mx-6 rounded-2xl shadow-2xl mb-16">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+              <h3 className="text-3xl md:text-5xl font-bold mb-2 text-[#f4e6ea]">25,000+</h3>
+              <p className="text-xs md:text-sm text-white/70 uppercase tracking-widest font-semibold">Sq. Meters Space</p>
+            </motion.div>
+            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.1 }}>
+              <h3 className="text-3xl md:text-5xl font-bold mb-2 text-[#f4e6ea]">100</h3>
+              <p className="text-xs md:text-sm text-white/70 uppercase tracking-widest font-semibold">TEU's Yearly Capacity</p>
+            </motion.div>
+            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.2 }}>
+              <h3 className="text-3xl md:text-5xl font-bold mb-2 text-[#f4e6ea]">5,000+</h3>
+              <p className="text-xs md:text-sm text-white/70 uppercase tracking-widest font-semibold">SKU Collection</p>
+            </motion.div>
+            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.3 }}>
+              <h3 className="text-3xl md:text-5xl font-bold mb-2 text-[#f4e6ea]">100%</h3>
+              <p className="text-xs md:text-sm text-white/70 uppercase tracking-widest font-semibold">Exclusive Designs</p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Production Capabilities */}
       <section className="py-24 bg-[#f4f2ee] px-6">
         <div className="container mx-auto max-w-6xl">
@@ -172,7 +196,7 @@ export default function ManufacturingPage() {
               <div className="flex-1 w-full">
                 <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-playfair)' }}>Packing</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Automated and manual bespoke packaging ensuring global transit safety and pristine unboxing experiences.
+                  Automated and manual bespoke packaging ensuring global transit safety and pristine unboxing experiences. We can also provide mail order packing at an additional cost.
                 </p>
               </div>
               <div className="w-full sm:w-40 h-28 relative rounded-lg overflow-hidden shrink-0">
@@ -193,7 +217,7 @@ export default function ManufacturingPage() {
               <div className="flex-1 w-full">
                 <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-playfair)' }}>Designing Products</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  In-house design studio creating exclusive molds, botanically accurate stems, and seasonal collections.
+                  We have in-house professional designers and accept customer designs. Our exclusive designs are protected by copyright, and we renew our collection yearly with new designs.
                 </p>
               </div>
               <div className="w-full sm:w-40 h-28 relative rounded-lg overflow-hidden shrink-0">
