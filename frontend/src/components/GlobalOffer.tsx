@@ -5,12 +5,14 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { X, Copy, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SlideToUnlock } from './ui/reward-card';
 
 export default function GlobalOffer({ offer }: { offer: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [hasDismissed, setHasDismissed] = useState(false); // Default false to prevent bottom banner flash
   const [isPermanentlyHidden, setIsPermanentlyHidden] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isUnlocking, setIsUnlocking] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const pathname = usePathname();
   const bannerRef = useRef<HTMLDivElement>(null);
@@ -107,7 +109,10 @@ export default function GlobalOffer({ offer }: { offer: any }) {
 
   const handleClaim = () => {
     localStorage.setItem('active_offer', JSON.stringify(offer));
-    setShowSuccess(true);
+    // The SlideToUnlock component shows an inline success message, so we just close the modal after a short delay
+    setTimeout(() => {
+      handleClose();
+    }, 1500);
   };
 
   const handleBannerDismiss = () => {
@@ -190,13 +195,45 @@ export default function GlobalOffer({ offer }: { offer: any }) {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-3">
-                  <button 
-                    onClick={handleClaim}
-                    className="w-full py-3 bg-[#3a081a] text-white text-xs font-bold uppercase tracking-widest hover:bg-[#2a0512] transition-colors shadow-lg shadow-[#3a081a]/20"
-                  >
-                    Claim Discount
-                  </button>
+                <div className="flex flex-col gap-3 min-h-[140px] justify-center">
+                  <AnimatePresence mode="wait">
+                    {!isUnlocking ? (
+                      <motion.button 
+                        key="claim-btn"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        onClick={() => setIsUnlocking(true)}
+                        className="w-full py-3 bg-[#3a081a] text-white text-xs font-bold uppercase tracking-widest hover:bg-[#2a0512] transition-colors shadow-lg shadow-[#3a081a]/20"
+                      >
+                        Claim Discount
+                      </motion.button>
+                    ) : (
+                      <motion.div
+                        key="slider-container"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="w-full"
+                      >
+                        <SlideToUnlock
+                          onUnlock={handleClaim}
+                          sliderText="Swipe to claim offer"
+                          unlockedContent={
+                            <div className="flex w-full items-center justify-center rounded-lg bg-green-50 p-4 text-green-700 border border-green-200 shadow-sm">
+                              <Check size={20} className="mr-2" />
+                              <span className="font-bold uppercase tracking-wider text-sm">Discount Applied!</span>
+                            </div>
+                          }
+                          shimmer={true}
+                          className="w-full max-w-none border-0 shadow-none p-0 bg-transparent"
+                        >
+                          <div className="text-center mb-2">
+                            <p className="text-sm font-medium text-gray-700">Almost there!</p>
+                          </div>
+                        </SlideToUnlock>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
             </motion.div>
@@ -209,33 +246,6 @@ export default function GlobalOffer({ offer }: { offer: any }) {
         {/* Banner disabled */}
       </AnimatePresence>
 
-      {/* Success Notification Modal */}
-      <AnimatePresence>
-        {showSuccess && (
-          <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 sm:p-6 bg-black/40 backdrop-blur-sm">
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-lg p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center border border-gray-100"
-            >
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Check size={32} className="text-green-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Discount Applied!</h3>
-              <p className="text-sm text-gray-600 mb-6 leading-relaxed">
-                Check out catalog and inquire with our company soon and get orders and discount
-              </p>
-              <button 
-                onClick={handleSuccessOk}
-                className="w-full py-3 bg-[#3a081a] text-white text-sm font-bold uppercase tracking-widest hover:bg-[#2a0512] transition-colors rounded shadow-lg"
-              >
-                OK
-              </button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </>
   );
 }
