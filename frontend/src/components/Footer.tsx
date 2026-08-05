@@ -25,7 +25,11 @@ export default function Footer() {
           <ul>
             <li>Manufacturing</li>
             <li>Floral Orders</li>
-            <li>Certifications</li>
+            <li>
+              <Link href="/certificates" className="hover:text-[#f4e6ea] transition-colors">
+                Certifications
+              </Link>
+            </li>
           </ul>
         </div>
         
