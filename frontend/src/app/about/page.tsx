@@ -126,7 +126,7 @@ export default function AboutPage() {
                 <img 
                   src="/current-owner.jpeg" 
                   alt="Mr. J.V. Udesh - Managing Director" 
-                  className="w-full h-full object-cover object-[center_70%] transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover object-[center_40%] transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => { e.currentTarget.src = 'https://placehold.co/400x400?text=Managing+Director' }}
                 />
               </div>
