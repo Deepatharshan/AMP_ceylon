@@ -42,7 +42,7 @@ export default function ScrollToTop() {
         y: isVisible ? 0 : 50,
       }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className={`fixed bottom-8 right-8 z-50 flex items-center justify-center p-3 rounded-full bg-white text-[#3a081a] shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] transition-shadow ${!isVisible ? 'pointer-events-none' : 'pointer-events-auto'}`}
+      className={`fixed bottom-[104px] right-8 z-50 flex items-center justify-center p-3 rounded-full bg-white text-[#3a081a] shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] transition-shadow ${!isVisible ? 'pointer-events-none' : 'pointer-events-auto'}`}
       aria-label="Scroll to top"
     >
       {/* Background Circle */}
