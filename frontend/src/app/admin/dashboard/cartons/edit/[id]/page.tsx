@@ -1,5 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
-import ProductForm from '../../catalog/ProductForm';
+import ProductForm from '../../../catalog/ProductForm';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
