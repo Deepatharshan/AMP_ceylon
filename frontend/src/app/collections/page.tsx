@@ -27,7 +27,7 @@ function CollectionsMain() {
   
   const [activeCategory, setActiveCategory] = useState("All Collections");
   const [products, setProducts] = useState<Product[]>([]);
-  const [categoriesList, setCategoriesList] = useState<string[]>(CATEGORIES);
+  const [categoriesList, setCategoriesList] = useState<string[]>(["All Collections"]);
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -49,18 +49,22 @@ function CollectionsMain() {
       try {
         const supabase = createClient();
         
-        // Fetch categories
-        const { data: catData } = await supabase
+        const { data, error } = await supabase.from('products').select('*').or('business_line.eq.FLORAL,business_line.is.null').order('created_at', { ascending: false });
+        if (error) throw error;
+
+        // Fetch categories from the admin-managed categories table
+        const { data: catData, error: catError } = await supabase
           .from('categories')
           .select('name')
+          .or('business_line.eq.FLORAL,business_line.is.null')
           .order('name', { ascending: true });
-        
+          
         if (catData && catData.length > 0) {
           setCategoriesList(["All Collections", ...catData.map(c => c.name)]);
+        } else {
+          setCategoriesList(["All Collections"]);
         }
 
-        const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-        if (error) throw error;
         if (data) {
           // Map to fit page format
           const mapped = data.map(item => ({
@@ -102,11 +106,11 @@ function CollectionsMain() {
 
   const filteredProducts = activeCategory === "All Collections" 
     ? products 
-    : products.filter(p => p.category === activeCategory);
+    : products.filter(p => p.category && p.category.toLowerCase() === activeCategory.toLowerCase());
 
   return (
-    <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
-      <div className="bg-[#3a081a] w-full relative" style={{ height: 'calc(8rem + var(--banner-height, 0px))' }}>
+    <main className="min-h-screen bg-transparent text-[#333]">
+      <div className="bg-transparent w-full relative" style={{ height: 'calc(5rem + var(--banner-height, 0px))' }}>
         <Navbar />
       </div>
 
@@ -306,7 +310,7 @@ export default function CollectionsPage() {
   return (
     <Suspense fallback={
       <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
-        <div className="bg-[#3a081a] w-full relative" style={{ height: 'calc(8rem + var(--banner-height, 0px))' }}>
+        <div className="bg-transparent w-full relative" style={{ height: 'calc(5rem + var(--banner-height, 0px))' }}>
           <Navbar />
         </div>
       </main>

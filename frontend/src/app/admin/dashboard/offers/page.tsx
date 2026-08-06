@@ -6,7 +6,7 @@ import OfferActionsDropdown from './OfferActionsDropdown';
 
 export const dynamic = 'force-dynamic';
 
-export default async function OffersPage() {
+export default async function OffersPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
   const supabase = await createClient();
   const { data: offers = [], error } = await supabase
     .from('offers')
@@ -19,6 +19,13 @@ export default async function OffersPage() {
   const activeCount = safeOffers.filter((o: any) => o.status === 'Active').length;
   const scheduledCount = safeOffers.filter((o: any) => o.status === 'Scheduled').length;
   const totalUsage = safeOffers.reduce((acc: number, o: any) => acc + (o.usage_count || 0), 0);
+
+  const pageParam = searchParams.page;
+  const currentPage = typeof pageParam === 'string' ? parseInt(pageParam, 10) || 1 : 1;
+  const itemsPerPage = 20;
+  
+  const totalPages = Math.ceil(safeOffers.length / itemsPerPage);
+  const paginatedOffers = safeOffers.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className="flex-1 flex flex-col min-h-0 overflow-y-auto">
@@ -128,7 +135,7 @@ export default async function OffersPage() {
                     </td>
                   </tr>
                 ) : (
-                  safeOffers.map((offer: any) => (
+                  paginatedOffers.map((offer: any) => (
                     <tr key={offer.id} className="hover:bg-gray-50 transition-colors group">
                       <td className="p-4">
                         <p className="font-semibold text-[#333] mb-0.5 whitespace-nowrap">{offer.title}</p>
@@ -178,11 +185,19 @@ export default async function OffersPage() {
           </div>
           
           <div className="flex items-center justify-between p-4 border-t border-[#ececec] bg-gray-50 text-xs text-gray-500">
-            <span>Showing {safeOffers.length > 0 ? `1-${safeOffers.length}` : '0'} of {safeOffers.length} campaigns</span>
+            <span>Showing {paginatedOffers.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to {Math.min(currentPage * itemsPerPage, safeOffers.length)} of {safeOffers.length} campaigns</span>
             <div className="flex items-center gap-1">
-              <button className="px-3 py-1.5 border border-[#ececec] bg-white rounded hover:bg-gray-50 disabled:opacity-50">Previous</button>
-              <button className="w-8 h-8 flex items-center justify-center bg-[#3a081a] text-white rounded">1</button>
-              <button className="px-3 py-1.5 border border-[#ececec] bg-white rounded hover:bg-gray-50 disabled:opacity-50">Next</button>
+              {currentPage > 1 ? (
+                <Link href={`/admin/dashboard/offers?page=${currentPage - 1}`} className="px-3 py-1.5 border border-[#ececec] bg-white rounded hover:bg-gray-50">Previous</Link>
+              ) : (
+                <button disabled className="px-3 py-1.5 border border-[#ececec] bg-gray-100 text-gray-400 rounded disabled:opacity-50">Previous</button>
+              )}
+              <span className="px-3 py-1.5 font-medium text-gray-700">Page {currentPage} of {totalPages || 1}</span>
+              {currentPage < totalPages ? (
+                <Link href={`/admin/dashboard/offers?page=${currentPage + 1}`} className="px-3 py-1.5 border border-[#ececec] bg-white rounded hover:bg-gray-50">Next</Link>
+              ) : (
+                <button disabled className="px-3 py-1.5 border border-[#ececec] bg-gray-100 text-gray-400 rounded disabled:opacity-50">Next</button>
+              )}
             </div>
           </div>
         </div>

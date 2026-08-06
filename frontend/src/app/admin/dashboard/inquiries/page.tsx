@@ -33,6 +33,8 @@ export default function InquiriesDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
   
   // Detail Modal state
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
@@ -253,118 +255,8 @@ export default function InquiriesDashboardPage() {
 
       if (error) throw error;
 
-      if (data && data.length > 0) {
+      if (data) {
         setInquiries(data);
-      } else {
-        // If empty, let's seed/display high-quality mock data matching the screenshot!
-        const mockInquiries: Inquiry[] = [
-          {
-            id: 'inq-29384',
-            customer_name: 'Alexandre Dubois',
-            company_name: 'Dubois Interiors',
-            email: 'dubois.interiors@mail.fr',
-            country: 'France',
-            status: 'quoted',
-            created_at: '2023-10-24T10:00:00Z',
-            message: 'Inquiring about bulk shipping for the upcoming hotel lobby project.',
-            inquiry_items: [
-              {
-                id: 'item-1',
-                product_id: 'p1',
-                quantity: 150,
-                products: {
-                  name: 'Polysilk Peony (Bulk)',
-                  image_url: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=800&auto=format&fit=crop'
-                }
-              }
-            ]
-          },
-          {
-            id: 'inq-29385',
-            customer_name: 'Sarah Jennings',
-            company_name: 'Flora Events UK',
-            email: 's.jennings@flora-events.co.uk',
-            country: 'United Kingdom',
-            status: 'order_confirmed',
-            created_at: '2023-10-25T11:30:00Z',
-            message: 'Need expedited shipping to London port by mid November.',
-            inquiry_items: [
-              {
-                id: 'item-2',
-                product_id: 'p2',
-                quantity: 300,
-                products: {
-                  name: 'Velvet Calla Lily',
-                  image_url: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?q=80&w=800&auto=format&fit=crop'
-                }
-              }
-            ]
-          },
-          {
-            id: 'inq-29386',
-            customer_name: 'Kenta Yamaguchi',
-            company_name: 'Tokyo Botanics',
-            email: 'yamaguchi.decor@tokyo.jp',
-            country: 'Japan',
-            status: 'reply_sent',
-            created_at: '2023-10-26T08:15:00Z',
-            message: 'Requested custom colors (deep magenta) for the blossom branch lines.',
-            inquiry_items: [
-              {
-                id: 'item-3',
-                product_id: 'p3',
-                quantity: 120,
-                products: {
-                  name: 'Silk Cherry Blossom',
-                  image_url: 'https://images.unsplash.com/photo-1522748906645-95d8adfd52c7?q=80&w=800&auto=format&fit=crop'
-                }
-              }
-            ]
-          },
-          {
-            id: 'inq-29387',
-            customer_name: 'Elena Rodriguez',
-            company_name: 'Casa Viva S.L.',
-            email: 'elena@casaviva.es',
-            country: 'Spain',
-            status: 'pending',
-            created_at: '2023-10-26T14:50:00Z',
-            message: 'We are expanding our retail outlets in Madrid. Need full product list quote.',
-            inquiry_items: [
-              {
-                id: 'item-4',
-                product_id: 'p4',
-                quantity: 200,
-                products: {
-                  name: 'Premium Eucalyptus',
-                  image_url: 'https://images.unsplash.com/photo-1545241047-6083a3684587?q=80&w=800&auto=format&fit=crop'
-                }
-              }
-            ]
-          },
-          {
-            id: 'inq-29388',
-            customer_name: 'Marco Rossi',
-            company_name: 'Venice Events Group',
-            email: 'rossi@venice-events.it',
-            country: 'Italy',
-            status: 'checked',
-            created_at: '2023-10-27T09:05:00Z',
-            message: 'Inquired about flame-retardant certification for export grades.',
-            inquiry_items: [
-              {
-                id: 'item-5',
-                product_id: 'p5',
-                quantity: 80,
-                products: {
-                  name: 'Dried Silk Lavender',
-                  image_url: 'https://images.unsplash.com/photo-1528183429752-a97d0bf99b5a?q=80&w=800&auto=format&fit=crop'
-                }
-              }
-            ]
-          }
-        ];
-        setInquiries(mockInquiries);
       }
     } catch (err) {
       console.error('Error fetching inquiries:', err);
@@ -431,6 +323,13 @@ export default function InquiriesDashboardPage() {
 
     return matchesSearch && matchesStatus;
   });
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, statusFilter]);
+
+  const totalPages = Math.ceil(filteredInquiries.length / itemsPerPage);
+  const paginatedInquiries = filteredInquiries.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   // Real Stats Calculations
   const now = new Date();
@@ -528,8 +427,8 @@ export default function InquiriesDashboardPage() {
                 <tr>
                   <td colSpan={7} className="px-6 py-12 text-center text-gray-500 animate-pulse">Loading inquiries...</td>
                 </tr>
-              ) : filteredInquiries.length > 0 ? (
-                filteredInquiries.map((inq) => {
+              ) : paginatedInquiries.length > 0 ? (
+                paginatedInquiries.map((inq) => {
                   const firstItem = inq.inquiry_items?.[0];
                   const itemText = firstItem 
                     ? `${firstItem.products?.name || 'Product'} (${firstItem.quantity} Units)` 
@@ -632,6 +531,31 @@ export default function InquiriesDashboardPage() {
               )}
             </tbody>
           </table>
+        </div>
+        
+        <div className="p-4 border-t border-[#ececec] bg-gray-50/50 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 rounded-b gap-4">
+          <span>Showing {paginatedInquiries.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to {Math.min(currentPage * itemsPerPage, filteredInquiries.length)} of {filteredInquiries.length} results</span>
+          {totalPages > 1 && (
+            <div className="flex items-center gap-1">
+              <button 
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1.5 border border-gray-200 rounded bg-white disabled:opacity-50 hover:bg-gray-50 transition-colors"
+              >
+                Previous
+              </button>
+              <span className="px-3 py-1.5 font-medium text-gray-700">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button 
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1.5 border border-gray-200 rounded bg-white disabled:opacity-50 hover:bg-gray-50 transition-colors"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

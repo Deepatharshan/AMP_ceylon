@@ -19,15 +19,9 @@ export default function CTA() {
           We offer tiered pricing for bulk international orders and custom OEM design services for major retail chains. Request a customized quote and catalog today.
         </p>
         
-        <form className={styles.form} onSubmit={e => e.preventDefault()}>
-          <input 
-            type="email" 
-            placeholder="YOUR WORK EMAIL" 
-            className={styles.input}
-            required
-          />
-          <button type="submit" className={styles.button}>Request Quote</button>
-        </form>
+        <div className={styles.actionContainer}>
+          <a href="/contact" className={styles.button}>Contact Us Now</a>
+        </div>
         
         <div className={styles.features}>
           <div className={styles.feature}>

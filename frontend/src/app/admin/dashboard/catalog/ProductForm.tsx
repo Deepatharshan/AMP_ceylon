@@ -22,7 +22,7 @@ interface Product {
   image_url: string;
 }
 
-export default function ProductForm({ product }: { product?: Product }) {
+export default function ProductForm({ product, businessLine = 'FLORAL' }: { product?: Product, businessLine?: string }) {
   // Custom Confirm & Save states
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -32,7 +32,7 @@ export default function ProductForm({ product }: { product?: Product }) {
     name: '',
     description: '',
     sku: '',
-    category: 'Floral Arrangements',
+    category: '',
     price: 0,
     materials: [],
     colors: [],
@@ -56,10 +56,17 @@ export default function ProductForm({ product }: { product?: Product }) {
 
   useEffect(() => {
     async function loadCategories() {
-      const { data, error } = await supabase
+      let query = supabase
         .from('categories')
-        .select('id, name')
-        .order('name', { ascending: true });
+        .select('id, name');
+        
+      if (businessLine === 'FLORAL') {
+        query = query.or('business_line.eq.FLORAL,business_line.is.null');
+      } else {
+        query = query.eq('business_line', businessLine);
+      }
+      
+      const { data, error } = await query.order('name', { ascending: true });
 
       if (data && data.length > 0) {
         setDbCategories(data);
@@ -261,7 +268,6 @@ export default function ProductForm({ product }: { product?: Product }) {
       if (isNewCollection !== !!orig.is_new_collection) changedFields.push('NEW COLLECTION BANNER');
       if (isLimitedProduct !== !!orig.is_limited_product) changedFields.push('LIMITED PRODUCT BANNER');
 
-      // 2. Build FormData payload
       const formData = new FormData();
       if (data.id) formData.append('id', data.id);
       formData.append('name', name);
@@ -273,6 +279,7 @@ export default function ProductForm({ product }: { product?: Product }) {
       formData.append('active_count', activeCount);
       formData.append('size', size);
       formData.append('market', market);
+      formData.append('business_line', businessLine);
       formData.append('materials', materials);
       formData.append('colors', colors);
       formData.append('image_urls', imageUrls.filter(Boolean).join(','));
@@ -424,20 +431,10 @@ export default function ProductForm({ product }: { product?: Product }) {
                   required
                   className="px-4 py-2 border border-gray-200 rounded text-sm focus:outline-none focus:border-[#3a081a] text-black w-full bg-white cursor-pointer"
                 >
-                  {dbCategories.length > 0 ? (
-                    dbCategories.map(cat => (
-                      <option key={cat.id} value={cat.name}>{cat.name}</option>
-                    ))
-                  ) : (
-                    <>
-                      <option value="Floral Arrangements">Floral Arrangements</option>
-                      <option value="Acrylic Flowers">Acrylic Flowers</option>
-                      <option value="Plants & Foliage">Plants & Foliage</option>
-                      <option value="Candles & Scent">Candles & Scent</option>
-                      <option value="Rattan & Woven">Rattan & Woven</option>
-                      <option value="Holiday Decor">Holiday Decor</option>
-                    </>
-                  )}
+                  <option value="" disabled>Select a category</option>
+                  {dbCategories.map(cat => (
+                    <option key={cat.id} value={cat.name}>{cat.name}</option>
+                  ))}
                 </select>
               </div>
 

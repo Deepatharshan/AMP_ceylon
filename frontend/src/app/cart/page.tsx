@@ -38,18 +38,39 @@ export default function CartPage() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const loadCart = () => {
+      const loadCart = async () => {
         const items = JSON.parse(localStorage.getItem('inquiry_cart') || '[]');
         setCartItems(items);
         
-        const offer = localStorage.getItem('active_offer');
-        if (offer) {
-          setActiveOffer(JSON.parse(offer));
+        const offerStr = localStorage.getItem('active_offer');
+        if (offerStr) {
+          try {
+            const parsedOffer = JSON.parse(offerStr);
+            const supabase = createClient();
+            
+            // Validate offer against database
+            const { data, error } = await supabase
+              .from('offers')
+              .select('id, is_active, status')
+              .eq('id', parsedOffer.id)
+              .single();
+              
+            if (error || !data || !data.is_active || data.status !== 'Active') {
+              // Offer is deleted, expired, or inactive
+              localStorage.removeItem('active_offer');
+              setActiveOffer(null);
+            } else {
+              setActiveOffer(parsedOffer);
+            }
+          } catch (err) {
+            localStorage.removeItem('active_offer');
+            setActiveOffer(null);
+          }
         }
+        setLoading(false);
       };
       
       loadCart();
-      setLoading(false);
     }
   }, []);
 
@@ -143,8 +164,41 @@ export default function CartPage() {
   const totalVarieties = cartItems.length;
   const totalVolume = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  const generatePDF = () => {
+  const generatePDF = async () => {
     const doc = new jsPDF();
+    
+    // Add watermark
+    try {
+      const img = new window.Image();
+      img.src = '/amplogo.png';
+      await new Promise((resolve) => {
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+
+      if (img.width > 0) {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.globalAlpha = 0.08; // 8% opacity for watermark
+          ctx.drawImage(img, 0, 0);
+          const dataUrl = canvas.toDataURL('image/png');
+          
+          // Center the watermark
+          const pdfWidth = doc.internal.pageSize.getWidth();
+          const pdfHeight = doc.internal.pageSize.getHeight();
+          const logoSize = 140; // Size of the logo in mm
+          const x = (pdfWidth - logoSize) / 2;
+          const y = (pdfHeight - logoSize) / 2;
+          
+          doc.addImage(dataUrl, 'PNG', x, y, logoSize, logoSize);
+        }
+      }
+    } catch (e) {
+      console.error('Could not load watermark', e);
+    }
     
     // Header
     doc.setFontSize(22);
@@ -184,7 +238,7 @@ export default function CartPage() {
 
   return (
     <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
-      <div className="bg-[#3a081a] w-full relative" style={{ height: 'calc(8rem + var(--banner-height, 0px))' }}>
+      <div className="bg-transparent w-full relative" style={{ height: 'calc(5rem + var(--banner-height, 0px))' }}>
         <Navbar />
       </div>
 
@@ -209,13 +263,21 @@ export default function CartPage() {
             <p className="text-sm text-gray-500 leading-relaxed mb-8">
               Thank you for requesting an export quote. Our logistics and pricing desk is already reviewing your details. A customized export manifest quote will be sent to your email address within 48 business hours.
             </p>
-            <Link
-              href="/collections"
-              className="inline-block bg-[#3a081a] px-8 py-3 rounded text-xs font-semibold uppercase tracking-wider hover:bg-[#4a0b22] transition-colors"
-              style={{ color: '#ffffff' }}
-            >
-              Return to Catalog
-            </Link>
+            <div className="flex items-center justify-center gap-4">
+              <Link
+                href="/collections"
+                className="inline-block bg-white border border-[#3a081a] px-6 py-3 rounded text-xs font-semibold uppercase tracking-wider text-[#3a081a] hover:bg-gray-50 transition-colors"
+              >
+                Floral & Decor
+              </Link>
+              <Link
+                href="/carton-boxes"
+                className="inline-block bg-[#3a081a] px-6 py-3 rounded text-xs font-semibold uppercase tracking-wider hover:bg-[#4a0b22] transition-colors"
+                style={{ color: '#ffffff' }}
+              >
+                Carton Boxes
+              </Link>
+            </div>
           </div>
         ) : cartItems.length === 0 ? (
           <div className="text-center py-20 bg-white border border-[#ececec] rounded shadow-sm">
@@ -226,13 +288,21 @@ export default function CartPage() {
             <p className="text-sm text-gray-500 mb-8 max-w-sm mx-auto">
               Browse our catalog of premium hand-crafted botanicals and add items to request a custom bulk shipping estimate.
             </p>
-            <Link
-              href="/collections"
-              className="inline-block bg-[#3a081a] px-8 py-3 rounded text-xs font-semibold uppercase tracking-wider hover:bg-[#4a0b22] transition-colors"
-              style={{ color: '#ffffff' }}
-            >
-              Browse Catalog
-            </Link>
+            <div className="flex items-center justify-center gap-4 mt-2">
+              <Link
+                href="/collections"
+                className="inline-block bg-white border border-[#3a081a] px-6 py-3 rounded text-xs font-semibold uppercase tracking-wider text-[#3a081a] hover:bg-gray-50 transition-colors"
+              >
+                Browse Floral & Decor
+              </Link>
+              <Link
+                href="/carton-boxes"
+                className="inline-block bg-[#3a081a] px-6 py-3 rounded text-xs font-semibold uppercase tracking-wider hover:bg-[#4a0b22] transition-colors"
+                style={{ color: '#ffffff' }}
+              >
+                Browse Carton Boxes
+              </Link>
+            </div>
           </div>
         ) : (
           <div className="flex flex-col lg:flex-row gap-12 items-start">

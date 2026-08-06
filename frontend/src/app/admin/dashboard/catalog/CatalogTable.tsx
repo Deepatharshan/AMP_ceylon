@@ -77,10 +77,13 @@ const parseDbArray = (field: any): string[] => {
   return [];
 };
 
-export default function CatalogTable({ initialProducts }: { initialProducts: Product[] }) {
+export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' }: { initialProducts: Product[], businessLine?: string }) {
   const [products, setProducts] = useState(initialProducts);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+
   
   // View Details Modal States
   const [viewProduct, setViewProduct] = useState<Product | null>(null);
@@ -105,10 +108,17 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
   // Load all categories on mount
   useEffect(() => {
     async function loadCategories() {
-      const { data, error } = await supabase
+      let query = supabase
         .from('categories')
-        .select('id, name, slug')
-        .order('name', { ascending: true });
+        .select('id, name, slug');
+
+      if (businessLine === 'FLORAL') {
+        query = query.or('business_line.eq.FLORAL,business_line.is.null');
+      } else {
+        query = query.eq('business_line', businessLine);
+      }
+
+      const { data, error } = await query.order('name', { ascending: true });
 
       if (data) {
         setDbCategories(data);
@@ -131,7 +141,7 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
 
     const { data, error } = await supabase
       .from('categories')
-      .insert([{ name: newCategoryName.trim(), slug }])
+      .insert([{ name: newCategoryName.trim(), slug, business_line: businessLine }])
       .select();
 
     if (error) {
@@ -232,6 +242,13 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
     return matchesSearch && matchesCategory;
   });
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, selectedCategory]);
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   const categories = Array.from(new Set([
     ...products.map(p => p.category),
     ...dbCategories.map(c => c.name)
@@ -285,8 +302,8 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
+            {paginatedProducts.length > 0 ? (
+              paginatedProducts.map((product) => (
                 <tr key={product.id} className="border-b border-[#ececec] hover:bg-gray-50/50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="relative w-12 h-12 bg-gray-100 rounded border border-gray-200 overflow-hidden flex items-center justify-center">
@@ -371,7 +388,7 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                       </button>
                       <Link 
-                        href={`/admin/dashboard/catalog/edit/${product.id}`}
+                        href={`/admin/dashboard/${businessLine === 'CARTON' ? 'cartons' : 'catalog'}/edit/${product.id}`}
                         className="p-1 hover:text-[#3a081a] transition-colors text-gray-400"
                         title="Edit Product"
                       >
@@ -398,8 +415,29 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
           </tbody>
         </table>
       </div>
-      <div className="p-4 border-t border-[#ececec] bg-gray-50/50 flex justify-between items-center text-xs text-gray-500 rounded-b">
-        <span>Showing {filteredProducts.length} of {products.length} results</span>
+      <div className="p-4 border-t border-[#ececec] bg-gray-50/50 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 rounded-b gap-4">
+        <span>Showing {paginatedProducts.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to {Math.min(currentPage * itemsPerPage, filteredProducts.length)} of {filteredProducts.length} results</span>
+        {totalPages > 1 && (
+          <div className="flex items-center gap-1">
+            <button 
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1.5 border border-gray-200 rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
+            >
+              Previous
+            </button>
+            <span className="px-3 py-1.5 font-medium text-gray-700">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button 
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1.5 border border-gray-200 rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Product Details Preview Modal */}

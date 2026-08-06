@@ -22,53 +22,56 @@ export default function FlowerVarietiesSection() {
   const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
-    // Pin the section
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: `+=${varieties.length * 100}%`, // Scroll length depends on number of varieties
-        pin: true,
-        scrub: 1,
-      }
-    });
+    const mm = gsap.matchMedia();
 
-    // Sequence the animations
-    varieties.forEach((variety, index) => {
-      const item = itemsRef.current[index];
-      
-      // Animate background color
-      tl.to(sectionRef.current, {
-        backgroundColor: variety.color,
-        duration: 1,
-        ease: 'none',
-      }, index * 2);
+    mm.add("(min-width: 769px)", () => {
+      // Pin the section
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: `+=${varieties.length * 100}%`, // Scroll length depends on number of varieties
+          pin: true,
+          scrub: 1,
+        }
+      });
 
-      // Fade in current item
-      tl.fromTo(item, {
-        opacity: 0,
-        y: 50,
-        autoAlpha: 0,
-      }, {
-        opacity: 1,
-        y: 0,
-        autoAlpha: 1,
-        duration: 0.5,
-        ease: 'power1.out',
-      }, index * 2);
+      // Sequence the animations
+      varieties.forEach((variety, index) => {
+        const item = itemsRef.current[index];
+        
+        // Animate background color
+        tl.to(sectionRef.current, {
+          backgroundColor: variety.color,
+          duration: 1,
+          ease: 'none',
+        }, index * 2);
 
-      // Fade out current item (unless it's the last one)
-      if (index < varieties.length - 1) {
-        tl.to(item, {
+        // Fade in current item
+        tl.fromTo(item, {
           opacity: 0,
-          y: -50,
+          y: 50,
           autoAlpha: 0,
+        }, {
+          opacity: 1,
+          y: 0,
+          autoAlpha: 1,
           duration: 0.5,
-          ease: 'power1.in',
-        }, (index * 2) + 1.5);
-      }
-    });
+          ease: 'power1.out',
+        }, index * 2);
 
+        // Fade out current item (unless it's the last one)
+        if (index < varieties.length - 1) {
+          tl.to(item, {
+            opacity: 0,
+            y: -50,
+            autoAlpha: 0,
+            duration: 0.5,
+            ease: 'power1.in',
+          }, (index * 2) + 1.5);
+        }
+      });
+    });
   }, { scope: sectionRef });
 
   return (

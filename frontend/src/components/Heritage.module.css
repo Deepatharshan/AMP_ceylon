@@ -73,3 +73,49 @@
   opacity: 1;
   transform: translateX(0) translateY(0);
 }
+
+@media (max-width: 1024px) {
+  .heritage {
+    padding: 6rem 5%;
+    gap: 3rem;
+  }
+  
+  .mainImage {
+    height: 500px;
+  }
+  
+  .overlayImage {
+    width: 200px;
+    height: 200px;
+    left: -20px;
+    bottom: -20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .heritage {
+    padding: 4rem 5%;
+    flex-direction: column;
+    gap: 4rem;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .imageContent {
+    width: 100%;
+  }
+  
+  .mainImage {
+    height: 400px;
+  }
+  
+  .overlayImage {
+    width: 160px;
+    height: 160px;
+    left: -10px;
+    bottom: -10px;
+    border-width: 8px;
+  }
+}

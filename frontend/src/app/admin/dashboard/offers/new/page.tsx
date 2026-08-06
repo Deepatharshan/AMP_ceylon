@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import PreviewModal from '../PreviewModal';
 
 export default function NewOfferPage() {
+  const [postType, setPostType] = useState<'SEASONAL' | 'CAMPAIGN'>('SEASONAL');
   const [isActive, setIsActive] = useState(false);
   const [selectedRegions, setSelectedRegions] = useState<string[]>(['Global']);
   
@@ -106,6 +107,7 @@ export default function NewOfferPage() {
     const formData = new FormData(e.currentTarget);
     
     // Add states
+    formData.set('postType', postType);
     formData.set('isActive', isActive.toString());
     formData.delete('targetRegions'); // Clear any generic ones
     selectedRegions.forEach(r => formData.append('targetRegions', r));
@@ -145,6 +147,7 @@ export default function NewOfferPage() {
       description: formData.get('description'),
       code: formData.get('code'),
       image_url: imageUrl,
+      type: postType,
     });
     setShowPreview(true);
   };
@@ -169,6 +172,38 @@ export default function NewOfferPage() {
 
       <form ref={formRef} onSubmit={handleSubmit} className="px-8 pb-12 max-w-5xl flex flex-col gap-12">
         
+        {/* Post Type Toggle */}
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 border-t border-[#ececec] pt-8 mt-2">
+          <div>
+            <h3 className="text-lg font-bold text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>Post Type</h3>
+            <p className="text-xs text-gray-500 leading-relaxed max-w-xs">Choose whether this is a promotional offer with a discount or a marketing campaign post.</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <button 
+              type="button"
+              onClick={() => setPostType('SEASONAL')}
+              className={`px-6 py-3 rounded text-sm font-bold border transition-colors ${
+                postType === 'SEASONAL' 
+                ? 'bg-[#3a081a] text-white border-[#3a081a]' 
+                : 'bg-white text-gray-500 border-[#ececec] hover:border-gray-300'
+              }`}
+            >
+              Discount Offer
+            </button>
+            <button 
+              type="button"
+              onClick={() => setPostType('CAMPAIGN')}
+              className={`px-6 py-3 rounded text-sm font-bold border transition-colors ${
+                postType === 'CAMPAIGN' 
+                ? 'bg-[#3a081a] text-white border-[#3a081a]' 
+                : 'bg-white text-gray-500 border-[#ececec] hover:border-gray-300'
+              }`}
+            >
+              Campaign Post
+            </button>
+          </div>
+        </div>
+
         {/* Basic Details */}
         <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 border-t border-[#ececec] pt-8">
           <div>
@@ -202,27 +237,33 @@ export default function NewOfferPage() {
         {/* Pricing & Validity */}
         <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 border-t border-[#ececec] pt-8">
           <div>
-            <h3 className="text-lg font-bold text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>Pricing & Validity</h3>
-            <p className="text-xs text-gray-500 leading-relaxed max-w-xs">Set the financial parameters and duration of the promotion.</p>
+            <h3 className="text-lg font-bold text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>{postType === 'CAMPAIGN' ? 'Campaign Validity' : 'Pricing & Validity'}</h3>
+            <p className="text-xs text-gray-500 leading-relaxed max-w-xs">
+              {postType === 'CAMPAIGN' ? 'Set the duration of the marketing campaign.' : 'Set the financial parameters and duration of the promotion.'}
+            </p>
           </div>
           <div className="grid grid-cols-2 gap-6">
-            <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Discount Type</label>
-              <select name="discountType" className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm">
-                <option value="Percentage">Percentage (%)</option>
-                <option value="Fixed">Fixed Amount ($)</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Value</label>
-              <input 
-                type="number" 
-                name="discountValue"
-                required
-                placeholder="15" 
-                className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm"
-              />
-            </div>
+            {postType === 'SEASONAL' && (
+              <>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Discount Type</label>
+                  <select name="discountType" className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm">
+                    <option value="Percentage">Percentage (%)</option>
+                    <option value="Fixed">Fixed Amount ($)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Value</label>
+                  <input 
+                    type="number" 
+                    name="discountValue"
+                    required={postType === 'SEASONAL'}
+                    placeholder="15" 
+                    className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm"
+                  />
+                </div>
+              </>
+            )}
             <div>
               <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Valid From</label>
               <input 
@@ -341,6 +382,20 @@ export default function NewOfferPage() {
               >
                 <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${isActive ? 'translate-x-6' : 'translate-x-0'}`} />
               </button>
+            </div>
+
+            <div className="bg-white border border-[#ececec] rounded-lg p-5 flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-bold text-[#333] mb-1">Display Priority</h4>
+                <p className="text-xs text-gray-500">Number indicating display order (1 is highest priority).</p>
+              </div>
+              <input 
+                type="number" 
+                name="displayOrder"
+                defaultValue={99}
+                min={1}
+                className="w-20 px-3 py-2 bg-gray-50 border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm text-center font-bold text-[#3a081a]"
+              />
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, Phone, MessageCircle, MapPin } from 'lucide-react';
+import { Mail, Phone, MessageCircle, MapPin, Globe } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { WorldMap } from '@/components/ui/map';
@@ -22,15 +22,18 @@ const staggerContainer = {
 };
 
 const mapDots = [
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: -38.4161, lng: -63.6167, label: "Argentina" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 51.1657, lng: 10.4515, label: "Germany" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 35.8617, lng: 104.1954, label: "China" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: -25.2744, lng: 133.7751, label: "Australia" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 23.6850, lng: 90.3563, label: "Bangladesh" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 30.3753, lng: 69.3451, label: "Pakistan" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 36.2048, lng: 138.2529, label: "Japan" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 46.8182, lng: 8.2275, label: "Switzerland", labelOffset: { x: -15, y: -20 } } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 25.2048, lng: 55.2708, label: "Dubai" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 51.1657, lng: 10.4515, label: "Germany", labelOffset: { x: 20, y: -25 } } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 51.5074, lng: -0.1278, label: "London", labelOffset: { x: -30, y: -20 } } },
   { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 20.5937, lng: 78.9629, label: "India" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 50.5039, lng: 4.4699, label: "Belgium" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 47.5162, lng: 14.5501, label: "Austria" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 51.5074, lng: -0.1278, label: "London" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: -25.2744, lng: 133.7751, label: "Australia" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 41.8719, lng: 12.5674, label: "Italy", labelOffset: { x: 25, y: 5 } } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 39.3999, lng: -8.2245, label: "Portugal", labelOffset: { x: -25, y: 10 } } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 35.9078, lng: 127.7669, label: "Korea" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 61.5240, lng: 105.3188, label: "Russia" } },
   { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 37.0902, lng: -95.7129, label: "USA" } },
 ];
 
@@ -68,6 +71,46 @@ export default function ContactPage() {
         {/* Abstract Map Animation */}
         <div className="w-full max-w-6xl mx-auto relative z-0 mt-4 opacity-90">
           <WorldMap dots={mapDots} lineColor="#8a385a" showLabels={true} />
+        </div>
+
+        {/* Global Destinations */}
+        <div className="w-full max-w-6xl mx-auto relative z-10 mt-12 pb-8">
+          <motion.div 
+            className="text-center mb-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
+            <motion.p variants={fadeUp} className="text-[10px] font-bold text-[#8a385a] uppercase tracking-widest mb-2">
+              Global Reach
+            </motion.p>
+            <motion.h3 variants={fadeUp} className="text-2xl text-[#3a081a] font-bold" style={{ fontFamily: 'var(--font-playfair)' }}>
+              Where We Export Our Products
+            </motion.h3>
+          </motion.div>
+
+          <motion.div 
+            className="flex flex-wrap justify-center gap-3 md:gap-4 px-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
+            {[
+              "Australia", "Dubai", "Germany", "India", "Italy", "Japan", 
+              "Korea", "London", "Pakistan", "Portugal", "Russia", "Switzerland", "USA"
+            ].map((country) => (
+              <motion.div
+                key={country}
+                variants={fadeUp}
+                className="px-6 py-3 bg-white rounded-full shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md transition-all hover:-translate-y-1 cursor-default group"
+              >
+                <div className="w-2 h-2 rounded-full bg-[#8a385a] group-hover:scale-150 transition-transform"></div>
+                <span className="text-sm font-semibold text-gray-700 tracking-wide">{country}</span>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
@@ -115,19 +158,17 @@ export default function ContactPage() {
                   Our state-of-the-art manufacturing facility is strategically located to ensure rapid global distribution and optimized logistics.
                 </p>
                 
-                {/* Embedded Map / Image */}
+                {/* Embedded Map */}
                 <div className="w-full h-48 bg-gray-200 rounded-lg overflow-hidden relative mt-auto">
-                  <Image 
-                    src="https://images.unsplash.com/photo-1569336415962-a4bd9f69c07b?q=80&w=800&auto=format&fit=crop"
-                    alt="Factory Location Map"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
-                    <div className="w-8 h-8 rounded-full bg-[#3a081a] text-white flex items-center justify-center shadow-xl animate-bounce">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                    </div>
-                  </div>
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.0203534570076!2d79.88219467576579!3d7.123565092881263!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2f200508a8d05%3A0x67fa2a8dbadbb0fa!2sKatunayake%20Export%20Processing%20Zone!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk" 
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0 }} 
+                    allowFullScreen={false} 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
                 </div>
               </div>
 
@@ -185,33 +226,33 @@ export default function ContactPage() {
               </h3>
               
               <div className="flex flex-col gap-6">
-                <a href="mailto:info@amp-flora.com" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
+                <a href="mailto:udeshjv.ampsl@gmail.com" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
                     <Mail size={18} className="text-[#3a081a]" />
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Email</p>
-                    <p className="text-sm font-semibold">info@amp-flora.com</p>
+                    <p className="text-sm font-semibold">udeshjv.ampsl@gmail.com</p>
                   </div>
                 </a>
                 
-                <a href="tel:+94771234567" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
+                <a href="tel:+94112251026" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
                     <Phone size={18} className="text-[#3a081a]" />
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Phone</p>
-                    <p className="text-sm font-semibold">+94 77 123 4567</p>
+                    <p className="text-sm font-semibold">+94-11-2251026, +94-77-767-6336</p>
                   </div>
                 </a>
 
-                <a href="https://wa.me/94771234567" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
+                <a href="https://www.ampceylon.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                    <MessageCircle size={18} className="text-[#3a081a]" />
+                    <Globe size={18} className="text-[#3a081a]" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">WhatsApp</p>
-                    <p className="text-sm font-semibold">+94 77 123 4567 💬</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Website</p>
+                    <p className="text-sm font-semibold">www.ampceylon.com</p>
                   </div>
                 </a>
 
@@ -220,7 +261,7 @@ export default function ContactPage() {
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-sm font-semibold">@AMPCeylon</span>
+                    <span className="text-sm font-semibold">AMP Ceylon flower Arrangements</span>
                   </a>
                   <a href="#" className="flex items-center gap-2 text-gray-600 hover:text-[#E4405F] transition-colors">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
@@ -247,7 +288,7 @@ export default function ContactPage() {
               </div>
               
               <h3 className="text-xl font-bold mb-8 relative z-10" style={{ fontFamily: 'var(--font-playfair)' }}>
-                Our Branches
+                Our Facilities
               </h3>
               
               <div className="flex flex-col gap-8 relative z-10">
@@ -256,9 +297,9 @@ export default function ContactPage() {
                     <MapPin size={20} className="text-[#f4e6ea]" />
                   </div>
                   <div>
-                    <h4 className="text-base font-bold mb-2 tracking-wide text-[#f4e6ea]">Katunayake Branch</h4>
+                    <h4 className="text-base font-bold mb-2 tracking-wide text-[#f4e6ea]">Head Office & Factory</h4>
                     <p className="text-sm text-white/70 leading-relaxed">
-                      123 Airport Road, Free Trade Zone,<br />
+                      Ring Road 3, Phase 2, Export Processing Zone,<br />
                       Katunayake, Sri Lanka
                     </p>
                   </div>
@@ -271,10 +312,9 @@ export default function ContactPage() {
                     <MapPin size={20} className="text-[#f4e6ea]" />
                   </div>
                   <div>
-                    <h4 className="text-base font-bold mb-2 tracking-wide text-[#f4e6ea]">Kandy Branch</h4>
+                    <h4 className="text-base font-bold mb-2 tracking-wide text-[#f4e6ea]">AMP Ceylon Lebanon Factory</h4>
                     <p className="text-sm text-white/70 leading-relaxed">
-                      45 Hill Capital Avenue, Peradeniya Road,<br />
-                      Kandy, Sri Lanka
+                      Thawalanthenna, Waththeyama
                     </p>
                   </div>
                 </div>

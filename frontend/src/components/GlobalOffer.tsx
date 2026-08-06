@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { X, Copy, Check } from 'lucide-react';
+import { X, Copy, Check, Gift, ChevronLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function GlobalOffer({ offer }: { offer: any }) {
+export default function GlobalOffer({ offer, autoOpen = true, onDismiss }: { offer: any; autoOpen?: boolean; onDismiss?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [hasDismissed, setHasDismissed] = useState(false); // Default false to prevent bottom banner flash
   const [isPermanentlyHidden, setIsPermanentlyHidden] = useState(false);
@@ -15,6 +15,7 @@ export default function GlobalOffer({ offer }: { offer: any }) {
   const pathname = usePathname();
   const bannerRef = useRef<HTMLDivElement>(null);
   const [hidden, setHidden] = useState(false);
+  const [showCampaignDetails, setShowCampaignDetails] = useState(false);
   const lastScrollY = useRef(0);
 
   // Scroll listener for hiding banner on scroll down
@@ -80,12 +81,24 @@ export default function GlobalOffer({ offer }: { offer: any }) {
     
     const isDismissed = localStorage.getItem(dismissedKey) === 'true';
     const isBannerDismissed = localStorage.getItem(bannerDismissedKey) === 'true';
-    const isClaimed = !!localStorage.getItem(activeOfferKey);
+    
+    let isClaimed = false;
+    const activeOfferJson = localStorage.getItem(activeOfferKey);
+    if (activeOfferJson) {
+      try {
+        const claimedOffer = JSON.parse(activeOfferJson);
+        if (claimedOffer.id === offer.id) {
+          isClaimed = true;
+        }
+      } catch (e) {
+        // ignore JSON parse errors
+      }
+    }
     
     if (isBannerDismissed) setIsPermanentlyHidden(true);
 
-    // If they already claimed it, or dismissed it, keep it dismissed.
-    if (isDismissed || isClaimed) {
+    // If they already claimed it, or dismissed it, keep it dismissed. Also keep it dismissed if autoOpen is false.
+    if (isDismissed || isClaimed || !autoOpen) {
       setHasDismissed(true);
     } else {
       setHasDismissed(false);
@@ -95,7 +108,7 @@ export default function GlobalOffer({ offer }: { offer: any }) {
       }, 500); // Wait 0.5s before showing
       return () => clearTimeout(timer);
     }
-  }, [offer, pathname]);
+  }, [offer, pathname, autoOpen]);
 
   if (!offer || pathname?.startsWith('/admin') || !isClient) return null;
 
@@ -103,6 +116,7 @@ export default function GlobalOffer({ offer }: { offer: any }) {
     setIsOpen(false);
     setHasDismissed(true);
     localStorage.setItem(`dismissed_offer_${offer.id}`, 'true');
+    if (onDismiss) onDismiss();
   };
 
   const handleClaim = () => {
@@ -153,98 +167,105 @@ export default function GlobalOffer({ offer }: { offer: any }) {
               {/* Close Button */}
               <button 
                 onClick={handleClose}
-                className="absolute top-4 right-4 z-10 text-gray-400 hover:text-black transition-colors bg-white/80 rounded-full p-1 md:bg-transparent"
+                className="absolute top-4 right-4 z-50 text-gray-400 hover:text-black transition-colors bg-white/80 rounded-full p-1 md:bg-transparent"
               >
                 <X size={20} />
               </button>
 
-              {/* Left Image */}
-              <div className="w-full md:w-1/2 h-64 md:h-auto relative bg-gray-100">
+              {/* Campaign Image (Full Size) OR Regular Offer Image (Half Size) */}
+              <div className={`relative ${offer.type === 'CAMPAIGN' ? 'w-full h-full min-h-[75vh]' : 'w-full md:w-1/2 h-64 md:h-auto'} bg-gray-100`}>
                 <Image 
                   src={offer.image_url || 'https://images.unsplash.com/photo-1563241598-646bc5683794?q=80&w=800&auto=format&fit=crop'} 
                   alt={offer.title}
                   fill
                   className="object-cover"
                 />
+                
+                {/* Details Toggle Button for Campaign */}
+                {offer.type === 'CAMPAIGN' && (
+                  <div className="absolute bottom-6 left-6 z-20">
+                    <button 
+                      onClick={() => setShowCampaignDetails(prev => !prev)}
+                      className="bg-black/80 backdrop-blur-md text-white border border-white/20 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-black transition-all flex items-center gap-2 shadow-xl"
+                    >
+                      {showCampaignDetails ? 'Hide Details' : 'View Campaign Details'}
+                    </button>
+                  </div>
+                )}
               </div>
 
-              {/* Right Content */}
-              <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-3">Limited Time Offer</p>
-                <h2 className="text-2xl md:text-3xl font-bold text-[#3a081a] mb-4" style={{ fontFamily: 'var(--font-playfair)' }}>
-                  {offer.title}
-                </h2>
-                <div className="mb-8">
-                  <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                    {offer.description}
+              {/* Right Content / Overlay */}
+              {offer.type === 'CAMPAIGN' ? (
+                <AnimatePresence>
+                  {showCampaignDetails && (
+                    <motion.div 
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 50 }}
+                      className="absolute top-0 right-0 bottom-0 w-full md:w-[40%] bg-[#1a0a10]/95 backdrop-blur-xl border-l border-white/10 text-white p-8 md:p-12 z-10 flex flex-col justify-center"
+                    >
+                      <p className="text-[9px] font-bold uppercase tracking-widest mb-3 text-white/60">
+                        Featured Campaign
+                      </p>
+                      <h2 className="text-4xl md:text-5xl text-white font-bold mb-4" style={{ fontFamily: 'var(--font-playfair)' }}>
+                        {offer.title}
+                      </h2>
+                      <div className="mb-8">
+                        <p className="text-sm leading-relaxed mb-4 text-white/80">
+                          {offer.description}
+                        </p>
+                        <div className="flex items-center gap-3 mt-6">
+                          {offer.valid_to && (
+                            <span className="text-xs font-semibold uppercase tracking-wider text-white/50">
+                              Valid Till: {new Date(offer.valid_to).toLocaleDateString()}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              ) : (
+                <div className="w-full md:w-1/2 bg-white text-black p-8 md:p-12 flex flex-col justify-center">
+                  <p className="text-[9px] font-bold uppercase tracking-widest mb-3 text-gray-400">
+                    Limited Time Offer
                   </p>
-                  <div className="flex items-center gap-3">
-                    <span className="bg-red-50 text-red-700 px-3 py-1 rounded font-bold text-lg tracking-wider border border-red-100">
-                      {getDiscountText()}
-                    </span>
-                    {offer.valid_to && (
-                      <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Valid Till: {new Date(offer.valid_to).toLocaleDateString()}
+                  <h2 className="text-2xl md:text-3xl text-[#3a081a] font-bold mb-4" style={{ fontFamily: 'var(--font-playfair)' }}>
+                    {offer.title}
+                  </h2>
+                  <div className="mb-8">
+                    <p className="text-sm leading-relaxed mb-4 text-gray-600">
+                      {offer.description}
+                    </p>
+                    <div className="flex items-center gap-3 mt-6">
+                      <span className="bg-red-50 text-red-700 px-3 py-1 rounded font-bold text-lg tracking-wider border border-red-100">
+                        {getDiscountText()}
                       </span>
-                    )}
+                      {offer.valid_to && (
+                        <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                          Valid Till: {new Date(offer.valid_to).toLocaleDateString()}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-3 mt-auto">
+                    <button 
+                      onClick={handleClaim}
+                      className="w-full py-3 bg-[#3a081a] text-white text-xs font-bold uppercase tracking-widest hover:bg-[#2a0512] transition-colors shadow-lg shadow-[#3a081a]/20"
+                    >
+                      Claim Discount
+                    </button>
                   </div>
                 </div>
-
-                <div className="flex flex-col gap-3">
-                  <button 
-                    onClick={handleClaim}
-                    className="w-full py-3 bg-[#3a081a] text-white text-xs font-bold uppercase tracking-widest hover:bg-[#2a0512] transition-colors shadow-lg shadow-[#3a081a]/20"
-                  >
-                    Claim Discount
-                  </button>
-                </div>
-              </div>
+              )}
             </motion.div>
           </div>
         )}
       </AnimatePresence>
 
-      {/* Slim Persistent Banner (Only shows when modal is dismissed) */}
+      {/* Slim Persistent Banner (Removed as per request to remove the maroon border) */}
       <AnimatePresence>
-        {hasDismissed && !isOpen && !isPermanentlyHidden && (
-          <motion.div 
-            id="global-offer-banner"
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: hidden ? -100 : 0, opacity: hidden ? 0 : 1 }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-0 left-0 right-0 z-[9000] bg-[#3a081a] text-white py-3 px-6 shadow-2xl flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8"
-          >
-            <p className="text-xs sm:text-sm font-medium text-center">
-              <span className="font-bold mr-2 text-[#f4e6ea]">{offer.title}:</span>
-              {offer.description.substring(0, 50)}...
-            </p>
-            <div className="flex items-center gap-4">
-              <span className="bg-white/20 px-2 py-1 rounded text-[10px] font-bold tracking-wider">
-                {getDiscountText()}
-              </span>
-              <button 
-                onClick={() => setIsOpen(true)}
-                className="text-[10px] font-bold uppercase tracking-widest underline decoration-white/30 underline-offset-4 hover:decoration-white transition-colors whitespace-nowrap"
-              >
-                View Details
-              </button>
-              <button 
-                onClick={handleClaim}
-                className="text-[10px] font-bold uppercase tracking-widest bg-white text-[#3a081a] px-3 py-1.5 rounded hover:bg-gray-100 transition-colors whitespace-nowrap"
-              >
-                Claim Now
-              </button>
-              {/* Close (X) Button */}
-              <button
-                onClick={handleBannerDismiss}
-                className="text-white/60 hover:text-white transition-colors ml-2"
-                aria-label="Hide banner"
-              >
-                <X size={16} />
-              </button>
-            </div>
-          </motion.div>
-        )}
+        {/* Banner disabled */}
       </AnimatePresence>
 
       {/* Success Notification Modal */}
@@ -272,6 +293,43 @@ export default function GlobalOffer({ offer }: { offer: any }) {
               </button>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* Minimized Floating Widget */}
+      <AnimatePresence>
+        {hasDismissed && !isOpen && !showSuccess && (
+          offer.type === 'CAMPAIGN' ? (
+            <motion.button
+              key="campaign-tab"
+              initial={{ x: '100%', opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: '100%', opacity: 0 }}
+              onClick={() => setIsOpen(true)}
+              className="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center justify-center py-6 px-3 rounded-l-lg bg-[#3a081a] text-white shadow-2xl hover:-translate-x-1 transition-transform border border-r-0 border-white/20"
+              aria-label="View Offer"
+            >
+              <ChevronLeft size={20} className="mb-4 animate-pulse text-white/70" />
+              <span 
+                className="text-xs font-bold uppercase tracking-widest whitespace-nowrap"
+                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+              >
+                {offer.title}
+              </span>
+            </motion.button>
+          ) : (
+            <motion.button
+              key="gift-box"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              onClick={() => setIsOpen(true)}
+              className="fixed bottom-8 left-8 z-50 flex items-center justify-center p-4 rounded-full bg-[#3a081a] text-white shadow-xl hover:scale-110 hover:shadow-2xl transition-all duration-300"
+              aria-label="View Offer"
+            >
+              <Gift size={24} className="animate-pulse" />
+            </motion.button>
+          )
         )}
       </AnimatePresence>
     </>

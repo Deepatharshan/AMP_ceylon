@@ -20,34 +20,38 @@ export default function ManufacturingSection() {
   const text4Ref = useRef<HTMLHeadingElement>(null);
 
   useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: '+=400%', // 4 stages
-        pin: true,
-        scrub: 1,
-      }
+    const mm = gsap.matchMedia();
+    
+    mm.add("(min-width: 769px)", () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: '+=400%', // 4 stages
+          pin: true,
+          scrub: 1,
+        }
+      });
+
+      // Stage 1: White Shape
+      tl.to(text1Ref.current, { opacity: 1, duration: 0.5 })
+        .to(text1Ref.current, { opacity: 0, duration: 0.5 }, '+=0.5');
+
+      // Stage 2: Dyeing
+      tl.to(dyeRef.current, { opacity: 0.8, duration: 1 }, '<')
+        .to(text2Ref.current, { opacity: 1, duration: 0.5 }, '<')
+        .to(text2Ref.current, { opacity: 0, duration: 0.5 }, '+=0.5');
+
+      // Stage 3: Heating
+      tl.to(heatRef.current, { opacity: 1, scale: 1.2, duration: 0.5 }, '<')
+        .to(heatRef.current, { opacity: 0, scale: 1.5, duration: 0.5 }, '+=0.5')
+        .to(text3Ref.current, { opacity: 1, duration: 0.5 }, '<-0.5')
+        .to(text3Ref.current, { opacity: 0, duration: 0.5 }, '+=0.5');
+
+      // Stage 4: Designed
+      tl.to(finalRef.current, { opacity: 1, duration: 1 }, '<')
+        .to(text4Ref.current, { opacity: 1, duration: 0.5 }, '<');
     });
-
-    // Stage 1: White Shape
-    tl.to(text1Ref.current, { opacity: 1, duration: 0.5 })
-      .to(text1Ref.current, { opacity: 0, duration: 0.5 }, '+=0.5');
-
-    // Stage 2: Dyeing
-    tl.to(dyeRef.current, { opacity: 0.8, duration: 1 }, '<')
-      .to(text2Ref.current, { opacity: 1, duration: 0.5 }, '<')
-      .to(text2Ref.current, { opacity: 0, duration: 0.5 }, '+=0.5');
-
-    // Stage 3: Heating
-    tl.to(heatRef.current, { opacity: 1, scale: 1.2, duration: 0.5 }, '<')
-      .to(heatRef.current, { opacity: 0, scale: 1.5, duration: 0.5 }, '+=0.5')
-      .to(text3Ref.current, { opacity: 1, duration: 0.5 }, '<-0.5')
-      .to(text3Ref.current, { opacity: 0, duration: 0.5 }, '+=0.5');
-
-    // Stage 4: Designed
-    tl.to(finalRef.current, { opacity: 1, duration: 1 }, '<')
-      .to(text4Ref.current, { opacity: 1, duration: 0.5 }, '<');
 
   }, { scope: sectionRef });
 

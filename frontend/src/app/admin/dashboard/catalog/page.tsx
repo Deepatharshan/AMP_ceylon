@@ -8,6 +8,7 @@ export default async function CatalogPage() {
   const { data: products = [], error } = await supabase
     .from('products')
     .select('*')
+    .or('business_line.eq.FLORAL,business_line.is.null')
     .order('created_at', { ascending: false });
 
   const { data: inquiries = [] } = await supabase

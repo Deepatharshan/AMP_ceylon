@@ -33,6 +33,8 @@ export async function saveProduct(prevState: any, formData: FormData) {
   const isTopSeller = formData.get('is_top_seller') === 'on'
   const isNewCollection = formData.get('is_new_collection') === 'on'
   const isLimitedProduct = formData.get('is_limited_product') === 'on'
+  
+  const businessLine = formData.get('business_line') as string || 'FLORAL'
 
   const productData = {
     name,
@@ -51,6 +53,7 @@ export async function saveProduct(prevState: any, formData: FormData) {
     active_count: activeCount,
     size,
     market,
+    business_line: businessLine,
   }
 
   let error;
@@ -77,6 +80,10 @@ export async function saveProduct(prevState: any, formData: FormData) {
 export async function deleteProduct(productId: string) {
   const supabase = await createClient()
 
+  // First, delete any linked items in the inquiry_items table to prevent foreign key errors
+  await supabase.from('inquiry_items').delete().eq('product_id', productId)
+
+  // Then delete the product itself
   const { error } = await supabase.from('products').delete().eq('id', productId)
 
   if (error) {

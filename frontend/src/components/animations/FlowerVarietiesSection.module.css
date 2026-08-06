@@ -66,3 +66,42 @@
   font-size: 1.2rem;
   line-height: 1.6;
 }
+
+@media (max-width: 768px) {
+  .flowerSection {
+    height: auto;
+    padding: 2rem 0;
+  }
+  
+  .flowerContainer {
+    width: 100%;
+    height: auto;
+  }
+  
+  .title {
+    position: static;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .flowerItem {
+    position: relative;
+    opacity: 1 !important;
+    visibility: visible !important;
+    flex-direction: column;
+    height: auto;
+    margin-bottom: 2rem;
+  }
+  
+  .flowerImage {
+    width: 90%;
+    height: 250px;
+    margin-bottom: 1rem;
+  }
+  
+  .flowerInfo {
+    width: 90%;
+    padding: 0;
+    text-align: center;
+  }
+}

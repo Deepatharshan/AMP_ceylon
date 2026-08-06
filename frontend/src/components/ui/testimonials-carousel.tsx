@@ -57,7 +57,7 @@ export const TestimonialsCarousel: React.FC<TestimonialsCarouselProps> = ({
           <motion.div
             key={index}
             whileHover={{ scale: 1.05, rotate: 1 }}
-            className={`bg-white dark:bg-black my-3 border-2 border-gray-100 shadow-md rounded-3xl p-6 flex-shrink-0 w-[350px]`}
+            className={`bg-white my-3 border-2 border-gray-100 shadow-md rounded-3xl p-6 flex-shrink-0 w-[350px]`}
             style={{ height: cardHeight }}
           >
             <p className="text-sm leading-relaxed text-justify break-words whitespace-normal overflow-hidden" style={{ fontFamily: 'var(--font-inter)' }}>
