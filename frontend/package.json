@@ -33,7 +33,7 @@
     "postcss": "^8.5.16",
     "react": "19.2.4",
     "react-confetti": "^6.4.0",
-    "react-dom": "19.2.4",
+    "react-dom": "19.2.8",
     "react-easy-crop": "^6.2.2",
     "react-image-crop": "^11.1.2",
     "react-use": "^17.6.1",
