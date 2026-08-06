@@ -9,16 +9,19 @@ export async function createOffer(formData: FormData) {
 
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
-  const discountType = formData.get('discountType') as string;
-  const discountValue = parseFloat(formData.get('discountValue') as string);
+  const discountType = formData.get('discountType') as string | null;
+  const discountValueStr = formData.get('discountValue') as string | null;
+  const discountValue = discountValueStr ? parseFloat(discountValueStr) : 0;
   const validFrom = formData.get('validFrom') as string;
   const validTo = formData.get('validTo') as string;
   const targetRegions = formData.getAll('targetRegions') as string[];
   const isActive = formData.get('isActive') === 'true';
+  const displayOrderStr = formData.get('displayOrder') as string | null;
+  const displayOrder = displayOrderStr ? parseInt(displayOrderStr) : 99;
 
-  // For simplicity, hardcode some fields that could be expanded later
+  // Determine the post type (Offer vs Campaign)
   const code = 'NEW-' + Math.floor(Math.random() * 10000);
-  const type = 'SEASONAL';
+  const type = (formData.get('postType') as string) || 'SEASONAL';
   
   let status = 'Active';
   if (!isActive) status = 'Scheduled';
@@ -92,12 +95,16 @@ export async function updateOffer(id: string, formData: FormData) {
   const supabase = await createClient();
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
-  const discountType = formData.get('discountType') as string;
-  const discountValue = Number(formData.get('discountValue'));
+  const discountType = formData.get('discountType') as string | null;
+  const discountValueStr = formData.get('discountValue') as string | null;
+  const discountValue = discountValueStr ? Number(discountValueStr) : 0;
   const validFrom = formData.get('validFrom') as string;
   const validTo = formData.get('validTo') as string;
   const targetRegions = formData.getAll('targetRegions') as string[];
   const isActive = formData.get('isActive') === 'true';
+  const type = (formData.get('postType') as string) || 'SEASONAL';
+  const displayOrderStr = formData.get('displayOrder') as string | null;
+  const displayOrder = displayOrderStr ? parseInt(displayOrderStr) : 99;
 
   let status = 'Active';
   if (!isActive) status = 'Scheduled';
@@ -136,6 +143,7 @@ export async function updateOffer(id: string, formData: FormData) {
     valid_until: validTo || new Date(Date.now() + 31536000000).toISOString(),
     target_regions: targetRegions,
     is_active: isActive,
+    type
   };
 
   if (imageUrl) {

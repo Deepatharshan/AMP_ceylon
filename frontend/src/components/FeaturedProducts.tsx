@@ -11,6 +11,7 @@ export default async function FeaturedProducts() {
   const { count, error: countError } = await supabase
     .from('products')
     .select('*', { count: 'exact', head: true })
+    .or('business_line.eq.FLORAL,business_line.is.null')
     .eq('is_active', true);
 
   if (countError) {
@@ -26,6 +27,7 @@ export default async function FeaturedProducts() {
     const { data } = await supabase
       .from('products')
       .select('*')
+      .or('business_line.eq.FLORAL,business_line.is.null')
       .eq('is_active', true)
       .order('created_at', { ascending: false });
     
@@ -35,6 +37,7 @@ export default async function FeaturedProducts() {
     const { data: featuredData } = await supabase
       .from('products')
       .select('*')
+      .or('business_line.eq.FLORAL,business_line.is.null')
       .eq('is_active', true)
       .eq('is_top_seller', true)
       .order('created_at', { ascending: false })
@@ -50,6 +53,7 @@ export default async function FeaturedProducts() {
       let query = supabase
         .from('products')
         .select('*')
+        .or('business_line.eq.FLORAL,business_line.is.null')
         .eq('is_active', true)
         .order('created_at', { ascending: false })
         .limit(remainingSlots);
@@ -92,7 +96,8 @@ export default async function FeaturedProducts() {
             name: p.name,
             image: p.image_urls?.[0] || p.image_url || '/placeholder-product.jpg',
             price: p.price,
-            slug: p.id
+            slug: p.id,
+            colors: p.colors || []
           }))}
         />
       </ScrollFadeWrapper>

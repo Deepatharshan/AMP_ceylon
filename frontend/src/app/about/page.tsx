@@ -144,7 +144,7 @@ export default function AboutPage() {
                 <img 
                   src="/founder.jpg" 
                   alt="Ms. Nancy Liu - Consultant" 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover object-[75%_10%] transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => { e.currentTarget.src = 'https://placehold.co/400x400?text=Consultant' }}
                 />
               </div>

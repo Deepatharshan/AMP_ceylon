@@ -2,7 +2,8 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Heritage from '@/components/Heritage';
 import FeaturedProducts from '@/components/FeaturedProducts';
-import Curation from '@/components/Curation';
+import CartonHero from '@/components/CartonHero';
+import FeaturedCartons from '@/components/FeaturedCartons';
 import ProcessAnimation from '@/components/ProcessAnimation';
 import StatsSection from '@/components/StatsSection';
 import Testimonials from '@/components/Testimonials';
@@ -16,8 +17,14 @@ export default function Home() {
       <Hero />
       <Heritage />
       <StatsSection />
+      
+      {/* Floral Business */}
       <FeaturedProducts />
-      <Curation />
+      
+      {/* Carton Business */}
+      <CartonHero />
+      <FeaturedCartons />
+      
       <ProcessAnimation />
       <Testimonials />
       <CTA />

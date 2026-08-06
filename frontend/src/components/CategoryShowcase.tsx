@@ -10,6 +10,7 @@ export interface ShowcaseProduct {
   image: string;
   price?: number;
   slug: string;
+  colors?: string[];
 }
 
 interface CategoryShowcaseProps {
@@ -28,6 +29,20 @@ export default function CategoryShowcase({
 }: CategoryShowcaseProps) {
   // Take up to 8 products for the grid
   const displayProducts = products.slice(0, 8);
+
+  // Helper to map color names to hex codes if needed, though Tailwind supports many standard names.
+  const getColorHex = (colorName: string) => {
+    const c = colorName.toLowerCase().trim();
+    if (c === 'white') return '#ffffff';
+    if (c === 'black') return '#000000';
+    if (c === 'red') return '#ef4444';
+    if (c === 'blue') return '#3b82f6';
+    if (c === 'green') return '#22c55e';
+    if (c === 'yellow') return '#eab308';
+    if (c === 'gray' || c === 'grey') return '#9ca3af';
+    if (c === 'brown') return '#8b4513';
+    return c; // fallback, could be a hex code already
+  };
 
   return (
     <section className="py-4 md:py-8 px-4 md:px-8 w-full mx-auto">
@@ -57,10 +72,9 @@ export default function CategoryShowcase({
         {/* Clean Static Grid Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
           {displayProducts.map((product) => {
-            // Ensure a valid price format
-            const formattedPrice = product.price 
-              ? `Rs ${Number(product.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-              : 'Rs 0.00';
+            const hasColors = product.colors && product.colors.length > 0;
+            const displayColors = hasColors ? product.colors!.slice(0, 3) : [];
+            const extraColors = hasColors ? product.colors!.length - 3 : 0;
               
             return (
               <div key={product.id} className="flex flex-col group items-center">
@@ -81,16 +95,31 @@ export default function CategoryShowcase({
                     <h3 className="font-semibold text-lg md:text-xl text-gray-900 tracking-tight">
                       {product.name}
                     </h3>
-                    <p className="text-sm text-gray-500 mt-2 font-medium">
-                      From {formattedPrice}
-                    </p>
+
+                    {/* Color Variations */}
+                    {hasColors && (
+                      <div className="flex items-center gap-2 mt-4 opacity-70 group-hover:opacity-100 transition-opacity">
+                        {displayColors.map((color, idx) => (
+                          <div 
+                            key={idx} 
+                            className="w-3 h-3 rounded-full border border-gray-200"
+                            style={{ backgroundColor: getColorHex(color) }}
+                            title={color}
+                          ></div>
+                        ))}
+                        {extraColors > 0 && (
+                          <span className="text-[10px] text-gray-400 ml-1">+{extraColors}</span>
+                        )}
+                      </div>
+                    )}
                     
-                    {/* Dummy color swatches to match Apple style */}
-                    <div className="flex items-center gap-2 mt-4 opacity-70 group-hover:opacity-100 transition-opacity">
-                      <div className="w-3 h-3 rounded-full bg-black border border-gray-200"></div>
-                      <div className="w-3 h-3 rounded-full bg-white border border-gray-300"></div>
-                      <div className="w-3 h-3 rounded-full bg-gray-400 border border-gray-200"></div>
-                      <span className="text-[10px] text-gray-400 ml-1">+1</span>
+                    {/* Action Button (Appears on Hover) */}
+                    <div className="mt-4 h-10 flex items-center justify-center">
+                      <div className="transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out">
+                        <span className="px-6 py-2.5 bg-[#3a081a] text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-lg shadow-[#3a081a]/20">
+                          Inquire Now
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </Link>

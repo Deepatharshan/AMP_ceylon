@@ -72,7 +72,7 @@ export default function Footer() {
       </div>
       
       <div className={styles.bottomBar}>
-        <span>© 2026 AMP pvt ltd. All Rights Reserved. Custom artificial flora from Sri Lanka.</span>
+        <span><Link href="/admin/login" className="cursor-default text-inherit hover:text-white transition-colors" title="Admin Login">© 2026</Link> AMP pvt ltd. All Rights Reserved. Custom artificial flora from Sri Lanka.</span>
         <ShoppingCart size={20} />
       </div>
     </footer>

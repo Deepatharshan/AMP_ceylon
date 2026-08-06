@@ -77,7 +77,7 @@ const parseDbArray = (field: any): string[] => {
   return [];
 };
 
-export default function CatalogTable({ initialProducts }: { initialProducts: Product[] }) {
+export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' }: { initialProducts: Product[], businessLine?: string }) {
   const [products, setProducts] = useState(initialProducts);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -108,10 +108,17 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
   // Load all categories on mount
   useEffect(() => {
     async function loadCategories() {
-      const { data, error } = await supabase
+      let query = supabase
         .from('categories')
-        .select('id, name, slug')
-        .order('name', { ascending: true });
+        .select('id, name, slug');
+
+      if (businessLine === 'FLORAL') {
+        query = query.or('business_line.eq.FLORAL,business_line.is.null');
+      } else {
+        query = query.eq('business_line', businessLine);
+      }
+
+      const { data, error } = await query.order('name', { ascending: true });
 
       if (data) {
         setDbCategories(data);
@@ -134,7 +141,7 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
 
     const { data, error } = await supabase
       .from('categories')
-      .insert([{ name: newCategoryName.trim(), slug }])
+      .insert([{ name: newCategoryName.trim(), slug, business_line: businessLine }])
       .select();
 
     if (error) {
@@ -381,7 +388,7 @@ export default function CatalogTable({ initialProducts }: { initialProducts: Pro
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                       </button>
                       <Link 
-                        href={`/admin/dashboard/catalog/edit/${product.id}`}
+                        href={`/admin/dashboard/${businessLine === 'CARTON' ? 'cartons' : 'catalog'}/edit/${product.id}`}
                         className="p-1 hover:text-[#3a081a] transition-colors text-gray-400"
                         title="Edit Product"
                       >

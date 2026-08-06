@@ -2,6 +2,8 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import SidebarLinks from './SidebarLinks'
+import AutoLogout from './AutoLogout'
+import LoginToaster from './LoginToaster'
 
 export default async function DashboardLayout({
   children,
@@ -17,6 +19,8 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex h-screen bg-[#fcfbf9] text-[#333]">
+      <AutoLogout />
+      <LoginToaster />
       {/* Sidebar */}
       <div className="w-64 border-r border-[#ececec] flex flex-col bg-white">
         <div className="p-8 border-b border-[#ececec]">

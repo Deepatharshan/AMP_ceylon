@@ -56,12 +56,24 @@ export default function Navbar() {
     async function loadCategories() {
       try {
         const supabase = createClient();
-        const { data: catData } = await supabase.from('categories').select('name').order('name', { ascending: true });
+        
+        // Fetch only floral categories
+        const { data: catData } = await supabase
+          .from('categories')
+          .select('name')
+          .or('business_line.eq.FLORAL,business_line.is.null')
+          .order('name', { ascending: true });
+          
         if (catData && catData.length > 0) {
           setCategories(["All Collections", ...catData.map(c => c.name)]);
         }
         
-        const { data: prodData } = await supabase.from('products').select('*').limit(3);
+        const { data: prodData } = await supabase
+          .from('products')
+          .select('*')
+          .or('business_line.eq.FLORAL,business_line.is.null')
+          .limit(3);
+          
         if (prodData) {
           setFeaturedProducts(prodData);
         }
@@ -156,7 +168,7 @@ export default function Navbar() {
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
             <div className="flex items-center gap-1 cursor-pointer py-2">
-              <AnimatedNavLink href="/collections" isActive={pathname === '/collections'}>Catalog</AnimatedNavLink>
+              <AnimatedNavLink href="/collections" isActive={pathname === '/collections'}>Floral & Decor</AnimatedNavLink>
               <ChevronDown size={14} className="text-[#3a081a]/80" />
             </div>
             
@@ -213,6 +225,8 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
 
+          <AnimatedNavLink href="/carton-boxes" isActive={pathname === '/carton-boxes'}>Carton Boxes</AnimatedNavLink>
+
           <AnimatedNavLink href="/manufacturing" isActive={pathname === '/manufacturing'}>Manufacturing</AnimatedNavLink>
           <AnimatedNavLink href="/contact" isActive={pathname === '/contact'}>Contact</AnimatedNavLink>
         </nav>
@@ -260,7 +274,7 @@ export default function Navbar() {
                 <Link href="/about" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">About Us</Link>
                 
                 <div className="flex flex-col items-center w-full">
-                  <div className="!text-[#3a081a] uppercase tracking-widest text-xs mb-4 font-semibold opacity-70">Catalog</div>
+                  <div className="!text-[#3a081a] uppercase tracking-widest text-xs mb-4 font-semibold opacity-70">Floral & Decor</div>
                   <div className="flex flex-col items-center space-y-4 w-full">
                     {categories.map((cat, idx) => (
                       <Link key={idx} href={`/collections?category=${encodeURIComponent(cat)}`} className="!text-[#3a081a] hover:opacity-80 transition-colors w-full text-center text-sm font-medium">
@@ -270,6 +284,7 @@ export default function Navbar() {
                   </div>
                 </div>
 
+                <Link href="/carton-boxes" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Carton Boxes</Link>
                 <Link href="/manufacturing" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Manufacturing</Link>
                 <Link href="/contact" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Contact</Link>
               </nav>

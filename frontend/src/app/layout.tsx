@@ -18,29 +18,45 @@ export const metadata: Metadata = {
 };
 
 import { createClient } from '@/utils/supabase/server';
-import GlobalOffer from '@/components/GlobalOffer';
 import ScrollToTop from '@/components/ScrollToTop';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import GlobalOffersManager from '@/components/GlobalOffersManager';
+import SmoothScroll from '@/components/SmoothScroll';
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  let activeOffer = null;
+  let validOffers: any[] = [];
+
   try {
     const supabase = await createClient();
+    
+    // Fetch latest Campaign
+    const { data: campaigns } = await supabase
+      .from('offers')
+      .select('*')
+      .eq('is_active', true)
+      .eq('type', 'CAMPAIGN')
+      .order('created_at', { ascending: false })
+      .limit(1);
+      
+    // Fetch latest non-Campaign
     const { data: offers } = await supabase
       .from('offers')
       .select('*')
       .eq('is_active', true)
-      .eq('status', 'Active')
+      .neq('type', 'CAMPAIGN')
       .order('created_at', { ascending: false })
       .limit(1);
 
-    if (offers && offers.length > 0) {
-      activeOffer = offers[0];
-    }
+    if (campaigns && campaigns.length > 0) validOffers.push(campaigns[0]);
+    if (offers && offers.length > 0) validOffers.push(offers[0]);
+
+    // Sort so newest is first in array
+    validOffers.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
   } catch (err) {
     console.error("Failed to load global offer", err);
   }
@@ -48,10 +64,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} bg-floral-pattern`}>
-        {children}
-        {activeOffer && <GlobalOffer offer={activeOffer} />}
-        <ScrollToTop />
-        <WhatsAppButton />
+        <SmoothScroll>
+          {children}
+          <GlobalOffersManager offers={validOffers} />
+          <ScrollToTop />
+          <WhatsAppButton />
+        </SmoothScroll>
       </body>
     </html>
   );
