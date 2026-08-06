@@ -22,15 +22,18 @@ const staggerContainer = {
 };
 
 const mapDots = [
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: -38.4161, lng: -63.6167, label: "Argentina" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 51.1657, lng: 10.4515, label: "Germany" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 35.8617, lng: 104.1954, label: "China" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: -25.2744, lng: 133.7751, label: "Australia" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 23.6850, lng: 90.3563, label: "Bangladesh" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 30.3753, lng: 69.3451, label: "Pakistan" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 36.2048, lng: 138.2529, label: "Japan" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 46.8182, lng: 8.2275, label: "Switzerland", labelOffset: { x: -15, y: -20 } } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 25.2048, lng: 55.2708, label: "Dubai" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 51.1657, lng: 10.4515, label: "Germany", labelOffset: { x: 20, y: -25 } } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 51.5074, lng: -0.1278, label: "London", labelOffset: { x: -30, y: -20 } } },
   { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 20.5937, lng: 78.9629, label: "India" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 50.5039, lng: 4.4699, label: "Belgium" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 47.5162, lng: 14.5501, label: "Austria" } },
-  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 51.5074, lng: -0.1278, label: "London" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: -25.2744, lng: 133.7751, label: "Australia" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 41.8719, lng: 12.5674, label: "Italy", labelOffset: { x: 25, y: 5 } } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 39.3999, lng: -8.2245, label: "Portugal", labelOffset: { x: -25, y: 10 } } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 35.9078, lng: 127.7669, label: "Korea" } },
+  { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 61.5240, lng: 105.3188, label: "Russia" } },
   { start: { lat: 7.8731, lng: 80.7718, label: "Sri Lanka" }, end: { lat: 37.0902, lng: -95.7129, label: "USA" } },
 ];
 
@@ -68,6 +71,46 @@ export default function ContactPage() {
         {/* Abstract Map Animation */}
         <div className="w-full max-w-6xl mx-auto relative z-0 mt-4 opacity-90">
           <WorldMap dots={mapDots} lineColor="#8a385a" showLabels={true} />
+        </div>
+
+        {/* Global Destinations */}
+        <div className="w-full max-w-6xl mx-auto relative z-10 mt-12 pb-8">
+          <motion.div 
+            className="text-center mb-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
+            <motion.p variants={fadeUp} className="text-[10px] font-bold text-[#8a385a] uppercase tracking-widest mb-2">
+              Global Reach
+            </motion.p>
+            <motion.h3 variants={fadeUp} className="text-2xl text-[#3a081a] font-bold" style={{ fontFamily: 'var(--font-playfair)' }}>
+              Where We Export Our Products
+            </motion.h3>
+          </motion.div>
+
+          <motion.div 
+            className="flex flex-wrap justify-center gap-3 md:gap-4 px-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
+            {[
+              "Australia", "Dubai", "Germany", "India", "Italy", "Japan", 
+              "Korea", "London", "Pakistan", "Portugal", "Russia", "Switzerland", "USA"
+            ].map((country) => (
+              <motion.div
+                key={country}
+                variants={fadeUp}
+                className="px-6 py-3 bg-white rounded-full shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md transition-all hover:-translate-y-1 cursor-default group"
+              >
+                <div className="w-2 h-2 rounded-full bg-[#8a385a] group-hover:scale-150 transition-transform"></div>
+                <span className="text-sm font-semibold text-gray-700 tracking-wide">{country}</span>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 

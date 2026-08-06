@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 interface MapProps {
   dots?: Array<{
     start: { lat: number; lng: number; label?: string };
-    end: { lat: number; lng: number; label?: string };
+    end: { lat: number; lng: number; label?: string; labelOffset?: { x: number; y: number } };
   }>;
   lineColor?: string;
   showLabels?: boolean;
@@ -53,10 +53,13 @@ export function WorldMap({
 
   const createCurvedPath = (
     start: { x: number; y: number },
-    end: { x: number; y: number }
+    end: { x: number; y: number },
+    index: number
   ) => {
     const midX = (start.x + end.x) / 2;
-    const midY = Math.min(start.y, end.y) - 50;
+    // Offset the curve height based on index to prevent paths from completely overlapping
+    const offset = (index % 3) * 20 - 20; 
+    const midY = Math.min(start.y, end.y) - 50 + offset;
     return `M ${start.x} ${start.y} Q ${midX} ${midY} ${end.x} ${end.y}`;
   };
 
@@ -113,7 +116,7 @@ export function WorldMap({
           return (
             <g key={`path-group-${i}`}>
               <motion.path
-                d={createCurvedPath(startPoint, endPoint)}
+                d={createCurvedPath(startPoint, endPoint, i)}
                 fill="none"
                 stroke="url(#path-gradient)"
                 strokeWidth="1"
@@ -153,7 +156,7 @@ export function WorldMap({
                     repeatDelay: 0,
                   }}
                   style={{
-                    offsetPath: `path('${createCurvedPath(startPoint, endPoint)}')`,
+                    offsetPath: `path('${createCurvedPath(startPoint, endPoint, i)}')`,
                   }}
                 />
               )}
@@ -210,11 +213,11 @@ export function WorldMap({
                   </circle>
                 </motion.g>
                 
-                {showLabels && dot.start.label && (
+                {showLabels && dot.start.label && i === 0 && (
                   <motion.g
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 * i + 0.3, duration: 0.5 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
                     className="pointer-events-none"
                   >
                     <foreignObject
@@ -222,7 +225,7 @@ export function WorldMap({
                       y={startPoint.y - 35}
                       width="100"
                       height="30"
-                      className="block"
+                      className="block overflow-visible"
                     >
                       <div className="flex items-center justify-center h-full">
                         <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-white/95 dark:bg-black/95 text-black dark:text-white border border-gray-200 dark:border-gray-700 shadow-sm whitespace-nowrap">
@@ -285,11 +288,11 @@ export function WorldMap({
                     className="pointer-events-none"
                   >
                     <foreignObject
-                      x={endPoint.x - 50}
-                      y={endPoint.y - 35}
+                      x={endPoint.x - 50 + (dot.end.labelOffset?.x || 0)}
+                      y={endPoint.y - 35 + (dot.end.labelOffset?.y || 0)}
                       width="100"
                       height="30"
-                      className="block"
+                      className="block overflow-visible"
                     >
                       <div className="flex items-center justify-center h-full">
                         <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-white/95 dark:bg-black/95 text-black dark:text-white border border-gray-200 dark:border-gray-700 shadow-sm whitespace-nowrap">

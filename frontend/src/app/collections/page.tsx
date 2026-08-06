@@ -105,7 +105,7 @@ function CollectionsMain() {
     : products.filter(p => p.category === activeCategory);
 
   return (
-    <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
+    <main className="min-h-screen bg-transparent text-[#333]">
       <div className="bg-transparent w-full relative" style={{ height: 'calc(5rem + var(--banner-height, 0px))' }}>
         <Navbar />
       </div>

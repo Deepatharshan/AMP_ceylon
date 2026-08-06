@@ -47,7 +47,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${playfair.variable}`}>
+      <body className={`${inter.variable} ${playfair.variable} bg-floral-pattern`}>
         {children}
         {activeOffer && <GlobalOffer offer={activeOffer} />}
         <ScrollToTop />

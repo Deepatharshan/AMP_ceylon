@@ -58,3 +58,14 @@ a {
 .delay-100 { transition-delay: 100ms; }
 .delay-200 { transition-delay: 200ms; }
 .delay-300 { transition-delay: 300ms; }
+
+/* Floral Background Pattern */
+.bg-floral-pattern {
+  background-color: var(--background);
+  background-image: 
+    linear-gradient(rgba(253, 251, 249, 0.80), rgba(253, 251, 249, 0.80)),
+    url('/vintage-floral-bg.jpg');
+  background-repeat: repeat;
+  background-size: 500px;
+  background-attachment: fixed;
+}

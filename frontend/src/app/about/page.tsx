@@ -134,7 +134,7 @@ export default function AboutPage() {
               <p className="text-gray-900 font-bold tracking-wider text-sm mb-1">Mr. J.V. Udesh</p>
               <p className="text-[#8a385a] font-medium tracking-wider uppercase text-xs mb-4">AMP Ceylon</p>
               <p className="text-gray-600 leading-relaxed max-w-sm">
-                Leading the company forward with modern innovations and sustainable practices while maintaining our core values and global standards.
+                As the owner, leading the company forward with modern innovations and sustainable practices while maintaining our core values and global standards.
               </p>
             </motion.div>
 

@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -23,8 +24,10 @@ const staggerContainer = {
 };
 
 export default function ManufacturingPage() {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   return (
-    <div className="bg-[#fcfbf9] min-h-screen text-[#3a081a]">
+    <div className="bg-transparent min-h-screen text-[#3a081a]">
       <Navbar />
 
       {/* Chapter 1: Artisanal Craftsmanship */}
@@ -315,41 +318,31 @@ export default function ManufacturingPage() {
 
             {/* Photo Grid */}
             <div className="lg:w-2/3 grid grid-cols-2 gap-4 md:gap-6 pb-8 items-start">
-              <motion.div 
-                className="relative w-full rounded-xl overflow-hidden shadow-lg"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <Image src="/Honkhongshowroom.jpg" alt="Hong Kong Showroom" width={600} height={800} className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700 bg-gray-50" />
-              </motion.div>
-              <motion.div 
-                className="relative w-full rounded-xl overflow-hidden shadow-lg translate-y-8 md:translate-y-12"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                viewport={{ once: true }}
-              >
-                <Image src="/exibition1.jpg" alt="Exhibition Showcase" width={600} height={800} className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700 bg-gray-50" />
-              </motion.div>
-              <motion.div 
-                className="relative w-full rounded-xl overflow-hidden shadow-lg"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                viewport={{ once: true }}
-              >
-                <Image src="/exibition3.jpg" alt="Exhibition Details" width={600} height={800} className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700 bg-gray-50" />
-              </motion.div>
-              <motion.div 
-                className="relative w-full rounded-xl overflow-hidden shadow-lg translate-y-8 md:translate-y-12"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                viewport={{ once: true }}
-              >
-                <Image src="/exibition4.jpg" alt="Exhibition Arrangements" width={600} height={800} className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700 bg-gray-50" />
-              </motion.div>
+              {[
+                { src: "/Honkhongshowroom.jpg", alt: "Hong Kong Showroom" },
+                { src: "/exibition1.jpg", alt: "Exhibition Showcase" },
+                { src: "/exibition3.jpg", alt: "Exhibition Details" },
+                { src: "/exibition4.jpg", alt: "Exhibition Arrangements" }
+              ].map((img, idx) => (
+                <motion.div 
+                  key={idx}
+                  className={`relative w-full rounded-xl overflow-hidden shadow-lg group cursor-pointer ${idx % 2 !== 0 ? 'translate-y-8 md:translate-y-12' : ''}`}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                  onClick={() => setSelectedImage(img.src)}
+                >
+                  <Image src={img.src} alt={img.alt} width={600} height={800} className="w-full h-auto object-contain transition-transform duration-700 bg-gray-50 group-hover:scale-105" />
+                  
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
+                    <span className="text-white font-medium px-5 py-2 border-2 border-white/70 rounded-full backdrop-blur-sm text-sm tracking-wide shadow-lg">
+                      Click to view
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
             </div>
 
           </div>
@@ -444,6 +437,45 @@ export default function ManufacturingPage() {
       </section>
 
       <Footer />
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 md:p-8 backdrop-blur-sm"
+            onClick={() => setSelectedImage(null)}
+          >
+            <button 
+              className="absolute top-6 right-6 text-white hover:text-gray-300 z-50 p-2 focus:outline-none"
+              onClick={() => setSelectedImage(null)}
+            >
+              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full h-full max-w-6xl max-h-[90vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image 
+                src={selectedImage} 
+                alt="Enlarged Exhibition View" 
+                fill
+                className="object-contain"
+                sizes="100vw"
+                quality={100}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
