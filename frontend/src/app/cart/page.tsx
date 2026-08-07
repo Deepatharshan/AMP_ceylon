@@ -237,12 +237,12 @@ export default function CartPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
+    <main className="min-h-screen flex flex-col bg-[#fcfbf9] text-[#333]">
       <div className="bg-transparent w-full relative" style={{ height: 'calc(5rem + var(--banner-height, 0px))' }}>
         <Navbar />
       </div>
 
-      <div className="container mx-auto px-6 py-16 max-w-7xl">
+      <div className="container mx-auto px-6 py-16 max-w-7xl flex-1">
         <h1 className="text-4xl text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>
           Inquiry Cart
         </h1>
@@ -263,16 +263,16 @@ export default function CartPage() {
             <p className="text-sm text-gray-500 leading-relaxed mb-8">
               Thank you for requesting an export quote. Our logistics and pricing desk is already reviewing your details. A customized export manifest quote will be sent to your email address within 48 business hours.
             </p>
-            <div className="flex items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/collections"
-                className="inline-block bg-white border border-[#3a081a] px-6 py-3 rounded text-xs font-semibold uppercase tracking-wider text-[#3a081a] hover:bg-gray-50 transition-colors"
+                className="inline-block w-full sm:w-auto text-center bg-white border border-[#3a081a] px-6 py-3 rounded text-xs font-semibold uppercase tracking-wider text-[#3a081a] hover:bg-gray-50 transition-colors"
               >
                 Floral & Decor
               </Link>
               <Link
                 href="/carton-boxes"
-                className="inline-block bg-[#3a081a] px-6 py-3 rounded text-xs font-semibold uppercase tracking-wider hover:bg-[#4a0b22] transition-colors"
+                className="inline-block w-full sm:w-auto text-center bg-[#3a081a] px-6 py-3 rounded text-xs font-semibold uppercase tracking-wider hover:bg-[#4a0b22] transition-colors"
                 style={{ color: '#ffffff' }}
               >
                 Carton Boxes
@@ -288,16 +288,16 @@ export default function CartPage() {
             <p className="text-sm text-gray-500 mb-8 max-w-sm mx-auto">
               Browse our catalog of premium hand-crafted botanicals and add items to request a custom bulk shipping estimate.
             </p>
-            <div className="flex items-center justify-center gap-4 mt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-2">
               <Link
                 href="/collections"
-                className="inline-block bg-white border border-[#3a081a] px-6 py-3 rounded text-xs font-semibold uppercase tracking-wider text-[#3a081a] hover:bg-gray-50 transition-colors"
+                className="inline-block w-full sm:w-auto text-center bg-white border border-[#3a081a] px-6 py-3 rounded text-xs font-semibold uppercase tracking-wider text-[#3a081a] hover:bg-gray-50 transition-colors"
               >
                 Browse Floral & Decor
               </Link>
               <Link
                 href="/carton-boxes"
-                className="inline-block bg-[#3a081a] px-6 py-3 rounded text-xs font-semibold uppercase tracking-wider hover:bg-[#4a0b22] transition-colors"
+                className="inline-block w-full sm:w-auto text-center bg-[#3a081a] px-6 py-3 rounded text-xs font-semibold uppercase tracking-wider hover:bg-[#4a0b22] transition-colors"
                 style={{ color: '#ffffff' }}
               >
                 Browse Carton Boxes
