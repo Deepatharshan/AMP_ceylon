@@ -130,7 +130,7 @@ function CartonsMain() {
             <div className="flex-1 flex justify-center lg:justify-end">
               <div className="relative w-full max-w-md aspect-[4/5] rounded-xl overflow-hidden shadow-2xl group">
                 <Image 
-                  src="/catonbox.jpg" 
+                  src="/cartonbox.jpg" 
                   alt="Tailored Carton Packaging" 
                   fill 
                   className="object-cover group-hover:scale-105 transition-transform duration-700" 
