@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useState, useEffect } from 'react';
+import { useActionState, useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { saveProduct, lookupBarcode } from './actions';
 import { createClient } from '@/utils/supabase/client';
