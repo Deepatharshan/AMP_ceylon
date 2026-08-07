@@ -128,17 +128,23 @@ function CartonsMain() {
 
             {/* Right Badge / Graphic */}
             <div className="flex-1 flex justify-center lg:justify-end">
-              <div className="w-72 h-72 rounded-full border-4 border-[#3a081a] flex flex-col items-center justify-center text-center p-8 bg-white shadow-xl relative overflow-hidden">
-                {/* Inner dashed ring */}
-                <div className="absolute inset-2 rounded-full border-2 border-dashed border-[#3a081a] opacity-30"></div>
-                <Package size={48} className="text-[#3a081a] mb-4" />
-                <h3 className="text-[#3a081a] font-black text-xl uppercase tracking-widest leading-snug">
-                  Tailored<br/>Packaging
-                </h3>
-                <div className="w-12 h-1 bg-[#4a0b22] my-3"></div>
-                <p className="text-[#4a0b22] font-semibold text-sm uppercase tracking-wide">
-                  For Every Industry
-                </p>
+              <div className="relative w-full max-w-md aspect-[4/5] rounded-xl overflow-hidden shadow-2xl group">
+                <Image 
+                  src="/catonbox.jpg" 
+                  alt="Tailored Carton Packaging" 
+                  fill 
+                  className="object-cover group-hover:scale-105 transition-transform duration-700" 
+                />
+                
+                {/* Text Badge */}
+                <div className="absolute bottom-8 left-0 bg-[#fcfbfa] py-4 px-6 shadow-xl">
+                  <p className="text-gray-500 font-bold text-[10px] uppercase tracking-widest mb-1">
+                    Tailored Packaging
+                  </p>
+                  <h3 className="text-[#3a081a] font-bold text-lg">
+                    For Every Industry
+                  </h3>
+                </div>
               </div>
             </div>
             
