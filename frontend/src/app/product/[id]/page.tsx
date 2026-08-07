@@ -329,7 +329,7 @@ export default function ProductDetailPage({
                 <div className="flex items-center border border-gray-300 rounded overflow-hidden h-12 bg-white">
                   <button
                     type="button"
-                    onClick={() => setQuantity(q => Math.max(1, q - 10))}
+                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
                     className="w-10 h-full flex items-center justify-center hover:bg-gray-50 font-bold transition-colors cursor-pointer text-gray-500 border-r border-gray-200"
                   >
                     -
@@ -342,7 +342,7 @@ export default function ProductDetailPage({
                   />
                   <button
                     type="button"
-                    onClick={() => setQuantity(q => q + 10)}
+                    onClick={() => setQuantity(q => q + 1)}
                     className="w-10 h-full flex items-center justify-center hover:bg-gray-50 font-bold transition-colors cursor-pointer text-gray-500 border-l border-gray-200"
                   >
                     +
@@ -359,8 +359,7 @@ export default function ProductDetailPage({
                 </button>
               </div>
 
-              <div className="flex justify-between items-center text-[10px] text-gray-400 uppercase tracking-widest font-semibold pt-1">
-                <span>Minimum Order Qty: 12 Units</span>
+              <div className="flex justify-end items-center text-[10px] text-gray-400 uppercase tracking-widest font-semibold pt-1">
                 <span>Global Export Ready</span>
               </div>
             </div>
