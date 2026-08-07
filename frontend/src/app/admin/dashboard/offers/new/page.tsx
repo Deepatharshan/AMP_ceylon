@@ -69,8 +69,11 @@ export default function NewOfferPage() {
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
     
-    canvas.width = crop.width;
-    canvas.height = crop.height;
+    const targetWidth = crop.width * scaleX;
+    const targetHeight = crop.height * scaleY;
+    
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
     const ctx = canvas.getContext('2d');
 
     if (!ctx) return null;
@@ -85,8 +88,8 @@ export default function NewOfferPage() {
       crop.height * scaleY,
       0,
       0,
-      crop.width,
-      crop.height
+      targetWidth,
+      targetHeight
     );
 
     return new Promise((resolve) => {
