@@ -1,10 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import GlobalOffer from './GlobalOffer';
 
 export default function GlobalOffersManager({ offers }: { offers: any[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const pathname = usePathname();
+
+  if (pathname !== '/') return null;
 
   // When an offer is fully dismissed (i.e. closed and user can move on to the next),
   // we want to trigger the next one.

@@ -306,7 +306,7 @@ export default function GlobalOffer({ offer, autoOpen = true, onDismiss }: { off
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: '100%', opacity: 0 }}
               onClick={() => setIsOpen(true)}
-              className="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center justify-center py-6 px-3 rounded-l-lg bg-[#3a081a] text-white shadow-2xl hover:-translate-x-1 transition-transform border border-r-0 border-white/20"
+              className="absolute right-0 top-[50vh] -translate-y-1/2 z-50 flex flex-col items-center justify-center py-6 px-3 rounded-l-lg bg-[#3a081a] text-white shadow-2xl hover:-translate-x-1 transition-transform border border-r-0 border-white/20"
               aria-label="View Offer"
             >
               <ChevronLeft size={20} className="mb-4 animate-pulse text-white/70" />
@@ -324,7 +324,7 @@ export default function GlobalOffer({ offer, autoOpen = true, onDismiss }: { off
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
               onClick={() => setIsOpen(true)}
-              className="fixed bottom-8 left-8 z-50 flex items-center justify-center p-4 rounded-full bg-[#3a081a] text-white shadow-xl hover:scale-110 hover:shadow-2xl transition-all duration-300"
+              className="absolute top-[calc(100vh-6rem)] left-8 z-50 flex items-center justify-center p-4 rounded-full bg-[#3a081a] text-white shadow-xl hover:scale-110 hover:shadow-2xl transition-all duration-300"
               aria-label="View Offer"
             >
               <Gift size={24} className="animate-pulse" />
