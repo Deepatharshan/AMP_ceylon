@@ -77,22 +77,22 @@ export default function CategoryShowcase({
             const extraColors = hasColors ? product.colors!.length - 3 : 0;
               
             return (
-              <div key={product.id} className="flex flex-col group items-center bg-white p-3 md:p-4 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_20px_40px_-15px_rgba(58,8,26,0.12)] transition-all duration-500">
+              <div key={product.id} className="flex flex-col group items-center bg-white rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_20px_40px_-15px_rgba(58,8,26,0.12)] transition-all duration-500 overflow-hidden">
                 <Link href={`/product/${product.slug}`} className="block w-full">
                   {/* Image Container */}
-                  <div className="w-full aspect-[4/5] bg-gradient-to-b from-[#fafafa] to-[#f4f4f6] rounded-[2rem] overflow-hidden relative flex items-center justify-center p-6 shadow-inner transition-transform duration-500 group-hover:scale-[1.03]">
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.02] transition-colors duration-500 z-10 rounded-[2rem]" />
+                  <div className="w-full aspect-[4/5] bg-gradient-to-b from-[#fafafa] to-[#f4f4f6] relative flex items-center justify-center shadow-inner transition-transform duration-500">
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.02] transition-colors duration-500 z-10" />
                     <Image 
                       src={product.image}
                       alt={product.name}
                       fill
-                      className="object-contain p-6 mix-blend-multiply drop-shadow-lg group-hover:drop-shadow-2xl transition-all duration-500 group-hover:scale-105"
+                      className="object-contain p-4 mix-blend-multiply drop-shadow-lg group-hover:drop-shadow-2xl transition-all duration-500 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 25vw"
                     />
                   </div>
                   
                   {/* Product Details */}
-                  <div className="mt-8 text-center flex flex-col items-center px-2">
+                  <div className="mt-6 text-center flex flex-col items-center px-6 pb-6">
                     <h3 className="font-semibold text-lg md:text-xl text-[#3a081a] tracking-tight group-hover:text-[#6a1533] transition-colors duration-300" style={{ fontFamily: 'var(--font-playfair)' }}>
                       {product.name}
                     </h3>
