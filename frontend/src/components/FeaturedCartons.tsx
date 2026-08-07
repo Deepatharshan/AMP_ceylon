@@ -41,13 +41,13 @@ export default async function FeaturedCartons() {
       .eq('is_active', true)
       .eq('is_top_seller', true)
       .order('created_at', { ascending: false })
-      .limit(6);
+      .limit(8);
 
     productsToDisplay = featuredData || [];
 
-    // If less than 6 are checked, pad with other latest products
-    if (productsToDisplay.length < 6) {
-      const remainingSlots = 6 - productsToDisplay.length;
+    // If less than 8 are checked, pad with other latest products
+    if (productsToDisplay.length < 8) {
+      const remainingSlots = 8 - productsToDisplay.length;
       const existingIds = productsToDisplay.map(p => p.id);
 
       let query = supabase

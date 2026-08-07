@@ -688,7 +688,7 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
               />
               <div>
                 <p className="text-xs font-bold text-gray-800">Top Seller / Home Page</p>
-                <p className="text-[10px] text-gray-500">Showcase 6 products on Home</p>
+                <p className="text-[10px] text-gray-500">Showcase 8 products on Home</p>
               </div>
             </label>
 
