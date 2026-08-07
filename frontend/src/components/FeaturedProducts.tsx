@@ -98,7 +98,10 @@ export default async function FeaturedProducts() {
             price: p.price,
             slug: p.id,
             description: p.description || '',
-            colors: p.colors || []
+            colors: p.colors || [],
+            is_top_seller: p.is_top_seller,
+            is_new_collection: p.is_new_collection,
+            is_limited_product: p.is_limited_product
           }))}
         />
       </ScrollFadeWrapper>

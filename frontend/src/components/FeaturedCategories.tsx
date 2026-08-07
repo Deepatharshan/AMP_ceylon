@@ -37,7 +37,10 @@ export default async function FeaturedCategories() {
             image: p.images?.[0] || '/placeholder-product.jpg',
             price: p.price,
             slug: p.id,
-            description: p.description || ''
+            description: p.description || '',
+            is_top_seller: p.is_top_seller,
+            is_new_collection: p.is_new_collection,
+            is_limited_product: p.is_limited_product
           }))}
         />
       );

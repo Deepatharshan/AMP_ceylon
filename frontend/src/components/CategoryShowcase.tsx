@@ -12,6 +12,9 @@ export interface ShowcaseProduct {
   price?: number;
   slug: string;
   colors?: string[];
+  is_top_seller?: boolean;
+  is_new_collection?: boolean;
+  is_limited_product?: boolean;
 }
 
 interface CategoryShowcaseProps {
@@ -90,6 +93,24 @@ export default function CategoryShowcase({
                       className="object-cover transition-all duration-500 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 25vw"
                     />
+                    {/* Banner tags overlay */}
+                    <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-20">
+                      {product.is_top_seller && (
+                        <span className="bg-[#3a081a] text-[#f5ebd3] text-[9px] font-bold px-2.5 py-1 uppercase tracking-wider rounded-md shadow-sm">
+                          Top Seller
+                        </span>
+                      )}
+                      {product.is_new_collection && (
+                        <span className="bg-emerald-600 text-white text-[9px] font-bold px-2.5 py-1 uppercase tracking-wider rounded-md shadow-sm">
+                          New Collection
+                        </span>
+                      )}
+                      {product.is_limited_product && (
+                        <span className="bg-amber-600 text-white text-[9px] font-bold px-2.5 py-1 uppercase tracking-wider rounded-md shadow-sm">
+                          Limited Edition
+                        </span>
+                      )}
+                    </div>
                   </div>
                   
                   {/* Product Details */}
