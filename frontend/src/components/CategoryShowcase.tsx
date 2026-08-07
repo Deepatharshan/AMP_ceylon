@@ -132,7 +132,7 @@ export default function CategoryShowcase({
                     
                     {/* Action Button */}
                     <div className="mt-auto pt-4 mb-1 w-full">
-                      <span className="flex w-full items-center justify-center py-2.5 bg-gray-900 text-white text-xs font-semibold rounded-2xl shadow-sm hover:bg-black hover:shadow-[0_8px_20px_rgb(0,0,0,0.16)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300">
+                      <span className="flex w-full items-center justify-center py-2.5 bg-[#3a081a] text-white text-xs font-semibold rounded-2xl shadow-sm hover:bg-[#280512] hover:shadow-[0_8px_20px_rgba(58,8,26,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300">
                         Inquiry now
                       </span>
                     </div>
