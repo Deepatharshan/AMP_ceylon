@@ -103,8 +103,8 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
     return '';
   };
 
-  const [materials, setMaterials] = useState(parseArrayToCommaString(data.materials));
-  const [colors, setColors] = useState(parseArrayToCommaString(data.colors));
+  const [materials, setMaterials] = useState(parseArrayToCommaString((product as any)?.materials));
+  const [colors, setColors] = useState(parseArrayToCommaString((product as any)?.colors));
   
   // New fields
   const [stockCount, setStockCount] = useState((product as any)?.stock_count !== undefined ? String((product as any).stock_count) : '0');
@@ -113,13 +113,13 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
   const [market, setMarket] = useState((product as any)?.market || 'Both');
 
   // Checkbox Visibility States
-  const [isTopSeller, setIsTopSeller] = useState(!!data.is_top_seller);
-  const [isNewCollection, setIsNewCollection] = useState(!!data.is_new_collection);
-  const [isLimitedProduct, setIsLimitedProduct] = useState(!!data.is_limited_product);
+  const [isTopSeller, setIsTopSeller] = useState(!!(product as any)?.is_top_seller);
+  const [isNewCollection, setIsNewCollection] = useState(!!(product as any)?.is_new_collection);
+  const [isLimitedProduct, setIsLimitedProduct] = useState(!!(product as any)?.is_limited_product);
 
   // Multi-image upload states (up to 4 slots)
   const [imageUrls, setImageUrls] = useState<string[]>(
-    (product as any)?.image_urls || (data.image_url ? [data.image_url] : [])
+    (product as any)?.image_urls || ((product as any)?.image_url ? [(product as any).image_url] : [])
   );
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
   const [uploadError, setUploadError] = useState('');
