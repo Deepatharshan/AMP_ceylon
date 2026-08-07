@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: "Global Bloom operates state-of-the-art facilities perfecting the art of botanical mimicry.",
 };
 
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@supabase/supabase-js';
 import ScrollToTop from '@/components/ScrollToTop';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import GlobalOffersManager from '@/components/GlobalOffersManager';
@@ -31,7 +31,10 @@ export default async function RootLayout({
   let validOffers: any[] = [];
 
   try {
-    const supabase = await createClient();
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
     
     // Fetch latest Campaign
     const { data: campaigns } = await supabase
