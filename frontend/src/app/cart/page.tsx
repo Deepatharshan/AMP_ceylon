@@ -35,6 +35,12 @@ export default function CartPage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -106,6 +112,7 @@ export default function CartPage() {
   const removeItem = (id: string) => {
     const updated = cartItems.filter(item => item.id !== id);
     saveCart(updated);
+    showToast('Item removed from your Inquiry Cart.');
   };
 
   const handleSubmitInquiry = async (e: React.FormEvent) => {
@@ -510,6 +517,24 @@ export default function CartPage() {
           </div>
         )}
       </div>
+
+      {/* Custom Toast Notification */}
+      {toast && (
+        <div className="fixed top-24 right-6 z-50 max-w-sm w-full bg-white border border-gray-100 rounded-lg shadow-2xl p-4 flex items-center gap-3 animate-fade-in-up">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-emerald-50 text-emerald-600 border border-emerald-200 font-bold text-sm shrink-0">
+            ✓
+          </div>
+          <div className="flex-1 text-sm text-gray-700 font-medium">
+            {toast.message}
+          </div>
+          <button 
+            onClick={() => setToast(null)}
+            className="text-gray-400 hover:text-gray-600 p-1 cursor-pointer rounded-full hover:bg-gray-100 transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <Footer />
     </main>

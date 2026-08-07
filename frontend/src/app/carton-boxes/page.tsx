@@ -265,7 +265,7 @@ function CartonsMain() {
 
       {/* Custom Toast Notification */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-50 max-w-sm w-full bg-white border border-gray-100 rounded-lg shadow-2xl p-4 flex items-center gap-3 animate-fade-in-up">
+        <div className="fixed top-24 right-6 z-50 max-w-sm w-full bg-white border border-gray-100 rounded-lg shadow-2xl p-4 flex items-center gap-3 animate-fade-in-up">
           <div className="w-8 h-8 rounded-full flex items-center justify-center bg-emerald-50 text-emerald-600 border border-emerald-200 font-bold text-sm shrink-0">
             ✓
           </div>

@@ -73,6 +73,12 @@ export default function ProductDetailPage({
   const [selectedColor, setSelectedColor] = useState('Classic Ivory');
   const [quantity, setQuantity] = useState(100);
   const [added, setAdded] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
+  };
 
   useEffect(() => {
     async function loadProductData() {
@@ -174,6 +180,7 @@ export default function ProductDetailPage({
     window.dispatchEvent(new Event('cart-updated'));
 
     setAdded(true);
+    showToast(`Added ${product.name} to your Inquiry Cart!`);
     setTimeout(() => setAdded(false), 3000);
   };
 
@@ -459,6 +466,24 @@ export default function ProductDetailPage({
         )}
 
       </div>
+
+      {/* Custom Toast Notification */}
+      {toast && (
+        <div className="fixed top-24 right-6 z-50 max-w-sm w-full bg-white border border-gray-100 rounded-lg shadow-2xl p-4 flex items-center gap-3 animate-fade-in-up">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-emerald-50 text-emerald-600 border border-emerald-200 font-bold text-sm shrink-0">
+            ✓
+          </div>
+          <div className="flex-1 text-sm text-gray-700 font-medium">
+            {toast.message}
+          </div>
+          <button 
+            onClick={() => setToast(null)}
+            className="text-gray-400 hover:text-gray-600 p-1 cursor-pointer rounded-full hover:bg-gray-100 transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <Footer />
     </main>
