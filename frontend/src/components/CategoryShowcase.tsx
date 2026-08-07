@@ -77,47 +77,48 @@ export default function CategoryShowcase({
             const extraColors = hasColors ? product.colors!.length - 3 : 0;
               
             return (
-              <div key={product.id} className="flex flex-col group items-center">
+              <div key={product.id} className="flex flex-col group items-center bg-white p-3 md:p-4 rounded-[2.5rem] hover:shadow-[0_20px_40px_-15px_rgba(58,8,26,0.1)] transition-all duration-500 border border-transparent hover:border-gray-100">
                 <Link href={`/product/${product.slug}`} className="block w-full">
                   {/* Image Container */}
-                  <div className="w-full aspect-[4/5] bg-[#fbfbfd] rounded-3xl overflow-hidden relative flex items-center justify-center p-8 transition-transform duration-300 group-hover:scale-[1.02]">
+                  <div className="w-full aspect-[4/5] bg-gradient-to-b from-[#fafafa] to-[#f4f4f6] rounded-[2rem] overflow-hidden relative flex items-center justify-center p-6 shadow-inner transition-transform duration-500 group-hover:scale-[1.03]">
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.02] transition-colors duration-500 z-10 rounded-[2rem]" />
                     <Image 
                       src={product.image}
                       alt={product.name}
                       fill
-                      className="object-contain p-6 mix-blend-multiply"
+                      className="object-contain p-6 mix-blend-multiply drop-shadow-lg group-hover:drop-shadow-2xl transition-all duration-500 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 25vw"
                     />
                   </div>
                   
                   {/* Product Details */}
-                  <div className="mt-8 text-center flex flex-col items-center">
-                    <h3 className="font-semibold text-lg md:text-xl text-gray-900 tracking-tight">
+                  <div className="mt-8 text-center flex flex-col items-center px-2">
+                    <h3 className="font-semibold text-lg md:text-xl text-[#3a081a] tracking-tight group-hover:text-[#6a1533] transition-colors duration-300" style={{ fontFamily: 'var(--font-playfair)' }}>
                       {product.name}
                     </h3>
 
                     {/* Color Variations */}
                     {hasColors && (
-                      <div className="flex items-center gap-2 mt-4 opacity-70 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-2.5 mt-4 opacity-80 group-hover:opacity-100 transition-opacity">
                         {displayColors.map((color, idx) => (
                           <div 
                             key={idx} 
-                            className="w-3 h-3 rounded-full border border-gray-200"
+                            className="w-3.5 h-3.5 md:w-4 md:h-4 rounded-full border border-black/10 shadow-inner ring-2 ring-transparent group-hover:ring-gray-100 transition-all"
                             style={{ backgroundColor: getColorHex(color) }}
                             title={color}
                           ></div>
                         ))}
                         {extraColors > 0 && (
-                          <span className="text-[10px] text-gray-400 ml-1">+{extraColors}</span>
+                          <span className="text-[10px] text-gray-400 font-bold ml-1">+{extraColors}</span>
                         )}
                       </div>
                     )}
                     
                     {/* Action Button (Appears on Hover) */}
-                    <div className="mt-4 h-10 flex items-center justify-center">
-                      <div className="transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out">
-                        <span className="px-6 py-2.5 bg-[#3a081a] text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-lg shadow-[#3a081a]/20">
-                          Inquire Now
+                    <div className="mt-5 h-10 flex items-center justify-center w-full">
+                      <div className="w-full transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400 ease-out">
+                        <span className="block w-full mx-auto max-w-[160px] py-2.5 bg-[#3a081a] text-white text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-full shadow-lg shadow-[#3a081a]/30 hover:bg-[#5a0c28] transition-colors">
+                          View Details
                         </span>
                       </div>
                     </div>
