@@ -148,8 +148,9 @@ export default function EditOfferClient({ initialOffer }: { initialOffer: any })
     setPreviewOffer({
       title: formData.get('title'),
       description: formData.get('description'),
-      code: initialOffer.code, // The edit form doesn't actually allow editing the code based on the form, so we use initialOffer.code
+      code: initialOffer.code,
       image_url: imageUrl,
+      type: initialOffer.type,
     });
     setShowPreview(true);
   };
