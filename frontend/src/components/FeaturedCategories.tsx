@@ -36,7 +36,8 @@ export default async function FeaturedCategories() {
             name: p.name,
             image: p.images?.[0] || '/placeholder-product.jpg',
             price: p.price,
-            slug: p.id
+            slug: p.id,
+            description: p.description || ''
           }))}
         />
       );

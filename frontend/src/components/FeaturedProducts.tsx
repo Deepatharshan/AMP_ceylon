@@ -97,6 +97,7 @@ export default async function FeaturedProducts() {
             image: p.image_urls?.[0] || p.image_url || '/placeholder-product.jpg',
             price: p.price,
             slug: p.id,
+            description: p.description || '',
             colors: p.colors || []
           }))}
         />
