@@ -78,22 +78,22 @@ export default function CategoryShowcase({
             const extraColors = hasColors ? product.colors!.length - 3 : 0;
               
             return (
-              <div key={product.id} className="flex flex-col h-full group items-start bg-white p-3 md:p-4 rounded-[2rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] transition-all duration-500">
+              <div key={product.id} className="flex flex-col h-full group items-start bg-white rounded-[2rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden">
                 <Link href={`/product/${product.slug}`} className="flex flex-col h-full block w-full text-left">
                   {/* Image Container */}
-                  <div className="w-full shrink-0 aspect-[4/5] bg-gradient-to-b from-[#fafafa] to-[#f4f4f6] rounded-[1.5rem] overflow-hidden relative flex items-center justify-center p-2 shadow-inner transition-transform duration-500 group-hover:scale-[1.02]">
+                  <div className="w-full shrink-0 aspect-[4/5] bg-gradient-to-b from-[#fafafa] to-[#f4f4f6] relative flex items-center justify-center shadow-inner transition-transform duration-500 group-hover:scale-[1.02]">
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.02] transition-colors duration-500 z-10" />
                     <Image 
                       src={product.image}
                       alt={product.name}
                       fill
-                      className="object-contain p-4 mix-blend-multiply drop-shadow-sm group-hover:drop-shadow-md transition-all duration-500 group-hover:scale-105"
+                      className="object-cover transition-all duration-500 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 25vw"
                     />
                   </div>
                   
                   {/* Product Details */}
-                  <div className="mt-5 flex flex-col items-start px-1 flex-1 w-full">
+                  <div className="mt-5 flex flex-col items-start px-5 flex-1 w-full">
                     <h3 className="font-bold text-lg text-gray-900 tracking-tight group-hover:text-black transition-colors duration-300">
                       {product.name}
                     </h3>
@@ -131,7 +131,7 @@ export default function CategoryShowcase({
                     )}
                     
                     {/* Action Button */}
-                    <div className="mt-auto pt-4 mb-1 w-full">
+                    <div className="mt-auto pt-4 pb-5 w-full">
                       <span className="flex w-full items-center justify-center py-2.5 bg-[#3a081a] text-white text-xs font-semibold rounded-2xl shadow-sm hover:bg-[#280512] hover:shadow-[0_8px_20px_rgba(58,8,26,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300">
                         Inquiry now
                       </span>
