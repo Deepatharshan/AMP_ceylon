@@ -77,7 +77,7 @@ export default function CategoryShowcase({
             const extraColors = hasColors ? product.colors!.length - 3 : 0;
               
             return (
-              <div key={product.id} className="flex flex-col group items-center bg-white p-3 md:p-4 rounded-[2.5rem] hover:shadow-[0_20px_40px_-15px_rgba(58,8,26,0.1)] transition-all duration-500 border border-transparent hover:border-gray-100">
+              <div key={product.id} className="flex flex-col group items-center bg-white p-3 md:p-4 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_20px_40px_-15px_rgba(58,8,26,0.12)] transition-all duration-500">
                 <Link href={`/product/${product.slug}`} className="block w-full">
                   {/* Image Container */}
                   <div className="w-full aspect-[4/5] bg-gradient-to-b from-[#fafafa] to-[#f4f4f6] rounded-[2rem] overflow-hidden relative flex items-center justify-center p-6 shadow-inner transition-transform duration-500 group-hover:scale-[1.03]">
@@ -99,7 +99,7 @@ export default function CategoryShowcase({
 
                     {/* Color Variations */}
                     {hasColors && (
-                      <div className="flex items-center gap-2.5 mt-4 opacity-80 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-2.5 mt-4 opacity-90 group-hover:opacity-100 transition-opacity">
                         {displayColors.map((color, idx) => (
                           <div 
                             key={idx} 
@@ -114,13 +114,11 @@ export default function CategoryShowcase({
                       </div>
                     )}
                     
-                    {/* Action Button (Appears on Hover) */}
-                    <div className="mt-5 h-10 flex items-center justify-center w-full">
-                      <div className="w-full transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400 ease-out">
-                        <span className="block w-full mx-auto max-w-[160px] py-2.5 bg-[#3a081a] text-white text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-full shadow-lg shadow-[#3a081a]/30 hover:bg-[#5a0c28] transition-colors">
-                          View Details
-                        </span>
-                      </div>
+                    {/* Action Button (Permanently Visible) */}
+                    <div className="mt-6 mb-2 flex items-center justify-center w-full">
+                      <span className="block w-full mx-auto max-w-[160px] py-2.5 bg-[#2a0512] text-white text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-full shadow-md hover:bg-[#3a081a] hover:shadow-lg hover:shadow-[#3a081a]/20 transition-all duration-300">
+                        View Details
+                      </span>
                     </div>
                   </div>
                 </Link>
