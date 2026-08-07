@@ -37,6 +37,7 @@ export default function Navbar() {
   const [categories, setCategories] = useState<string[]>(["All Collections"]);
   const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileFloralOpen, setIsMobileFloralOpen] = useState(false);
   
   const pathname = usePathname();
 
@@ -269,22 +270,47 @@ export default function Navbar() {
             className="md:hidden flex flex-col items-center w-full overflow-hidden"
           >
             <div className="pt-6 pb-2 w-full">
-              <nav className="flex flex-col items-center space-y-6 text-base w-full bg-[#faf9f6] text-[#3a081a]">
+              <nav className="flex flex-col items-center gap-6 text-base w-full bg-[#faf9f6] text-[#3a081a]">
                 <Link href="/" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Home</Link>
                 <Link href="/about" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">About Us</Link>
                 
-                <div className="flex flex-col items-center w-full my-2">
-                  <Link href="/collections" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-bold flex items-center justify-center gap-2">
+                <div className="flex flex-col items-center w-full">
+                  <button 
+                    onClick={() => setIsMobileFloralOpen(!isMobileFloralOpen)}
+                    className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-bold flex items-center justify-center gap-2"
+                  >
                     Floral & Decor
-                    <ChevronDown size={14} className="opacity-50" />
-                  </Link>
-                  <div className="flex flex-col items-center w-full mt-4 bg-gray-50/80 py-4 rounded-xl border border-gray-100 gap-4 max-w-[220px]">
-                    {categories.map((cat, idx) => (
-                      <Link key={idx} href={`/collections?category=${encodeURIComponent(cat)}`} className="!text-[#3a081a]/80 hover:!text-[#3a081a] transition-colors w-full text-center text-sm font-medium">
-                        {cat}
-                      </Link>
-                    ))}
-                  </div>
+                    <motion.div
+                      animate={{ rotate: isMobileFloralOpen ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ChevronDown size={14} className="opacity-50" />
+                    </motion.div>
+                  </button>
+                  <AnimatePresence>
+                    {isMobileFloralOpen && (
+                      <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden w-full flex justify-center"
+                      >
+                        <div className="flex flex-col items-center w-full mt-4 bg-gray-50/80 py-4 rounded-xl border border-gray-100 gap-4 max-w-[220px]">
+                          {categories.map((cat, idx) => (
+                            <Link 
+                              key={idx} 
+                              href={`/collections?category=${encodeURIComponent(cat)}`} 
+                              onClick={() => setIsOpen(false)}
+                              className="!text-[#3a081a]/80 hover:!text-[#3a081a] transition-colors w-full text-center text-sm font-medium"
+                            >
+                              {cat}
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 <Link href="/carton-boxes" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Carton Boxes</Link>
