@@ -162,14 +162,14 @@ export default function EditOfferClient({ initialOffer }: { initialOffer: any })
           <span className="mx-2">/</span>
           <Link href="/admin/dashboard/offers" className="hover:text-[#3a081a]">Offers</Link>
           <span className="mx-2">/</span>
-          <span className="text-[#3a081a]">Edit Offer</span>
+          <span className="text-[#3a081a]">Edit {initialOffer.type === 'CAMPAIGN' ? 'Campaign' : 'Offer'}</span>
         </div>
         
         <h1 className="text-3xl font-bold text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>
-          Edit Offer: {initialOffer.title}
+          Edit {initialOffer.type === 'CAMPAIGN' ? 'Campaign' : 'Offer'}: {initialOffer.title}
         </h1>
         <p className="text-sm text-gray-500 max-w-xl mb-8">
-          Update the promotional offer details.
+          Update the {initialOffer.type === 'CAMPAIGN' ? 'marketing campaign' : 'promotional offer'} details.
         </p>
       </div>
 
@@ -208,27 +208,31 @@ export default function EditOfferClient({ initialOffer }: { initialOffer: any })
         {/* Pricing & Validity */}
         <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 border-t border-[#ececec] pt-8">
           <div>
-            <h3 className="text-lg font-bold text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>Pricing & Validity</h3>
-            <p className="text-xs text-gray-500 leading-relaxed max-w-xs">Set the financial parameters and duration of the promotion.</p>
+            <h3 className="text-lg font-bold text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>{initialOffer.type === 'CAMPAIGN' ? 'Validity' : 'Pricing & Validity'}</h3>
+            <p className="text-xs text-gray-500 leading-relaxed max-w-xs">{initialOffer.type === 'CAMPAIGN' ? 'Set the active duration of this campaign.' : 'Set the financial parameters and duration of the promotion.'}</p>
           </div>
           <div className="grid grid-cols-2 gap-6">
-            <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Discount Type</label>
-              <select name="discountType" defaultValue={initialOffer.discount_type} className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm">
-                <option value="Percentage">Percentage (%)</option>
-                <option value="Fixed">Fixed Amount ($)</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Value</label>
-              <input 
-                type="number" 
-                name="discountValue"
-                defaultValue={initialOffer.discount_value}
-                required
-                className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm"
-              />
-            </div>
+            {initialOffer.type !== 'CAMPAIGN' && (
+              <>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Discount Type</label>
+                  <select name="discountType" defaultValue={initialOffer.discount_type} className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm">
+                    <option value="Percentage">Percentage (%)</option>
+                    <option value="Fixed">Fixed Amount ($)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Value</label>
+                  <input 
+                    type="number" 
+                    name="discountValue"
+                    defaultValue={initialOffer.discount_value}
+                    required
+                    className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm"
+                  />
+                </div>
+              </>
+            )}
             <div>
               <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Valid From</label>
               <input 
@@ -375,7 +379,7 @@ export default function EditOfferClient({ initialOffer }: { initialOffer: any })
             disabled={isSubmitting}
             className={`bg-[#3a081a] text-white px-8 py-3 rounded text-sm font-medium transition-colors ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-[#2a0512]'}`}
           >
-            {isSubmitting ? 'Saving...' : 'Update Offer'}
+            {isSubmitting ? 'Saving...' : `Update ${initialOffer.type === 'CAMPAIGN' ? 'Campaign' : 'Offer'}`}
           </button>
         </div>
 
