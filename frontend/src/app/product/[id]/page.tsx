@@ -373,20 +373,41 @@ export default function ProductDetailPage({
 
             {/* Trust Badges */}
             <div className="grid grid-cols-2 gap-4 border-t border-gray-200 pt-6">
-              <div className="flex items-center gap-3 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#3a081a]"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                <div>
-                  <span className="font-bold block text-[10px] uppercase text-[#3a081a] tracking-wider">ISO CERTIFIED</span>
-                  Manufacturing Grade
-                </div>
-              </div>
-              <div className="flex items-center gap-3 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#3a081a]"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-                <div>
-                  <span className="font-bold block text-[10px] uppercase text-[#3a081a] tracking-wider">FDA TEXTILE</span>
-                  100% Recyclable Silk
-                </div>
-              </div>
+              {product.category?.toLowerCase().includes('box') || product.category?.toLowerCase().includes('carton') ? (
+                <>
+                  <div className="flex items-center gap-3 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#3a081a]"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    <div>
+                      <span className="font-bold block text-[10px] uppercase text-[#3a081a] tracking-wider">ISO 9001</span>
+                      Industrial Grade Corrugated
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#3a081a]"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <div>
+                      <span className="font-bold block text-[10px] uppercase text-[#3a081a] tracking-wider">FSC CERTIFIED</span>
+                      100% Recycled Kraft
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-3 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#3a081a]"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <div>
+                      <span className="font-bold block text-[10px] uppercase text-[#3a081a] tracking-wider">ISO CERTIFIED</span>
+                      Manufacturing Grade
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#3a081a]"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                    <div>
+                      <span className="font-bold block text-[10px] uppercase text-[#3a081a] tracking-wider">FDA TEXTILE</span>
+                      100% Recyclable Silk
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
           </div>
