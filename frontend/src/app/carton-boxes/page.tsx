@@ -244,12 +244,11 @@ function CartonsMain() {
                     {product.name}
                   </h4>
                   
-                  <button 
-                    onClick={(e) => addToCart(e, product)}
-                    className="w-full bg-[#f2f1ef] text-[#3a081a] py-3 px-4 rounded font-bold uppercase tracking-wider hover:bg-[#3a081a] hover:text-white transition-colors mt-auto border border-transparent group-hover:border-[#3a081a]"
+                  <div 
+                    className="w-full bg-[#f2f1ef] text-[#3a081a] py-3 px-4 rounded font-bold uppercase tracking-wider hover:bg-[#3a081a] hover:text-white transition-colors mt-auto border border-transparent group-hover:border-[#3a081a] text-center"
                   >
-                    Inquire Now
-                  </button>
+                    View Details
+                  </div>
                 </div>
               </Link>
             ))}
