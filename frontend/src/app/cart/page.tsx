@@ -322,8 +322,8 @@ export default function CartPage() {
                 </div>
               )}
 
-              <div className="bg-white border border-[#ececec] rounded shadow-sm overflow-hidden">
-                <table className="w-full text-left text-sm text-gray-600 border-collapse">
+              <div className="bg-white border border-[#ececec] rounded shadow-sm overflow-x-auto">
+                <table className="w-full min-w-[600px] text-left text-sm text-gray-600 border-collapse">
                   <thead>
                     <tr className="bg-gray-50 border-b border-[#ececec] text-[10px] text-gray-400 uppercase tracking-widest font-semibold">
                       <th className="px-6 py-4">Product Details</th>
