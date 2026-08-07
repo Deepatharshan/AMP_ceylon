@@ -270,11 +270,11 @@ export default function Navbar() {
             className="md:hidden flex flex-col items-center w-full overflow-hidden"
           >
             <div className="pt-6 pb-2 w-full">
-              <nav className="flex flex-col items-center space-y-6 text-base w-full bg-[#faf9f6] text-[#3a081a]">
+              <nav className="flex flex-col items-center gap-6 text-base w-full bg-[#faf9f6] text-[#3a081a]">
                 <Link href="/" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Home</Link>
                 <Link href="/about" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">About Us</Link>
                 
-                <div className="flex flex-col items-center w-full my-2">
+                <div className="flex flex-col items-center w-full">
                   <button 
                     onClick={() => setIsMobileFloralOpen(!isMobileFloralOpen)}
                     className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-bold flex items-center justify-center gap-2"
