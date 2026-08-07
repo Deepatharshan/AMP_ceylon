@@ -87,7 +87,7 @@ export default function CategoryShowcase({
                       src={product.image}
                       alt={product.name}
                       fill
-                      className="object-contain p-4 mix-blend-multiply drop-shadow-sm group-hover:drop-shadow-md transition-all duration-500 group-hover:scale-105"
+                      className="object-cover transition-all duration-500 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 25vw"
                     />
                   </div>
