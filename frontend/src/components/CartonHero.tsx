@@ -52,15 +52,15 @@ export default function CartonHero() {
         {/* Image Grid/Hero Image */}
         <div className="w-full md:w-1/2 relative h-[500px] md:h-[600px] z-10 rounded-2xl overflow-hidden shadow-2xl">
           <img 
-            src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=1200&auto=format&fit=crop" 
-            alt="Corrugated Carton Boxes stacked" 
+            src="/cartonbox.jpg" 
+            alt="Corrugated Carton Boxes" 
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
           
-          <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end">
-            <div className="bg-white/95 backdrop-blur px-6 py-4 rounded shadow-lg border-l-4 border-[#3a081a]">
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Tailored Packaging</p>
+          <div className="absolute bottom-8 left-0">
+            <div className="bg-[#fcfbfa] px-6 py-4 rounded-r shadow-xl">
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Tailored Packaging</p>
               <p className="text-xl font-bold text-[#3a081a]">For Every Industry</p>
             </div>
           </div>
