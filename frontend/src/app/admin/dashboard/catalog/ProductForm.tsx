@@ -131,6 +131,7 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
   const imgRef = useRef<HTMLImageElement | null>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [previewUrlsForModal, setPreviewUrlsForModal] = useState<string[]>([]);
   
   // Custom Toast State
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -885,7 +886,14 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
           <div className="space-y-4">
             <button 
               type="button"
-              onClick={() => setShowPreviewModal(true)}
+              onClick={() => {
+                const urls = [...imageUrls];
+                if (previewCanvasRef.current && completedCrop && uploadingIndex !== null) {
+                  urls[uploadingIndex] = previewCanvasRef.current.toDataURL('image/jpeg');
+                }
+                setPreviewUrlsForModal(urls);
+                setShowPreviewModal(true);
+              }}
               className="w-full bg-white border border-[#3a081a] text-[#3a081a] py-3 rounded font-bold text-sm hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               PREVIEW CUSTOMER VIEW
@@ -982,7 +990,7 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
             is_top_seller: isTopSeller,
             is_new_collection: isNewCollection,
             is_limited_product: isLimitedProduct,
-            imageUrls,
+            imageUrls: previewUrlsForModal,
             size
           }}
           onClose={() => setShowPreviewModal(false)}
