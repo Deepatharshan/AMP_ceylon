@@ -273,11 +273,14 @@ export default function Navbar() {
                 <Link href="/" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">Home</Link>
                 <Link href="/about" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-medium">About Us</Link>
                 
-                <div className="flex flex-col items-center w-full">
-                  <div className="!text-[#3a081a] uppercase tracking-widest text-xs mb-4 font-semibold opacity-70">Floral & Decor</div>
-                  <div className="flex flex-col items-center space-y-4 w-full">
+                <div className="flex flex-col items-center w-full my-2">
+                  <Link href="/collections" className="!text-[#3a081a] hover:opacity-80 uppercase tracking-widest text-sm transition-colors w-full text-center font-bold flex items-center justify-center gap-2">
+                    Floral & Decor
+                    <ChevronDown size={14} className="opacity-50" />
+                  </Link>
+                  <div className="flex flex-col items-center w-full mt-4 bg-gray-50/80 py-4 rounded-xl border border-gray-100 gap-4 max-w-[220px]">
                     {categories.map((cat, idx) => (
-                      <Link key={idx} href={`/collections?category=${encodeURIComponent(cat)}`} className="!text-[#3a081a] hover:opacity-80 transition-colors w-full text-center text-sm font-medium">
+                      <Link key={idx} href={`/collections?category=${encodeURIComponent(cat)}`} className="!text-[#3a081a]/80 hover:!text-[#3a081a] transition-colors w-full text-center text-sm font-medium">
                         {cat}
                       </Link>
                     ))}
