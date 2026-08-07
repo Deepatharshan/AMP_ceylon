@@ -1,10 +1,11 @@
 'use client';
 
-import { useActionState, useState, useEffect } from 'react';
+import { useActionState, useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { saveProduct, lookupBarcode } from './actions';
 import { createClient } from '@/utils/supabase/client';
-import ImageCropperModal from '@/components/ImageCropperModal';
+import ReactCrop, { Crop, PixelCrop, centerCrop, makeAspectCrop } from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 import ProductPreviewModal from './ProductPreviewModal';
 
 interface Product {
@@ -125,7 +126,12 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
   
   // Crop & Preview States
   const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+  const [crop, setCrop] = useState<Crop>();
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [previewUrlsForModal, setPreviewUrlsForModal] = useState<string[]>([]);
   
   // Custom Toast State
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -190,14 +196,102 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
     const reader = new FileReader();
     reader.addEventListener('load', () => {
       setCropImageSrc(reader.result?.toString() || null);
+      setCrop(undefined);
+      setCompletedCrop(null);
     });
     reader.readAsDataURL(file);
     e.target.value = ''; // Reset input
   };
 
-  const handleCropComplete = async (croppedBlob: Blob) => {
-    setCropImageSrc(null);
-    if (uploadingIndex === null) return;
+  function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
+    const { width, height } = e.currentTarget;
+    const crop = centerCrop(
+      makeAspectCrop({ unit: '%', width: 90 }, 4 / 5, width, height),
+      width,
+      height
+    );
+    setCrop(crop);
+  }
+
+  const getCroppedImg = async (image: HTMLImageElement, crop: PixelCrop): Promise<Blob | null> => {
+    const canvas = document.createElement('canvas');
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    
+    const targetWidth = crop.width * scaleX;
+    const targetHeight = crop.height * scaleY;
+    
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return null;
+
+    ctx.imageSmoothingQuality = 'high';
+
+    ctx.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      targetWidth,
+      targetHeight
+    );
+
+    return new Promise((resolve) => {
+      canvas.toBlob(
+        (blob) => {
+          resolve(blob);
+        },
+        'image/jpeg',
+        0.95
+      );
+    });
+  };
+
+  useEffect(() => {
+    if (completedCrop && completedCrop.width && completedCrop.height && imgRef.current && previewCanvasRef.current) {
+      const image = imgRef.current;
+      const canvas = previewCanvasRef.current;
+      const crop = completedCrop;
+
+      const scaleX = image.naturalWidth / image.width;
+      const scaleY = image.naturalHeight / image.height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const pixelRatio = window.devicePixelRatio || 1;
+      const targetWidth = crop.width * scaleX;
+      const targetHeight = crop.height * scaleY;
+      
+      canvas.width = targetWidth * pixelRatio;
+      canvas.height = targetHeight * pixelRatio;
+      
+      ctx.scale(pixelRatio, pixelRatio);
+      ctx.imageSmoothingQuality = 'high';
+
+      ctx.drawImage(
+        image,
+        crop.x * scaleX,
+        crop.y * scaleY,
+        crop.width * scaleX,
+        crop.height * scaleY,
+        0,
+        0,
+        targetWidth,
+        targetHeight
+      );
+    }
+  }, [completedCrop]);
+
+  const handleCropCompleteAndUpload = async () => {
+    if (uploadingIndex === null || !completedCrop || !imgRef.current) return;
+
+    const croppedBlob = await getCroppedImg(imgRef.current, completedCrop);
+    if (!croppedBlob) return;
 
     try {
       const supabase = createClient();
@@ -222,6 +316,9 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
       updatedUrls[uploadingIndex] = publicUrl;
       setImageUrls(updatedUrls);
       showToast('Image cropped and uploaded successfully!');
+      setCropImageSrc(null);
+      setCompletedCrop(null);
+      setCrop(undefined);
     } catch (err: any) {
       console.error('Error uploading image:', err);
       setUploadError(err.message || 'Error uploading file.');
@@ -591,7 +688,7 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
               />
               <div>
                 <p className="text-xs font-bold text-gray-800">Top Seller / Home Page</p>
-                <p className="text-[10px] text-gray-500">Showcase 6 products on Home</p>
+                <p className="text-[10px] text-gray-500">Showcase 8 products on Home</p>
               </div>
             </label>
 
@@ -655,8 +752,75 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
               )}
             </div>
 
+            {/* Inline Cropper */}
+            {cropImageSrc && uploadingIndex !== null && (
+              <div className="bg-gray-50 p-4 border border-[#ececec] rounded shadow-sm mb-6">
+                <div className="flex justify-between items-center mb-3">
+                  <h4 className="text-sm font-bold text-[#3a081a]">Crop Image (Slot {uploadingIndex + 1})</h4>
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setCropImageSrc(null);
+                      setUploadingIndex(null);
+                      setCrop(undefined);
+                      setCompletedCrop(null);
+                    }}
+                    className="text-gray-400 hover:text-gray-600 transition-colors p-1"
+                  >
+                    ✕
+                  </button>
+                </div>
+                
+                <div className="bg-white border border-[#ececec] rounded-lg p-2 mb-4 overflow-hidden flex justify-center">
+                  <ReactCrop
+                    crop={crop}
+                    onChange={(_, percentCrop) => setCrop(percentCrop)}
+                    onComplete={(c) => setCompletedCrop(c)}
+                    className="max-h-[400px] w-auto mx-auto object-contain"
+                  >
+                    <img
+                      ref={imgRef}
+                      alt="Crop preview"
+                      src={cropImageSrc}
+                      className="max-h-[400px]"
+                      onLoad={onImageLoad}
+                    />
+                  </ReactCrop>
+                </div>
+
+                {!!completedCrop && (
+                  <div className="mb-4 flex flex-col items-center">
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Live Preview</p>
+                    <div className="border border-gray-200 rounded shadow-sm overflow-hidden bg-white">
+                      <canvas
+                        ref={previewCanvasRef}
+                        style={{
+                          objectFit: 'contain',
+                          width: Math.round(completedCrop?.width ?? 0),
+                          height: Math.round(completedCrop?.height ?? 0),
+                          maxWidth: '100px',
+                          maxHeight: '125px', // 4:5 ratio roughly
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+                
+                <div className="flex justify-between items-center">
+                  <p className="text-xs text-gray-500">Drag to adjust the 4:5 cropping area.</p>
+                  <button 
+                    type="button" 
+                    onClick={handleCropCompleteAndUpload}
+                    className="bg-[#3a081a] text-white px-4 py-2 rounded text-xs font-bold uppercase tracking-wider hover:bg-[#4a0b22] transition-colors shadow-sm cursor-pointer"
+                  >
+                    Crop & Upload
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Gallery Upload Slots */}
-            <div className="space-y-4">
+            <div className={`space-y-4 ${cropImageSrc ? 'opacity-50 pointer-events-none' : ''}`}>
               <label className="text-xs font-bold text-gray-600 uppercase tracking-wide block">
                 Gallery Photos (1-4 Photos)
               </label>
@@ -725,7 +889,14 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
           <div className="space-y-4">
             <button 
               type="button"
-              onClick={() => setShowPreviewModal(true)}
+              onClick={() => {
+                const urls = [...imageUrls];
+                if (previewCanvasRef.current && completedCrop && uploadingIndex !== null) {
+                  urls[uploadingIndex] = previewCanvasRef.current.toDataURL('image/jpeg');
+                }
+                setPreviewUrlsForModal(urls);
+                setShowPreviewModal(true);
+              }}
               className="w-full bg-white border border-[#3a081a] text-[#3a081a] py-3 rounded font-bold text-sm hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               PREVIEW CUSTOMER VIEW
@@ -808,16 +979,6 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
       )}
 
       {/* Modals */}
-      {cropImageSrc && (
-        <ImageCropperModal
-          imageSrc={cropImageSrc}
-          onCropComplete={handleCropComplete}
-          onClose={() => {
-            setCropImageSrc(null);
-            setUploadingIndex(null);
-          }}
-        />
-      )}
 
       {showPreviewModal && (
         <ProductPreviewModal
@@ -832,7 +993,7 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
             is_top_seller: isTopSeller,
             is_new_collection: isNewCollection,
             is_limited_product: isLimitedProduct,
-            imageUrls,
+            imageUrls: previewUrlsForModal,
             size
           }}
           onClose={() => setShowPreviewModal(false)}

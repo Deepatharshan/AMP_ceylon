@@ -7,6 +7,7 @@ import Link from 'next/link';
 export interface ShowcaseProduct {
   id: string;
   name: string;
+  description?: string;
   image: string;
   price?: number;
   slug: string;
@@ -77,49 +78,63 @@ export default function CategoryShowcase({
             const extraColors = hasColors ? product.colors!.length - 3 : 0;
               
             return (
-              <div key={product.id} className="flex flex-col group items-center">
-                <Link href={`/product/${product.slug}`} className="block w-full">
+              <div key={product.id} className="flex flex-col h-full group items-start bg-white p-3 md:p-4 rounded-[2rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] transition-all duration-500">
+                <Link href={`/product/${product.slug}`} className="flex flex-col h-full block w-full text-left">
                   {/* Image Container */}
-                  <div className="w-full aspect-[4/5] bg-[#fbfbfd] rounded-3xl overflow-hidden relative flex items-center justify-center p-8 transition-transform duration-300 group-hover:scale-[1.02]">
+                  <div className="w-full shrink-0 aspect-[4/5] bg-gradient-to-b from-[#fafafa] to-[#f4f4f6] rounded-[1.5rem] overflow-hidden relative flex items-center justify-center p-2 shadow-inner transition-transform duration-500 group-hover:scale-[1.02]">
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.02] transition-colors duration-500 z-10" />
                     <Image 
                       src={product.image}
                       alt={product.name}
                       fill
-                      className="object-contain p-6 mix-blend-multiply"
+                      className="object-contain p-4 mix-blend-multiply drop-shadow-sm group-hover:drop-shadow-md transition-all duration-500 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 25vw"
                     />
                   </div>
                   
                   {/* Product Details */}
-                  <div className="mt-8 text-center flex flex-col items-center">
-                    <h3 className="font-semibold text-lg md:text-xl text-gray-900 tracking-tight">
+                  <div className="mt-5 flex flex-col items-start px-1 flex-1 w-full">
+                    <h3 className="font-bold text-lg text-gray-900 tracking-tight group-hover:text-black transition-colors duration-300">
                       {product.name}
                     </h3>
 
-                    {/* Color Variations */}
+                    {/* Description */}
+                    {product.description ? (
+                      <p className="text-gray-500 text-[11px] leading-relaxed mt-1.5 line-clamp-2">
+                        {product.description}
+                      </p>
+                    ) : (
+                      <p className="text-gray-500 text-[11px] leading-relaxed mt-1.5 line-clamp-2">
+                        Premium botanical arrangement handcrafted for durability.
+                      </p>
+                    )}
+
+                    {/* Color Variations as Pill Tags */}
                     {hasColors && (
-                      <div className="flex items-center gap-2 mt-4 opacity-70 group-hover:opacity-100 transition-opacity">
+                      <div className="flex flex-wrap items-center gap-2 mt-3 mb-2">
                         {displayColors.map((color, idx) => (
                           <div 
                             key={idx} 
-                            className="w-3 h-3 rounded-full border border-gray-200"
-                            style={{ backgroundColor: getColorHex(color) }}
+                            className="px-2.5 py-1 bg-gray-100/80 rounded-full flex items-center gap-1.5"
                             title={color}
-                          ></div>
+                          >
+                            <div className="w-2.5 h-2.5 rounded-full border border-black/10 shadow-inner" style={{ backgroundColor: getColorHex(color) }}></div>
+                            <span className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">{color}</span>
+                          </div>
                         ))}
                         {extraColors > 0 && (
-                          <span className="text-[10px] text-gray-400 ml-1">+{extraColors}</span>
+                          <div className="px-2.5 py-1 bg-gray-100/80 rounded-full flex items-center">
+                            <span className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">+{extraColors}</span>
+                          </div>
                         )}
                       </div>
                     )}
                     
-                    {/* Action Button (Appears on Hover) */}
-                    <div className="mt-4 h-10 flex items-center justify-center">
-                      <div className="transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out">
-                        <span className="px-6 py-2.5 bg-[#3a081a] text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-lg shadow-[#3a081a]/20">
-                          Inquire Now
-                        </span>
-                      </div>
+                    {/* Action Button */}
+                    <div className="mt-auto pt-4 mb-1 w-full">
+                      <span className="flex w-full items-center justify-center py-2.5 bg-[#4c3a3a] text-white text-xs font-semibold rounded-2xl shadow-sm hover:bg-[#3a2027] hover:shadow-md transition-all duration-300">
+                        Inquiry now
+                      </span>
                     </div>
                   </div>
                 </Link>
