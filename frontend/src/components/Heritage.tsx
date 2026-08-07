@@ -22,12 +22,12 @@ export default function Heritage() {
       
       <div className={styles.imageContent}>
         <img 
-          src="/3221.jpg" 
+          src="/heritage_main_floral.jpg" 
           alt="Manufacturing premium artificial flowers" 
           className={styles.mainImage}
         />
         <img 
-          src="/9090.jpg" 
+          src="/heritage_overlay_floral.jpg" 
           alt="Artisan detail crafting flowers" 
           className={styles.overlayImage}
         />
