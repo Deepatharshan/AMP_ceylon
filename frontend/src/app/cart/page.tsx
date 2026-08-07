@@ -361,7 +361,7 @@ export default function CartPage() {
                           <div className="flex items-center border border-gray-300 rounded max-w-[120px] bg-white overflow-hidden">
                             <button
                               type="button"
-                              onClick={() => updateQuantity(item.id, -100)}
+                              onClick={() => updateQuantity(item.id, -1)}
                               className="w-8 h-8 flex items-center justify-center hover:bg-gray-100 font-bold transition-colors cursor-pointer text-gray-500"
                             >
                               -
@@ -374,7 +374,7 @@ export default function CartPage() {
                             />
                             <button
                               type="button"
-                              onClick={() => updateQuantity(item.id, 100)}
+                              onClick={() => updateQuantity(item.id, 1)}
                               className="w-8 h-8 flex items-center justify-center hover:bg-gray-100 font-bold transition-colors cursor-pointer text-gray-500"
                             >
                               +
