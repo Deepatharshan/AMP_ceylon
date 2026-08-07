@@ -30,6 +30,8 @@ function CollectionsMain() {
   const [categoriesList, setCategoriesList] = useState<string[]>(["All Collections"]);
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 12;
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type });
@@ -107,6 +109,14 @@ function CollectionsMain() {
   const filteredProducts = activeCategory === "All Collections" 
     ? products 
     : products.filter(p => p.category && p.category.toLowerCase() === activeCategory.toLowerCase());
+
+  // Reset pagination when category changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / ITEMS_PER_PAGE));
+  const currentProducts = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
     <main className="min-h-screen bg-transparent text-[#333]">
@@ -214,9 +224,9 @@ function CollectionsMain() {
             </div>
 
             {/* Grid */}
-            {filteredProducts.length > 0 ? (
+            {currentProducts.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-12">
-                {filteredProducts.map(product => (
+                {currentProducts.map(product => (
                   <Link 
                     href={`/product/${product.id}`}
                     key={product.id} 
@@ -269,13 +279,37 @@ function CollectionsMain() {
             )}
 
             {/* Pagination */}
-            {filteredProducts.length > 0 && (
+            {totalPages > 1 && (
               <div className="flex justify-center mt-16 gap-2">
-                <button className="w-8 h-8 flex items-center justify-center border border-gray-200 text-gray-400 hover:border-gray-400 text-sm">&lt;</button>
-                <button className="w-8 h-8 flex items-center justify-center bg-[#3a081a] text-white text-sm">1</button>
-                <button className="w-8 h-8 flex items-center justify-center border border-gray-200 text-gray-600 hover:border-gray-400 text-sm">2</button>
-                <button className="w-8 h-8 flex items-center justify-center border border-gray-200 text-gray-600 hover:border-gray-400 text-sm">3</button>
-                <button className="w-8 h-8 flex items-center justify-center border border-gray-200 text-gray-400 hover:border-gray-400 text-sm">&gt;</button>
+                <button 
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className={`w-8 h-8 flex items-center justify-center border border-gray-200 text-sm transition-colors ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:border-gray-400 cursor-pointer'}`}
+                >
+                  &lt;
+                </button>
+                
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <button 
+                    key={i} 
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={`w-8 h-8 flex items-center justify-center text-sm transition-colors border ${
+                      currentPage === i + 1 
+                        ? 'bg-[#3a081a] border-[#3a081a] text-white' 
+                        : 'border-gray-200 text-gray-600 hover:border-gray-400 cursor-pointer'
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+                
+                <button 
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className={`w-8 h-8 flex items-center justify-center border border-gray-200 text-sm transition-colors ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:border-gray-400 cursor-pointer'}`}
+                >
+                  &gt;
+                </button>
               </div>
             )}
           </div>
