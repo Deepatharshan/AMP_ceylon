@@ -162,14 +162,18 @@ export default function GlobalOffer({ offer, autoOpen = true, onDismiss }: { off
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-3xl bg-white flex flex-col md:flex-row shadow-2xl overflow-hidden rounded-sm"
+              className={`relative w-full ${offer.type === 'CAMPAIGN' ? 'max-w-5xl min-h-[75vh]' : 'max-w-3xl'} bg-white flex flex-col md:flex-row shadow-2xl overflow-hidden rounded-sm`}
             >
               {/* Close Button */}
               <button 
                 onClick={handleClose}
-                className="absolute top-4 right-4 z-50 text-gray-400 hover:text-black transition-colors bg-white/80 rounded-full p-1 md:bg-transparent"
+                className={`absolute top-4 right-4 z-50 transition-colors rounded-full p-1 ${
+                  offer.type === 'CAMPAIGN' 
+                    ? 'text-white/60 hover:text-white bg-black/20 hover:bg-black/40 md:text-gray-400 md:hover:text-white md:bg-transparent' 
+                    : 'text-gray-400 hover:text-black bg-white/80 md:bg-transparent'
+                }`}
               >
-                <X size={20} />
+                <X size={offer.type === 'CAMPAIGN' ? 24 : 20} />
               </button>
 
               {/* Campaign Image (Full Size) OR Regular Offer Image (Half Size) */}

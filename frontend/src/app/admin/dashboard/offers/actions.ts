@@ -9,7 +9,7 @@ export async function createOffer(formData: FormData) {
 
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
-  const discountType = formData.get('discountType') as string | null;
+  const discountType = (formData.get('discountType') as string) || 'Percentage';
   const discountValueStr = formData.get('discountValue') as string | null;
   const discountValue = discountValueStr ? parseFloat(discountValueStr) : 0;
   const validFrom = formData.get('validFrom') as string;
@@ -58,8 +58,8 @@ export async function createOffer(formData: FormData) {
       status,
       discount_type: discountType,
       discount_value: discountValue,
-      valid_from: validFrom || null,
-      valid_to: validTo || null,
+      valid_from: validFrom || new Date().toISOString(),
+      valid_to: validTo || new Date(Date.now() + 31536000000).toISOString(),
       valid_until: validTo || new Date(Date.now() + 31536000000).toISOString(),
       target_regions: targetRegions,
       is_active: isActive,
@@ -95,14 +95,18 @@ export async function updateOffer(id: string, formData: FormData) {
   const supabase = await createClient();
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
-  const discountType = formData.get('discountType') as string | null;
+  const discountType = (formData.get('discountType') as string) || 'Percentage';
   const discountValueStr = formData.get('discountValue') as string | null;
   const discountValue = discountValueStr ? Number(discountValueStr) : 0;
   const validFrom = formData.get('validFrom') as string;
   const validTo = formData.get('validTo') as string;
   const targetRegions = formData.getAll('targetRegions') as string[];
   const isActive = formData.get('isActive') === 'true';
-  const type = (formData.get('postType') as string) || 'SEASONAL';
+  
+  // Only update type if it is explicitly passed (i.e. from the New page). 
+  // Edit page doesn't pass postType, so we shouldn't overwrite it.
+  const postType = formData.get('postType') as string | null;
+  
   const displayOrderStr = formData.get('displayOrder') as string | null;
   const displayOrder = displayOrderStr ? parseInt(displayOrderStr) : 99;
 
@@ -138,13 +142,16 @@ export async function updateOffer(id: string, formData: FormData) {
     status,
     discount_type: discountType,
     discount_value: discountValue,
-    valid_from: validFrom || null,
-    valid_to: validTo || null,
+    valid_from: validFrom || new Date().toISOString(),
+    valid_to: validTo || new Date(Date.now() + 31536000000).toISOString(),
     valid_until: validTo || new Date(Date.now() + 31536000000).toISOString(),
     target_regions: targetRegions,
-    is_active: isActive,
-    type
+    is_active: isActive
   };
+
+  if (postType) {
+    updateData.type = postType;
+  }
 
   if (imageUrl) {
     updateData.image_url = imageUrl;

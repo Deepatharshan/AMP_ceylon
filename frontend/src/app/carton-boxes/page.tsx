@@ -128,23 +128,17 @@ function CartonsMain() {
 
             {/* Right Badge / Graphic */}
             <div className="flex-1 flex justify-center lg:justify-end">
-              <div className="relative w-full max-w-md aspect-[4/5] rounded-xl overflow-hidden shadow-2xl group">
-                <Image 
-                  src="/cartonbox.jpg" 
-                  alt="Tailored Carton Packaging" 
-                  fill 
-                  className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                />
-                
-                {/* Text Badge */}
-                <div className="absolute bottom-8 left-0 bg-[#fcfbfa] py-4 px-6 shadow-xl">
-                  <p className="text-gray-500 font-bold text-[10px] uppercase tracking-widest mb-1">
-                    Tailored Packaging
-                  </p>
-                  <h3 className="text-[#3a081a] font-bold text-lg">
-                    For Every Industry
-                  </h3>
-                </div>
+              <div className="w-72 h-72 rounded-full border-4 border-[#3a081a] flex flex-col items-center justify-center text-center p-8 bg-white shadow-xl relative overflow-hidden">
+                {/* Inner dashed ring */}
+                <div className="absolute inset-2 rounded-full border-2 border-dashed border-[#3a081a] opacity-30"></div>
+                <Package size={48} className="text-[#3a081a] mb-4" />
+                <h3 className="text-[#3a081a] font-black text-xl uppercase tracking-widest leading-snug">
+                  Tailored<br/>Packaging
+                </h3>
+                <div className="w-12 h-1 bg-[#4a0b22] my-3"></div>
+                <p className="text-[#4a0b22] font-semibold text-sm uppercase tracking-wide">
+                  For Every Industry
+                </p>
               </div>
             </div>
             
@@ -250,12 +244,11 @@ function CartonsMain() {
                     {product.name}
                   </h4>
                   
-                  <button 
-                    onClick={(e) => addToCart(e, product)}
-                    className="w-full bg-[#f2f1ef] text-[#3a081a] py-3 px-4 rounded font-bold uppercase tracking-wider hover:bg-[#3a081a] hover:text-white transition-colors mt-auto border border-transparent group-hover:border-[#3a081a]"
+                  <div 
+                    className="w-full bg-[#f2f1ef] text-[#3a081a] py-3 px-4 rounded font-bold uppercase tracking-wider hover:bg-[#3a081a] hover:text-white transition-colors mt-auto border border-transparent group-hover:border-[#3a081a] text-center"
                   >
-                    Inquire Now
-                  </button>
+                    View Details
+                  </div>
                 </div>
               </Link>
             ))}
@@ -271,7 +264,7 @@ function CartonsMain() {
 
       {/* Custom Toast Notification */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-50 max-w-sm w-full bg-white border border-gray-100 rounded-lg shadow-2xl p-4 flex items-center gap-3 animate-fade-in-up">
+        <div className="fixed top-24 right-6 z-50 max-w-sm w-full bg-white border border-gray-100 rounded-lg shadow-2xl p-4 flex items-center gap-3 animate-fade-in-up">
           <div className="w-8 h-8 rounded-full flex items-center justify-center bg-emerald-50 text-emerald-600 border border-emerald-200 font-bold text-sm shrink-0">
             ✓
           </div>

@@ -24,6 +24,7 @@ interface Product {
   is_new_collection?: boolean;
   is_limited_product?: boolean;
   stock_count?: number;
+  business_line?: string;
 }
 
 const formatArrayForDisplay = (field: any): string => {
@@ -73,6 +74,12 @@ export default function ProductDetailPage({
   const [selectedColor, setSelectedColor] = useState('Classic Ivory');
   const [quantity, setQuantity] = useState(100);
   const [added, setAdded] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
+  };
 
   useEffect(() => {
     async function loadProductData() {
@@ -174,6 +181,7 @@ export default function ProductDetailPage({
     window.dispatchEvent(new Event('cart-updated'));
 
     setAdded(true);
+    showToast(`Added ${product.name} to your Inquiry Cart!`);
     setTimeout(() => setAdded(false), 3000);
   };
 
@@ -329,7 +337,7 @@ export default function ProductDetailPage({
                 <div className="flex items-center border border-gray-300 rounded overflow-hidden h-12 bg-white">
                   <button
                     type="button"
-                    onClick={() => setQuantity(q => Math.max(1, q - 10))}
+                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
                     className="w-10 h-full flex items-center justify-center hover:bg-gray-50 font-bold transition-colors cursor-pointer text-gray-500 border-r border-gray-200"
                   >
                     -
@@ -342,7 +350,7 @@ export default function ProductDetailPage({
                   />
                   <button
                     type="button"
-                    onClick={() => setQuantity(q => q + 10)}
+                    onClick={() => setQuantity(q => q + 1)}
                     className="w-10 h-full flex items-center justify-center hover:bg-gray-50 font-bold transition-colors cursor-pointer text-gray-500 border-l border-gray-200"
                   >
                     +
@@ -359,28 +367,48 @@ export default function ProductDetailPage({
                 </button>
               </div>
 
-              <div className="flex justify-between items-center text-[10px] text-gray-400 uppercase tracking-widest font-semibold pt-1">
-                <span>Minimum Order Qty: 12 Units</span>
+              <div className="flex justify-end items-center text-[10px] text-gray-400 uppercase tracking-widest font-semibold pt-1">
                 <span>Global Export Ready</span>
               </div>
             </div>
 
             {/* Trust Badges */}
             <div className="grid grid-cols-2 gap-4 border-t border-gray-200 pt-6">
-              <div className="flex items-center gap-3 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#3a081a]"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                <div>
-                  <span className="font-bold block text-[10px] uppercase text-[#3a081a] tracking-wider">ISO CERTIFIED</span>
-                  Manufacturing Grade
-                </div>
-              </div>
-              <div className="flex items-center gap-3 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#3a081a]"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-                <div>
-                  <span className="font-bold block text-[10px] uppercase text-[#3a081a] tracking-wider">FDA TEXTILE</span>
-                  100% Recyclable Silk
-                </div>
-              </div>
+              {product.business_line === 'CARTON' || product.category?.toLowerCase().includes('box') || product.category?.toLowerCase().includes('carton') ? (
+                <>
+                  <div className="flex items-center gap-3 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#3a081a]"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    <div>
+                      <span className="font-bold block text-[10px] uppercase text-[#3a081a] tracking-wider">ISO 9001</span>
+                      Industrial Grade Corrugated
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#3a081a]"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <div>
+                      <span className="font-bold block text-[10px] uppercase text-[#3a081a] tracking-wider">FSC CERTIFIED</span>
+                      100% Recycled Kraft
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-3 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#3a081a]"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <div>
+                      <span className="font-bold block text-[10px] uppercase text-[#3a081a] tracking-wider">ISO CERTIFIED</span>
+                      Manufacturing Grade
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#3a081a]"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                    <div>
+                      <span className="font-bold block text-[10px] uppercase text-[#3a081a] tracking-wider">FDA TEXTILE</span>
+                      100% Recyclable Silk
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
           </div>
@@ -460,6 +488,24 @@ export default function ProductDetailPage({
         )}
 
       </div>
+
+      {/* Custom Toast Notification */}
+      {toast && (
+        <div className="fixed top-24 right-6 z-50 max-w-sm w-full bg-white border border-gray-100 rounded-lg shadow-2xl p-4 flex items-center gap-3 animate-fade-in-up">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-emerald-50 text-emerald-600 border border-emerald-200 font-bold text-sm shrink-0">
+            ✓
+          </div>
+          <div className="flex-1 text-sm text-gray-700 font-medium">
+            {toast.message}
+          </div>
+          <button 
+            onClick={() => setToast(null)}
+            className="text-gray-400 hover:text-gray-600 p-1 cursor-pointer rounded-full hover:bg-gray-100 transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <Footer />
     </main>

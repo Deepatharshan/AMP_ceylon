@@ -235,53 +235,51 @@ export default function NewOfferPage() {
         </div>
 
         {/* Pricing & Validity */}
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 border-t border-[#ececec] pt-8">
-          <div>
-            <h3 className="text-lg font-bold text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>{postType === 'CAMPAIGN' ? 'Campaign Validity' : 'Pricing & Validity'}</h3>
-            <p className="text-xs text-gray-500 leading-relaxed max-w-xs">
-              {postType === 'CAMPAIGN' ? 'Set the duration of the marketing campaign.' : 'Set the financial parameters and duration of the promotion.'}
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-6">
-            {postType === 'SEASONAL' && (
-              <>
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Discount Type</label>
-                  <select name="discountType" className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm">
-                    <option value="Percentage">Percentage (%)</option>
-                    <option value="Fixed">Fixed Amount ($)</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Value</label>
-                  <input 
-                    type="number" 
-                    name="discountValue"
-                    required={postType === 'SEASONAL'}
-                    placeholder="15" 
-                    className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm"
-                  />
-                </div>
-              </>
-            )}
+        {postType === 'SEASONAL' && (
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 border-t border-[#ececec] pt-8">
             <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Valid From</label>
-              <input 
-                type="date" 
-                name="validFrom"
-                className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm text-gray-600"
-              />
+              <h3 className="text-lg font-bold text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>Pricing & Validity</h3>
+              <p className="text-xs text-gray-500 leading-relaxed max-w-xs">
+                Set the financial parameters and duration of the promotion.
+              </p>
             </div>
-            <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Valid To</label>
-              <input 
-                type="date" 
-                name="validTo"
-                className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm text-gray-600"
-              />
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Discount Type</label>
+                <select name="discountType" className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm">
+                  <option value="Percentage">Percentage (%)</option>
+                  <option value="Fixed">Fixed Amount ($)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Value</label>
+                <input 
+                  type="number" 
+                  name="discountValue"
+                  required
+                  placeholder="15" 
+                  className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Valid From</label>
+                <input 
+                  type="date" 
+                  name="validFrom"
+                  className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm text-gray-600"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Valid To</label>
+                <input 
+                  type="date" 
+                  name="validTo"
+                  className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm text-gray-600"
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Offer Imagery with Cropping */}
         <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 border-t border-[#ececec] pt-8">

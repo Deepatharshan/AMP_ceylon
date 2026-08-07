@@ -148,8 +148,9 @@ export default function EditOfferClient({ initialOffer }: { initialOffer: any })
     setPreviewOffer({
       title: formData.get('title'),
       description: formData.get('description'),
-      code: initialOffer.code, // The edit form doesn't actually allow editing the code based on the form, so we use initialOffer.code
+      code: initialOffer.code,
       image_url: imageUrl,
+      type: initialOffer.type,
     });
     setShowPreview(true);
   };
@@ -206,53 +207,51 @@ export default function EditOfferClient({ initialOffer }: { initialOffer: any })
         </div>
 
         {/* Pricing & Validity */}
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 border-t border-[#ececec] pt-8">
-          <div>
-            <h3 className="text-lg font-bold text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>{initialOffer.type === 'CAMPAIGN' ? 'Validity' : 'Pricing & Validity'}</h3>
-            <p className="text-xs text-gray-500 leading-relaxed max-w-xs">{initialOffer.type === 'CAMPAIGN' ? 'Set the active duration of this campaign.' : 'Set the financial parameters and duration of the promotion.'}</p>
-          </div>
-          <div className="grid grid-cols-2 gap-6">
-            {initialOffer.type !== 'CAMPAIGN' && (
-              <>
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Discount Type</label>
-                  <select name="discountType" defaultValue={initialOffer.discount_type} className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm">
-                    <option value="Percentage">Percentage (%)</option>
-                    <option value="Fixed">Fixed Amount ($)</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Value</label>
-                  <input 
-                    type="number" 
-                    name="discountValue"
-                    defaultValue={initialOffer.discount_value}
-                    required
-                    className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm"
-                  />
-                </div>
-              </>
-            )}
+        {initialOffer.type !== 'CAMPAIGN' && (
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 border-t border-[#ececec] pt-8">
             <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Valid From</label>
-              <input 
-                type="date" 
-                name="validFrom"
-                defaultValue={initialOffer.valid_from ? initialOffer.valid_from.split('T')[0] : ''}
-                className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm text-gray-600"
-              />
+              <h3 className="text-lg font-bold text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>Pricing & Validity</h3>
+              <p className="text-xs text-gray-500 leading-relaxed max-w-xs">Set the financial parameters and duration of the promotion.</p>
             </div>
-            <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Valid To</label>
-              <input 
-                type="date" 
-                name="validTo"
-                defaultValue={initialOffer.valid_to ? initialOffer.valid_to.split('T')[0] : ''}
-                className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm text-gray-600"
-              />
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Discount Type</label>
+                <select name="discountType" defaultValue={initialOffer.discount_type} className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm">
+                  <option value="Percentage">Percentage (%)</option>
+                  <option value="Fixed">Fixed Amount ($)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Value</label>
+                <input 
+                  type="number" 
+                  name="discountValue"
+                  defaultValue={initialOffer.discount_value}
+                  required
+                  className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Valid From</label>
+                <input 
+                  type="date" 
+                  name="validFrom"
+                  defaultValue={initialOffer.valid_from ? initialOffer.valid_from.split('T')[0] : ''}
+                  className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm text-gray-600"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Valid To</label>
+                <input 
+                  type="date" 
+                  name="validTo"
+                  defaultValue={initialOffer.valid_to ? initialOffer.valid_to.split('T')[0] : ''}
+                  className="w-full px-4 py-3 bg-white border border-[#ececec] rounded outline-none focus:border-[#3a081a] text-sm text-gray-600"
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Offer Imagery */}
         <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 border-t border-[#ececec] pt-8">
