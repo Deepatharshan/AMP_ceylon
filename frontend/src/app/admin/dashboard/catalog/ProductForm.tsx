@@ -129,6 +129,7 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
+  const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   
   // Custom Toast State
@@ -246,6 +247,41 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
       );
     });
   };
+
+  useEffect(() => {
+    if (completedCrop && completedCrop.width && completedCrop.height && imgRef.current && previewCanvasRef.current) {
+      const image = imgRef.current;
+      const canvas = previewCanvasRef.current;
+      const crop = completedCrop;
+
+      const scaleX = image.naturalWidth / image.width;
+      const scaleY = image.naturalHeight / image.height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const pixelRatio = window.devicePixelRatio || 1;
+      const targetWidth = crop.width * scaleX;
+      const targetHeight = crop.height * scaleY;
+      
+      canvas.width = targetWidth * pixelRatio;
+      canvas.height = targetHeight * pixelRatio;
+      
+      ctx.scale(pixelRatio, pixelRatio);
+      ctx.imageSmoothingQuality = 'high';
+
+      ctx.drawImage(
+        image,
+        crop.x * scaleX,
+        crop.y * scaleY,
+        crop.width * scaleX,
+        crop.height * scaleY,
+        0,
+        0,
+        targetWidth,
+        targetHeight
+      );
+    }
+  }, [completedCrop]);
 
   const handleCropCompleteAndUpload = async () => {
     if (uploadingIndex === null || !completedCrop || !imgRef.current) return;
@@ -747,6 +783,24 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
                     />
                   </ReactCrop>
                 </div>
+
+                {!!completedCrop && (
+                  <div className="mb-4 flex flex-col items-center">
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Live Preview</p>
+                    <div className="border border-gray-200 rounded shadow-sm overflow-hidden bg-white">
+                      <canvas
+                        ref={previewCanvasRef}
+                        style={{
+                          objectFit: 'contain',
+                          width: Math.round(completedCrop?.width ?? 0),
+                          height: Math.round(completedCrop?.height ?? 0),
+                          maxWidth: '100px',
+                          maxHeight: '125px', // 4:5 ratio roughly
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
                 
                 <div className="flex justify-between items-center">
                   <p className="text-xs text-gray-500">Drag to adjust the 4:5 cropping area.</p>
