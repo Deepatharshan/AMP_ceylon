@@ -267,7 +267,7 @@ export default function ContactPage() {
 
                 <a href="https://www.ampceylon.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-gray-700 hover:text-[#8a385a] transition-colors group">
                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                    <Globe size={18} className="text-[#3a081a]" />
+                    <Globe2 size={18} className="text-[#3a081a]" />
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Website</p>

@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
-const closePopup = async (page) => {
+const closePopup = async (page: Page) => {
   try {
     await page.waitForTimeout(1000); 
     const backdrop = page.locator('.bg-black\\/40').first();

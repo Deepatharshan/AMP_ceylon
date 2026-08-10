@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
-const closePopup = async (page) => {
+const closePopup = async (page: Page) => {
   try {
     await page.waitForTimeout(1000); 
     const backdrop = page.locator('.bg-black\\/40').first();
@@ -31,7 +31,9 @@ test.describe('Shopping & Cart Flow', () => {
     // Extract the exact URL of the first product and navigate directly
     // This bypasses any CSS layout issues (like sticky navbars or popups) blocking the physical click
     const href = await firstProduct.getAttribute('href');
-    await page.goto(href);
+    if (href) {
+      await page.goto(href);
+    }
     
     await expect(page).toHaveURL(/.*\/product\/.+/);
     
