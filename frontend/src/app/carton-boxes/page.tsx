@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import ClientPage from './ClientPage';
 
 export const metadata: Metadata = {
-  title: 'Carton Boxes',
-  description: 'Premium corrugated carton boxes for safe global transit.',
+  title: 'Corrugated Carton Boxes Manufacturer Sri Lanka | AMP Ceylon',
+  description: 'High-quality, sustainable corrugated carton boxes manufactured in Sri Lanka. Custom packaging solutions designed for secure global transit and export.',
   alternates: {
     canonical: '/carton-boxes',
   },

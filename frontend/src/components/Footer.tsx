@@ -24,34 +24,62 @@ export default function Footer() {
         </div>
         
         <div className={styles.column}>
-          <h4>Categories</h4>
+          <h4>Quick Links</h4>
           <ul>
-            <li>Manufacturing</li>
-            <li>Floral Orders</li>
+            <li>
+              <Link href="/blog" className="hover:text-[#f4e6ea] transition-colors">
+                Blog & Industry Insights
+              </Link>
+            </li>
+            <li>
+              <Link href="/manufacturing" className="hover:text-[#f4e6ea] transition-colors">
+                Manufacturing
+              </Link>
+            </li>
+            <li>
+              <Link href="/carton-boxes" className="hover:text-[#f4e6ea] transition-colors">
+                Carton Boxes
+              </Link>
+            </li>
             <li>
               <Link href="/certificates" className="hover:text-[#f4e6ea] transition-colors">
                 Certifications
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy-policy" className="hover:text-[#f4e6ea] transition-colors">
+                Privacy Policy
               </Link>
             </li>
           </ul>
         </div>
         
         <div className={styles.column}>
-          <h4>Information</h4>
+          <h4>Export Markets</h4>
           <ul>
             <li>
-              <Link href="/privacy-policy" className="hover:text-[#f4e6ea] transition-colors">
-                Privacy Policy
+              <Link href="/export-markets/uk" className="hover:text-[#f4e6ea] transition-colors">
+                United Kingdom
               </Link>
             </li>
             <li>
-              <Link href="/terms-of-sales" className="hover:text-[#f4e6ea] transition-colors">
-                Terms of Sales
+              <Link href="/export-markets/australia" className="hover:text-[#f4e6ea] transition-colors">
+                Australia
               </Link>
             </li>
             <li>
-              <Link href="/faq" className="hover:text-[#f4e6ea] transition-colors">
-                FAQs
+              <Link href="/export-markets/middle-east" className="hover:text-[#f4e6ea] transition-colors">
+                Middle East
+              </Link>
+            </li>
+            <li>
+              <Link href="/export-markets/europe" className="hover:text-[#f4e6ea] transition-colors">
+                Europe
+              </Link>
+            </li>
+            <li>
+              <Link href="/export-markets/north-america" className="hover:text-[#f4e6ea] transition-colors">
+                North America
               </Link>
             </li>
           </ul>

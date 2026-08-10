@@ -16,6 +16,10 @@ export default function Hero() {
         <source src="https://vjilhfyiupdvtscmwxbt.supabase.co/storage/v1/object/public/headernew1/headernew1_hq.mp4" type="video/mp4" />
       </video>
       
+      <h1 className="sr-only">
+        Premium Artificial Flowers Exporter in Sri Lanka
+      </h1>
+      
       <div className={styles.scrollIndicator}>
         <span>Scroll to Explore</span>
         <ChevronDown size={24} className={styles.bounce} />

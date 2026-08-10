@@ -3,8 +3,8 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 
 export const metadata: Metadata = {
-  title: 'Home | AMP Ceylon Premium Botanicals',
-  description: 'AMP Ceylon pioneers the art of hyper-realistic artificial botanicals, serving global supply chains with meticulous attention to detail and design.',
+  title: 'Artificial Flowers Exporter Sri Lanka | AMP Ceylon',
+  description: "AMP Ceylon is Sri Lanka's leading manufacturer and exporter of premium artificial flowers, lifelike botanical decor, and sustainable carton packaging.",
   alternates: {
     canonical: '/',
   },
