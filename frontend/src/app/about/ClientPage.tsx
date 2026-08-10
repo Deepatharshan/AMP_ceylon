@@ -41,7 +41,7 @@ export default function AboutPage() {
           transition={{ duration: 1, delay: 0.2 }}
           className={styles.heroTitle}
         >
-          World-Class Artificial Botanical Manufacturer
+          About Us
         </motion.h1>
       </section>
 
