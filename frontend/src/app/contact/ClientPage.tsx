@@ -60,7 +60,7 @@ export default function ContactPage() {
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-[#3a081a]" 
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
-              Connecting Excellence Across Borders
+              Contact Our Global Artificial Decor Export Team
             </motion.h1>
             <motion.p variants={fadeUp} className="text-gray-600 text-base md:text-lg leading-relaxed mb-6">
               Our state-of-the-art facility in Export City is the heart of our global floral operations. Reach out to discuss wholesale opportunities and custom manufacturing.

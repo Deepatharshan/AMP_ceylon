@@ -13,24 +13,24 @@ export default function Heritage() {
         <p className={styles.preTitle}>Our Heritage</p>
         <h2 className={styles.title}>40+ Years of Botanical Excellence</h2>
         <p className={styles.description}>
-          Established in 1984, AMP Ceylon pioneered the art of hyper-realistic artificial botanicals in South Asia. What began as a small boutique workshop has blossomed into a global leader in floral design.
+          Established in 1984, AMP Ceylon pioneered the art of hyper-realistic artificial botanicals in South Asia. What began as a small boutique workshop has blossomed into Sri Lanka's leading manufacturer and exporter of lifelike artificial flowers and decor.
         </p>
         <p className={styles.description}>
-          Today, we operate a state-of-the-art 100,000+ sq ft manufacturing facility employing over 500 skilled artisans who meticulously hand-assemble every petal and leaf. We are not just manufacturers, we are global export specialists serving 50+ countries with meticulous attention to customs compliance and logistics.
+          Today, we operate a state-of-the-art 100,000+ sq ft manufacturing facility employing over 500 skilled artisans. We are specialized global export partners, proudly supplying premium botanical products to global supply chains across 50+ countries with meticulous attention to detail and design.
         </p>
       </div>
       
       <div className={styles.imageContent}>
         <Image 
           src="/heritage_main_floral.jpg" 
-          alt="Manufacturing premium artificial flowers" 
+          alt="Sri Lankan manufacturer assembling premium artificial flowers for export" 
           width={600}
           height={800}
           className={styles.mainImage}
         />
         <Image 
           src="/heritage_overlay_floral.jpg" 
-          alt="Artisan detail crafting flowers"
+          alt="Close-up of lifelike artificial flowers manufactured by AMP Ceylon"
           width={400}
           height={400}
           className={styles.overlayImage}

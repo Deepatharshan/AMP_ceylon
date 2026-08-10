@@ -83,11 +83,11 @@ function CartonsMain() {
               <p className="text-[#4a0b22] text-xs font-bold uppercase tracking-widest mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                 We Manufacture Carton Boxes
               </p>
-              <h1 className="text-5xl lg:text-7xl text-[#3a081a] font-extrabold mb-6 leading-tight uppercase" style={{ fontFamily: 'var(--font-inter)' }}>
-                Strong.<br/>Reliable.<br/>Made For You.
+              <h1 className="text-4xl lg:text-6xl text-[#3a081a] font-extrabold mb-6 leading-tight uppercase" style={{ fontFamily: 'var(--font-inter)' }}>
+                Premium Corrugated Carton Boxes Manufacturer in Sri Lanka
               </h1>
               <p className="text-gray-600 text-lg md:text-xl leading-relaxed mb-10 max-w-xl">
-                High quality carton boxes for all your packing and packaging needs.
+                High-quality, sustainable corrugated carton boxes manufactured in Sri Lanka. Custom packaging solutions designed for secure global transit and export.
               </p>
               
               <div className="grid grid-cols-2 gap-y-8 gap-x-4 max-w-lg">

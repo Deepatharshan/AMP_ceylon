@@ -18,8 +18,8 @@ const capabilities = [
     icon: Palette
   },
   {
-    title: "Heating & Molding",
-    description: "Precision thermal molding processes that permanently set the lifelike curves and textures of our petals.",
+    title: "Advanced Heating & Molding",
+    description: "Precision thermal molding processes that permanently set the lifelike curves and textures of our artificial botanical petals.",
     icon: ThermometerSun
   },
   {
@@ -81,9 +81,9 @@ export default function ManufacturingPage() {
                 <motion.p variants={fadeUp} className="text-[#3a081a] text-[10px] font-bold uppercase tracking-[0.2em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                   Chapter I
                 </motion.p>
-                <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl" style={{ fontFamily: 'var(--font-playfair)' }}>
-                  Artisanal Craftsmanship
-                </motion.h2>
+                <motion.h1 variants={fadeUp} className="text-3xl md:text-5xl leading-tight" style={{ fontFamily: 'var(--font-playfair)' }}>
+                  Sustainable Artificial Flower Production Facilities
+                </motion.h1>
               </div>
               
               <motion.p variants={fadeUp} className="text-gray-600 leading-relaxed text-sm md:text-base">

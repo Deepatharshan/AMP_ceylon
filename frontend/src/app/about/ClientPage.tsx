@@ -32,7 +32,7 @@ export default function AboutPage() {
           animate={{ scale: 1, opacity: 0.7 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
           src="/aboutusheader.jpg" 
-          alt="About Us Hero" 
+          alt="Inside the AMP Ceylon artificial botanical manufacturing facility" 
           className={styles.heroImage} 
         />
         <motion.h1 
@@ -41,7 +41,7 @@ export default function AboutPage() {
           transition={{ duration: 1, delay: 0.2 }}
           className={styles.heroTitle}
         >
-          About Us
+          World-Class Artificial Botanical Manufacturer
         </motion.h1>
       </section>
 
@@ -56,15 +56,15 @@ export default function AboutPage() {
         >
           <motion.div variants={fadeUp} className={styles.columnLeft}>
             <h2 className={styles.sectionHeading}>
-              Our Story
+              A Legacy of Crafting Lifelike Florals
             </h2>
           </motion.div>
           <motion.div variants={fadeUp} className={styles.columnRight}>
             <p className={`${styles.serviceDesc} mb-6 text-lg`}>
-              AMP Ceylon (Pvt) Ltd. is one of Sri Lanka's leading manufacturers and exporters of premium artificial decorative products, giftware, and sustainable packaging solutions. Established in 1984, the company has earned an international reputation for quality, innovation, and reliability, supplying customers in more than 50 countries across Europe, North America, Asia, Australia, and other global markets.
+              AMP Ceylon (Pvt) Ltd. is one of Sri Lanka's premier artificial botanical manufacturers and global exporters. Established in 1984, our company has earned an international reputation for pioneering hyper-realistic floral design, unmatched quality, and reliability. We proudly supply premium decorative products, giftware, and sustainable packaging solutions to wholesale markets in over 50 countries across Europe, North America, Asia, and Australia.
             </p>
             <p className={`${styles.serviceDesc} text-lg`}>
-              Located in the Export Processing Zone, Katunayake, Sri Lanka, AMP Ceylon combines advanced manufacturing capabilities with skilled craftsmanship to produce world-class products that meet international quality and ethical standards. The company is recognized for its creativity, customer-focused approach, and ability to develop exclusive product collections tailored to global retail and wholesale markets.
+              Located in the Export Processing Zone, Katunayake, Sri Lanka, our state-of-the-art facility combines advanced manufacturing capabilities with skilled artisan craftsmanship. We specialize in producing export-grade artificial flowers and bespoke lifelike plants that strictly adhere to international quality and ethical standards, tailoring exclusive product collections to meet the exact specifications of global retail brands.
             </p>
           </motion.div>
         </motion.div>

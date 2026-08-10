@@ -132,10 +132,10 @@ function CollectionsMain() {
               The Export Collection
             </p>
             <h1 className="text-5xl text-[#3a081a] mb-6" style={{ fontFamily: 'var(--font-playfair)' }}>
-              Our Collections
+              Wholesale Artificial Floral Arrangements & Decor
             </h1>
             <p className="text-gray-600 leading-relaxed text-sm">
-              Designed in-house by our master florists, our collections represent the pinnacle of artificial botanical artistry. Each arrangement is meticulously hand-crafted using premium polyesters and artisanal resins to replicate the delicate texture and organic movement of nature.
+              Designed in-house by our master florists, our collections represent the pinnacle of artificial botanical artistry. Each arrangement is meticulously hand-crafted using premium polyesters and artisanal resins to replicate the delicate texture and organic movement of nature. We supply wholesale artificial floral arrangements, bespoke lifelike plants, and premium botanical decor in bulk to global retail markets and supply chains.
             </p>
           </div>
           
