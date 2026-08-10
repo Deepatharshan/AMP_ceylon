@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+
+# Host
+Host: https://www.ampceylon.com
+
+# Sitemaps
+Sitemap: https://www.ampceylon.com/sitemap.xml

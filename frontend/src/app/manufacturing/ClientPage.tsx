@@ -1,0 +1,415 @@
+'use client';
+
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Package, Palette, ThermometerSun, Droplets, Boxes, Ship } from 'lucide-react';
+
+const capabilities = [
+  {
+    title: "Packing",
+    description: "Automated and manual bespoke packaging ensuring global transit safety and pristine unboxing experiences. We can also provide mail order packing at an additional cost.",
+    icon: Package
+  },
+  {
+    title: "Designing Products",
+    description: "We have in-house professional designers and accept customer designs. Our exclusive designs are protected by copyright, and we renew our collection yearly with new designs.",
+    icon: Palette
+  },
+  {
+    title: "Heating & Molding",
+    description: "Precision thermal molding processes that permanently set the lifelike curves and textures of our petals.",
+    icon: ThermometerSun
+  },
+  {
+    title: "Dyeing",
+    description: "Proprietary custom dyeing systems to achieve nature's true gradient and exact Pantone color matching.",
+    icon: Droplets
+  },
+  {
+    title: "Inventory Management",
+    description: "Advanced ERP-integrated warehousing allowing for real-time stock monitoring and rapid order fulfillment.",
+    icon: Boxes
+  },
+  {
+    title: "Shipping",
+    description: "Global logistics network with rapid prototyping to shipping cycles of 45-60 days for commercial contracts.",
+    icon: Ship
+  }
+];
+
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
+export default function ManufacturingPage() {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  return (
+    <div className="bg-transparent min-h-screen text-[#3a081a]">
+      <Navbar />
+
+      {/* Chapter 1: Artisanal Craftsmanship */}
+      <section className="pt-32 pb-24 md:pt-40 md:pb-32 px-6">
+        <div className="container mx-auto max-w-6xl">
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
+            
+            {/* Text Content */}
+            <motion.div 
+              className="lg:w-1/2 space-y-8"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <div>
+                <motion.p variants={fadeUp} className="text-[#3a081a] text-[10px] font-bold uppercase tracking-[0.2em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
+                  Chapter I
+                </motion.p>
+                <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl" style={{ fontFamily: 'var(--font-playfair)' }}>
+                  Artisanal Craftsmanship
+                </motion.h2>
+              </div>
+              
+              <motion.p variants={fadeUp} className="text-gray-600 leading-relaxed text-sm md:text-base">
+                At the heart of our facility, master artisans preserve the legacy of floral design. Every petal of our hand-painted silk undergoes a rigorous bothen-dyeing process to achieve nature's true gradient.
+              </motion.p>
+
+              <motion.ul variants={staggerContainer} className="space-y-4 pt-4">
+                {[
+                  "Proprietary Custom Dyeing Systems",
+                  "Eco-Friendly Hand-Painted Silk Components",
+                  "Meticulous Hand-Assembly Quality Control"
+                ].map((item, idx) => (
+                  <motion.li key={idx} variants={fadeUp} className="flex items-center gap-3 text-sm text-gray-800 font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#3a081a]"></span>
+                    {item}
+                  </motion.li>
+                ))}
+              </motion.ul>
+            </motion.div>
+
+            {/* Image Grid */}
+            <div className="lg:w-1/2 flex gap-4 md:gap-8 h-[500px]">
+              <motion.div 
+                className="w-1/2 h-[90%] relative mt-auto rounded-lg overflow-hidden shadow-xl"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true, margin: "-50px" }}
+              >
+                <Image 
+                  src="/images/artisan_arranging_flowers.jpg" 
+                  alt="Artisan arranging floral components" 
+                  fill
+                  className="object-cover"
+                />
+              </motion.div>
+              <motion.div 
+                className="w-1/2 h-[90%] relative mb-auto rounded-lg overflow-hidden shadow-xl"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                viewport={{ once: true, margin: "-50px" }}
+              >
+                <Image 
+                  src="/images/meticulous_floral_assembly.jpg" 
+                  alt="Meticulous assembly process" 
+                  fill
+                  className="object-cover"
+                />
+              </motion.div>
+            </div>
+            
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Stats Banner */}
+      <section className="bg-[#3a081a] text-white py-12 md:py-16 px-6 relative z-10 -mt-12 md:-mt-16 mx-4 md:mx-auto max-w-5xl rounded-2xl shadow-2xl mb-16 md:mb-24">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 text-center divide-x-0 md:divide-x divide-white/10">
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="flex flex-col items-center justify-center">
+            <h3 className="text-3xl md:text-4xl lg:text-5xl mb-3 text-[#f4e6ea]" style={{ fontFamily: 'var(--font-playfair)' }}>25,000+</h3>
+            <p className="text-[10px] md:text-xs text-white/60 uppercase tracking-[0.2em] font-medium max-w-[120px] leading-relaxed">Sq. Meters Space</p>
+          </motion.div>
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.1 }} className="flex flex-col items-center justify-center">
+            <h3 className="text-3xl md:text-4xl lg:text-5xl mb-3 text-[#f4e6ea]" style={{ fontFamily: 'var(--font-playfair)' }}>100</h3>
+            <p className="text-[10px] md:text-xs text-white/60 uppercase tracking-[0.2em] font-medium max-w-[120px] leading-relaxed">TEU's Yearly Capacity</p>
+          </motion.div>
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex flex-col items-center justify-center">
+            <h3 className="text-3xl md:text-4xl lg:text-5xl mb-3 text-[#f4e6ea]" style={{ fontFamily: 'var(--font-playfair)' }}>5,000+</h3>
+            <p className="text-[10px] md:text-xs text-white/60 uppercase tracking-[0.2em] font-medium max-w-[120px] leading-relaxed">SKU Collection</p>
+          </motion.div>
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.3 }} className="flex flex-col items-center justify-center">
+            <h3 className="text-3xl md:text-4xl lg:text-5xl mb-3 text-[#f4e6ea]" style={{ fontFamily: 'var(--font-playfair)' }}>100%</h3>
+            <p className="text-[10px] md:text-xs text-white/60 uppercase tracking-[0.2em] font-medium max-w-[120px] leading-relaxed">Exclusive Designs</p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Production Capabilities */}
+      <section className="py-24 bg-[#f4f2ee] px-6">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div 
+            className="text-center max-w-2xl mx-auto mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+          >
+            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl mb-4" style={{ fontFamily: 'var(--font-playfair)' }}>
+              Scalable Production Capabilities
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-gray-600 text-sm">
+              Engineered for global supply chains, our facility balances volume with precision.
+            </motion.p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {capabilities.map((cap, idx) => (
+              <motion.div 
+                key={idx}
+                className="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 border border-transparent hover:border-[#3a081a]/10 relative overflow-hidden flex flex-col items-start"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 * idx }}
+                viewport={{ once: true, margin: "-50px" }}
+              >
+                {/* Background watermark icon */}
+                <div className="absolute -bottom-6 -right-6 text-[#f4e6ea]/40 transition-transform duration-700 group-hover:scale-150 group-hover:-rotate-12 pointer-events-none">
+                  <cap.icon size={120} strokeWidth={1} />
+                </div>
+                
+                {/* Icon wrapper */}
+                <div className="w-14 h-14 rounded-full bg-[#fcf9fa] text-[#3a081a] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 shadow-sm border border-[#f4e6ea]">
+                  <cap.icon size={24} strokeWidth={1.5} />
+                </div>
+                
+                <h3 className="text-xl font-bold mb-3 text-gray-900 relative z-10" style={{ fontFamily: 'var(--font-playfair)' }}>
+                  {cap.title}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed relative z-10">
+                  {cap.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Global Presence */}
+      <section className="py-24 md:py-32 bg-white px-6">
+        <div className="container mx-auto max-w-6xl">
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
+            
+            {/* Text Content */}
+            <motion.div 
+              className="lg:w-1/3"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <motion.p variants={fadeUp} className="text-[10px] font-bold text-[#8a385a] uppercase tracking-widest mb-3">
+                Global Presence
+              </motion.p>
+              <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold mb-6" style={{ fontFamily: 'var(--font-playfair)' }}>
+                Trade Shows & Exhibitions
+              </motion.h2>
+              <motion.p variants={fadeUp} className="text-sm text-gray-600 leading-relaxed mb-8">
+                We proudly showcase our premium floral collections at major international trade shows. From Europe to the Middle East, our botanical creations have left a lasting impression on buyers and distributors worldwide.
+              </motion.p>
+              
+              <motion.div variants={staggerContainer} className="flex flex-wrap gap-2">
+                {[
+                  "Hong Kong Showroom",
+                  "Ambiente Frankfurt",
+                  "Dubai World Trade Centre",
+                  "Canton Fair",
+                  "Maison&Objet Paris"
+                ].map((pill, i) => (
+                  <motion.span key={i} variants={fadeUp} className="bg-[#fcf5f7] text-[#8a385a] text-[11px] font-semibold px-3 py-1.5 rounded-sm border border-[#f5e1e6]">
+                    {pill}
+                  </motion.span>
+                ))}
+              </motion.div>
+            </motion.div>
+
+            {/* Photo Grid */}
+            <div className="lg:w-2/3 grid grid-cols-2 gap-4 md:gap-6 pb-8 items-start">
+              {[
+                { src: "/Honkhongshowroom.jpg", alt: "Hong Kong Showroom" },
+                { src: "/exibition1.jpg", alt: "Exhibition Showcase" },
+                { src: "/exibition3.jpg", alt: "Exhibition Details" },
+                { src: "/exibition4.jpg", alt: "Exhibition Arrangements" }
+              ].map((img, idx) => (
+                <motion.div 
+                  key={idx}
+                  className={`relative w-full rounded-xl overflow-hidden shadow-lg group cursor-pointer ${idx % 2 !== 0 ? 'translate-y-8 md:translate-y-12' : ''}`}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                  onClick={() => setSelectedImage(img.src)}
+                >
+                  <Image src={img.src} alt={img.alt} width={600} height={800} className="w-full h-auto object-contain transition-transform duration-700 bg-gray-50 group-hover:scale-105" />
+                  
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
+                    <span className="text-white font-medium px-5 py-2 border-2 border-white/70 rounded-full backdrop-blur-sm text-sm tracking-wide shadow-lg">
+                      Click to view
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Quality & Compliance */}
+      <section className="py-24 bg-[#faf9f8] px-6 border-t border-[#f4f2ee]">
+        <div className="container mx-auto max-w-6xl">
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+            
+            {/* Left Column */}
+            <motion.div 
+              className="lg:w-1/3"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true, margin: "-50px" }}
+            >
+              <h2 className="text-3xl font-bold mb-6 text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>
+                Quality & Compliance
+              </h2>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                We adhere to the highest international standards of safety and ethical manufacturing.
+              </p>
+            </motion.div>
+
+            {/* Right Column - Grid */}
+            <motion.div 
+              className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+            >
+              {/* Item 1 */}
+              <motion.div variants={fadeUp}>
+                <div className="flex items-center gap-3 mb-3 text-[#3a081a]">
+                  <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  <h4 className="font-bold text-[15px]">ISO 9001:2015 Certified</h4>
+                </div>
+                <p className="text-gray-500 text-sm leading-relaxed">
+                  Our Quality Management Systems ensure consistent output that meets regulatory requirements and customer satisfaction.
+                </p>
+              </motion.div>
+
+              {/* Item 2 */}
+              <motion.div variants={fadeUp}>
+                <div className="flex items-center gap-3 mb-3 text-[#3a081a]">
+                  <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 9a3.5 3.5 0 100 6" />
+                  </svg>
+                  <h4 className="font-bold text-[15px]">Copyright Protection</h4>
+                </div>
+                <p className="text-gray-500 text-sm leading-relaxed">
+                  Exclusive designs are protected through robust legal frameworks, ensuring your custom collections remain unique to your brand.
+                </p>
+              </motion.div>
+
+              {/* Item 3 */}
+              <motion.div variants={fadeUp}>
+                <div className="flex items-center gap-3 mb-3 text-[#3a081a]">
+                  <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                  </svg>
+                  <h4 className="font-bold text-[15px]">Ethical Sourcing</h4>
+                </div>
+                <p className="text-gray-500 text-sm leading-relaxed">
+                  100% audit-compliant facility focusing on fair labor practices and worker safety across all production tiers.
+                </p>
+              </motion.div>
+
+              {/* Item 4 */}
+              <motion.div variants={fadeUp}>
+                <div className="flex items-center gap-3 mb-3 text-[#3a081a]">
+                  <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  <h4 className="font-bold text-[15px]">REACH Compliance</h4>
+                </div>
+                <p className="text-gray-500 text-sm leading-relaxed">
+                  All materials and dyes used in our manufacturing process are certified for chemical safety and environmental standards.
+                </p>
+              </motion.div>
+
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 md:p-8 backdrop-blur-sm"
+            onClick={() => setSelectedImage(null)}
+          >
+            <button 
+              className="absolute top-6 right-6 text-white hover:text-gray-300 z-50 p-2 focus:outline-none"
+              onClick={() => setSelectedImage(null)}
+            >
+              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full h-full max-w-6xl max-h-[90vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image 
+                src={selectedImage} 
+                alt="Enlarged Exhibition View" 
+                fill
+                className="object-contain"
+                sizes="100vw"
+                quality={100}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

@@ -1,5 +1,6 @@
 import { Mail, Phone, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -8,10 +9,12 @@ export default function Footer() {
       <div className={styles.linksSection}>
         <div className={styles.column} style={{ flex: 1.5 }}>
           <div className="flex items-center gap-3 mb-4">
-            <img 
+            <Image 
               src="/amplogo.png" 
               alt="AMP Ceylon Logo" 
-              className="w-14 h-14 object-contain mix-blend-screen opacity-90" 
+              width={56}
+              height={56}
+              className="object-contain mix-blend-screen opacity-90" 
             />
             <h3 className={styles.logo} style={{ marginBottom: 0 }}>AMP pvt ltd</h3>
           </div>
