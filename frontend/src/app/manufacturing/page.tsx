@@ -4,6 +4,40 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Package, Palette, ThermometerSun, Droplets, Boxes, Ship } from 'lucide-react';
+
+const capabilities = [
+  {
+    title: "Packing",
+    description: "Automated and manual bespoke packaging ensuring global transit safety and pristine unboxing experiences. We can also provide mail order packing at an additional cost.",
+    icon: Package
+  },
+  {
+    title: "Designing Products",
+    description: "We have in-house professional designers and accept customer designs. Our exclusive designs are protected by copyright, and we renew our collection yearly with new designs.",
+    icon: Palette
+  },
+  {
+    title: "Heating & Molding",
+    description: "Precision thermal molding processes that permanently set the lifelike curves and textures of our petals.",
+    icon: ThermometerSun
+  },
+  {
+    title: "Dyeing",
+    description: "Proprietary custom dyeing systems to achieve nature's true gradient and exact Pantone color matching.",
+    icon: Droplets
+  },
+  {
+    title: "Inventory Management",
+    description: "Advanced ERP-integrated warehousing allowing for real-time stock monitoring and rapid order fulfillment.",
+    icon: Boxes
+  },
+  {
+    title: "Shipping",
+    description: "Global logistics network with rapid prototyping to shipping cycles of 45-60 days for commercial contracts.",
+    icon: Ship
+  }
+];
 
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -146,134 +180,34 @@ export default function ManufacturingPage() {
             </motion.p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
-            {/* Card 1: Packing */}
-            <motion.div 
-              className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6 items-center"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true, margin: "-50px" }}
-            >
-              <div className="flex-1 w-full">
-                <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-playfair)' }}>Packing</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  Automated and manual bespoke packaging ensuring global transit safety and pristine unboxing experiences. We can also provide mail order packing at an additional cost.
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {capabilities.map((cap, idx) => (
+              <motion.div 
+                key={idx}
+                className="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 border border-transparent hover:border-[#3a081a]/10 relative overflow-hidden flex flex-col items-start"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 * idx }}
+                viewport={{ once: true, margin: "-50px" }}
+              >
+                {/* Background watermark icon */}
+                <div className="absolute -bottom-6 -right-6 text-[#f4e6ea]/40 transition-transform duration-700 group-hover:scale-150 group-hover:-rotate-12 pointer-events-none">
+                  <cap.icon size={120} strokeWidth={1} />
+                </div>
+                
+                {/* Icon wrapper */}
+                <div className="w-14 h-14 rounded-full bg-[#fcf9fa] text-[#3a081a] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 shadow-sm border border-[#f4e6ea]">
+                  <cap.icon size={24} strokeWidth={1.5} />
+                </div>
+                
+                <h3 className="text-xl font-bold mb-3 text-gray-900 relative z-10" style={{ fontFamily: 'var(--font-playfair)' }}>
+                  {cap.title}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed relative z-10">
+                  {cap.description}
                 </p>
-              </div>
-              <div className="w-full sm:w-40 h-28 relative rounded-lg overflow-hidden shrink-0">
-                <video autoPlay loop muted playsInline className="object-cover w-full h-full">
-                  <source src="/hero-video.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </motion.div>
-
-            {/* Card 2: Designing Products */}
-            <motion.div 
-              className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6 items-center"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true, margin: "-50px" }}
-            >
-              <div className="flex-1 w-full">
-                <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-playfair)' }}>Designing Products</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  We have in-house professional designers and accept customer designs. Our exclusive designs are protected by copyright, and we renew our collection yearly with new designs.
-                </p>
-              </div>
-              <div className="w-full sm:w-40 h-28 relative rounded-lg overflow-hidden shrink-0">
-                <video autoPlay loop muted playsInline className="object-cover w-full h-full">
-                  <source src="/hero-video.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </motion.div>
-
-            {/* Card 3: Heating */}
-            <motion.div 
-              className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6 items-center"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true, margin: "-50px" }}
-            >
-              <div className="flex-1 w-full">
-                <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-playfair)' }}>Heating & Molding</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  Precision thermal molding processes that permanently set the lifelike curves and textures of our petals.
-                </p>
-              </div>
-              <div className="w-full sm:w-40 h-28 relative rounded-lg overflow-hidden shrink-0">
-                <video autoPlay loop muted playsInline className="object-cover w-full h-full">
-                  <source src="/hero-video.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </motion.div>
-
-            {/* Card 4: Dyeing */}
-            <motion.div 
-              className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6 items-center"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true, margin: "-50px" }}
-            >
-              <div className="flex-1 w-full">
-                <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-playfair)' }}>Dyeing</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  Proprietary custom dyeing systems to achieve nature's true gradient and exact Pantone color matching.
-                </p>
-              </div>
-              <div className="w-full sm:w-40 h-28 relative rounded-lg overflow-hidden shrink-0">
-                <video autoPlay loop muted playsInline className="object-cover w-full h-full">
-                  <source src="/hero-video.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </motion.div>
-
-            {/* Card 5: Inventory Management */}
-            <motion.div 
-              className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6 items-center"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              viewport={{ once: true, margin: "-50px" }}
-            >
-              <div className="flex-1 w-full">
-                <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-playfair)' }}>Inventory Management</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  Advanced ERP-integrated warehousing allowing for real-time stock monitoring and rapid order fulfillment.
-                </p>
-              </div>
-              <div className="w-full sm:w-40 h-28 relative rounded-lg overflow-hidden shrink-0">
-                <video autoPlay loop muted playsInline className="object-cover w-full h-full">
-                  <source src="/hero-video.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </motion.div>
-
-            {/* Card 6: Shipping */}
-            <motion.div 
-              className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6 items-center"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              viewport={{ once: true, margin: "-50px" }}
-            >
-              <div className="flex-1 w-full">
-                <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-playfair)' }}>Shipping</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  Global logistics network with rapid prototyping to shipping cycles of 45-60 days for commercial contracts.
-                </p>
-              </div>
-              <div className="w-full sm:w-40 h-28 relative rounded-lg overflow-hidden shrink-0">
-                <video autoPlay loop muted playsInline className="object-cover w-full h-full">
-                  <source src="/hero-video.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </motion.div>
-
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
