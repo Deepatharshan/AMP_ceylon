@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, Phone, MessageCircle, MapPin, Globe } from 'lucide-react';
+import { Mail, MapPin, Phone, MessageCircle, Briefcase, Globe2, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { WorldMap } from '@/components/ui/map';
@@ -121,22 +121,31 @@ export default function ContactPage() {
             
             {/* Left: Business Inquiry */}
             <motion.div 
-              className="w-full lg:w-7/12 bg-white rounded-xl p-10 md:p-14 shadow-sm border border-gray-100 flex flex-col justify-center"
+              className="w-full lg:w-7/12 bg-white rounded-2xl p-10 md:p-14 shadow-sm hover:shadow-xl transition-shadow duration-500 border border-gray-100 flex flex-col justify-center relative overflow-hidden group"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true, margin: "-50px" }}
             >
-              <h2 className="text-2xl font-bold mb-4 text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>
+              <div className="absolute -right-10 -top-10 text-[#f4e6ea]/30 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-12 pointer-events-none">
+                <Briefcase size={200} strokeWidth={1} />
+              </div>
+              
+              <div className="w-16 h-16 rounded-full bg-[#f4e6ea] text-[#3a081a] flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform duration-500">
+                <Briefcase size={28} />
+              </div>
+
+              <h2 className="text-3xl font-bold mb-6 text-[#3a081a] relative z-10" style={{ fontFamily: 'var(--font-playfair)' }}>
                 Business Inquiry
               </h2>
-              <p className="text-gray-600 text-sm leading-relaxed mb-8 max-w-md">
+              <p className="text-gray-600 text-base leading-relaxed mb-10 max-w-lg relative z-10">
                 Looking to stock our premium artificial florals or require custom manufacturing for a specific project? Browse our extensive catalog and inquire directly on the products that interest you. Our sales team will get back to you with wholesale pricing and MOQs.
               </p>
               
-              <div>
-                <Link href="/collections" className="inline-block bg-[#3a081a] !text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded hover:bg-[#250510] transition-colors shadow-lg shadow-[#3a081a]/20">
+              <div className="relative z-10">
+                <Link href="/collections" className="inline-flex items-center gap-3 bg-[#3a081a] !text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-lg hover:bg-[#250510] transition-colors shadow-lg shadow-[#3a081a]/20 group/btn">
                   Browse Catalog
+                  <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </motion.div>
@@ -150,16 +159,21 @@ export default function ContactPage() {
               viewport={{ once: true, margin: "-50px" }}
             >
               {/* Factory Map */}
-              <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 flex-1 flex flex-col">
-                <h3 className="text-lg font-bold mb-4 text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>
-                  Factory Location
-                </h3>
-                <p className="text-gray-600 text-xs mb-6 leading-relaxed">
-                  Our state-of-the-art manufacturing facility is strategically located to ensure rapid global distribution and optimized logistics.
+              <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-shadow duration-500 border border-gray-100 flex-1 flex flex-col group">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-[#3a081a] group-hover:bg-[#f4e6ea] transition-colors">
+                    <MapPin size={20} />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>
+                    Factory Location
+                  </h3>
+                </div>
+                <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+                  Our state-of-the-art manufacturing facility is strategically located to ensure rapid global distribution.
                 </p>
                 
                 {/* Embedded Map */}
-                <div className="w-full h-48 bg-gray-200 rounded-lg overflow-hidden relative mt-auto">
+                <div className="w-full h-48 bg-gray-100 rounded-xl overflow-hidden relative mt-auto border border-gray-100 group-hover:shadow-md transition-shadow">
                   <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.0203534570076!2d79.88219467576579!3d7.123565092881263!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2f200508a8d05%3A0x67fa2a8dbadbb0fa!2sKatunayake%20Export%20Processing%20Zone!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk" 
                     width="100%" 
@@ -168,21 +182,26 @@ export default function ContactPage() {
                     allowFullScreen={false} 
                     loading="lazy" 
                     referrerPolicy="no-referrer-when-downgrade"
+                    className="opacity-90 group-hover:opacity-100 transition-opacity duration-500 filter grayscale group-hover:grayscale-0"
                   ></iframe>
                 </div>
               </div>
 
               {/* Export Partnership */}
-              <div className="bg-[#3a081a] rounded-xl p-8 text-white shadow-xl">
-                <h3 className="text-lg font-bold mb-3" style={{ fontFamily: 'var(--font-playfair)' }}>
+              <div className="bg-[#3a081a] rounded-2xl p-8 text-white shadow-xl relative overflow-hidden group">
+                <div className="absolute -right-6 -bottom-6 text-white/5 transition-transform duration-700 group-hover:scale-125 pointer-events-none">
+                  <Globe2 size={120} strokeWidth={1.5} />
+                </div>
+                
+                <h3 className="text-xl font-bold mb-3 relative z-10" style={{ fontFamily: 'var(--font-playfair)' }}>
                   Export Partnership
                 </h3>
-                <p className="text-white/80 text-xs leading-relaxed mb-6">
+                <p className="text-white/80 text-sm leading-relaxed mb-8 relative z-10">
                   Looking to become an official distributor of AMP premium botanicals? We offer competitive pricing for volume partners.
                 </p>
-                <Link href="#" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:text-[#f4e6ea] transition-colors border-b border-white/30 pb-1">
+                <Link href="#" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#f4e6ea] hover:text-white transition-colors relative z-10 group/link">
                   View Partner Terms
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                  <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </motion.div>
