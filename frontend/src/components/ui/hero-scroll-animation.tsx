@@ -2,6 +2,7 @@
 
 import { useScroll, useTransform, motion, MotionValue } from 'motion/react';
 import React, { useRef, forwardRef } from 'react';
+import Image from 'next/image';
 
 interface SectionProps {
   scrollYProgress: MotionValue<number>;
@@ -39,24 +40,32 @@ const Section2: React.FC<SectionProps> = ({ scrollYProgress }) => {
           Meticulously Crafted <br /> Everlasting Elegance
         </h1>
         <div className='grid grid-cols-2 md:grid-cols-4 gap-4 max-h-[50vh]'>
-          <img
+          <Image
             src='/112.jpg'
             alt='img'
+            width={400}
+            height={533}
             className='object-cover w-full rounded-md h-full aspect-[3/4]'
           />
-          <img
+          <Image
             src='/222.jpeg'
             alt='img'
+            width={400}
+            height={533}
             className='object-cover w-full rounded-md h-full aspect-[3/4]'
           />
-          <img
+          <Image
             src='/2323.jpeg'
             alt='img'
+            width={400}
+            height={533}
             className='object-cover w-full rounded-md h-full aspect-[3/4]'
           />
-          <img
+          <Image
             src='/4343.jpg'
             alt='img'
+            width={400}
+            height={533}
             className='object-cover w-full rounded-md h-full aspect-[3/4] hidden md:block'
           />
         </div>

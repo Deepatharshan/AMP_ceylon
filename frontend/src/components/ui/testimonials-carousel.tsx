@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
+import Image from "next/image";
 import { motion } from "motion/react";
 
 export interface Testimonial {
@@ -76,11 +77,11 @@ export const TestimonialsCarousel: React.FC<TestimonialsCarouselProps> = ({
             </p>
 
             <div className="flex items-center gap-3 mt-6">
-              <img
+              <Image
                 src={image}
                 alt={name}
-                width={50}
-                height={50}
+                width={48}
+                height={48}
                 className="h-12 w-12 rounded-full object-cover"
               />
               <div className="flex flex-col">

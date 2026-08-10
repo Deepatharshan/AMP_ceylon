@@ -13,8 +13,34 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "AMP Ceylon - Artificial Florals & Gifts",
-  description: "Global Bloom operates state-of-the-art facilities perfecting the art of botanical mimicry.",
+  metadataBase: new URL(process.env.SITE_URL || 'https://www.ampceylon.com'),
+  title: {
+    template: '%s | AMP Ceylon',
+    default: 'AMP Ceylon | Premium Artificial Botanicals',
+  },
+  description: 'AMP Ceylon pioneers the art of hyper-realistic artificial botanicals, serving global supply chains with meticulous attention to detail and design.',
+  openGraph: {
+    title: 'AMP Ceylon | Premium Artificial Botanicals',
+    description: 'AMP Ceylon pioneers the art of hyper-realistic artificial botanicals, serving global supply chains with meticulous attention to detail and design.',
+    url: 'https://www.ampceylon.com',
+    siteName: 'AMP Ceylon',
+    images: [
+      {
+        url: '/3221.jpg', // Default OG image fallback
+        width: 1200,
+        height: 630,
+        alt: 'AMP Ceylon Premium Botanicals',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AMP Ceylon | Premium Artificial Botanicals',
+    description: 'AMP Ceylon pioneers the art of hyper-realistic artificial botanicals.',
+    images: ['/3221.jpg'],
+  },
 };
 
 import { createClient } from '@supabase/supabase-js';

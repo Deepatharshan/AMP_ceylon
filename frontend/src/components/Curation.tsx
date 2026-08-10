@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import styles from './Curation.module.css';
+import Image from 'next/image';
 import { useScrollFade } from '@/hooks/useScrollFade';
 
 const collections = [
@@ -47,7 +48,7 @@ export default function Curation() {
             className={`${styles.card} fade-in delay-${(index + 1) * 100} ${isVisible ? 'visible' : ''}`}
           >
             <div className={styles.imageWrapper}>
-              <img src={item.image} alt={item.title} className={styles.cardImage} />
+              <Image src={item.image} alt={item.title} fill className={styles.cardImage} />
             </div>
             <h3 className={styles.cardTitle}>{item.title}</h3>
             <p className={styles.cardCategory}>{item.category}</p>

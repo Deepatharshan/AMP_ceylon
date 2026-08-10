@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ShoppingBag, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -142,8 +143,8 @@ export default function Navbar() {
 
   const logoElement = (
     <Link href="/" className="flex items-center gap-3 mr-4 group">
-      <div className="w-20 h-20 min-w-[5rem] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-        <img src="/amplogo.png" alt="AMP Ceylon Logo" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" />
+      <div className="w-20 h-20 min-w-[5rem] flex items-center justify-center transition-transform duration-300 group-hover:scale-105 relative">
+        <Image src="/amplogo.png" alt="AMP Ceylon Logo" fill className="object-contain transition-transform duration-500 group-hover:scale-105" sizes="80px" />
       </div>
     </Link>
   );
@@ -208,10 +209,11 @@ export default function Navbar() {
                           href={`/product/${product.id}`}
                           className="group block relative rounded-lg overflow-hidden bg-gray-200 aspect-[4/3]"
                         >
-                          <img 
+                          <Image 
                             src={product.image_url || (product.image_urls && product.image_urls[0]) || ''} 
                             alt={product.name}
-                            className="w-full h-full object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500"
+                            fill
+                            className="object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6">
                             <span className="text-xs font-bold uppercase tracking-wider text-white/70 mb-1">{product.category}</span>
