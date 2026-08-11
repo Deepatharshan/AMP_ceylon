@@ -4,6 +4,7 @@
   min-height: 100vh;
   background-color: #faf9f8; /* Soft beige matching the brand */
   overflow: hidden;
+  text-align: left;
 }
 
 .splitContainer {
@@ -38,7 +39,8 @@
 }
 
 .textContent > div {
-  max-width: 500px;
+  max-width: 550px;
+  text-align: left;
 }
 
 .mainTitle {
@@ -56,13 +58,13 @@
 
 @media (min-width: 768px) {
   .mainTitle {
-    font-size: 5rem;
+    font-size: 3.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .mainTitle {
-    font-size: 6.5rem;
+    font-size: 4.5rem;
   }
 }
 
