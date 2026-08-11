@@ -45,9 +45,10 @@ export default function Hero() {
               loop 
               muted 
               playsInline 
+              preload="auto"
               className="object-cover w-full h-full absolute inset-0"
             >
-              <source src="/headernew1_hq_compressed.mp4" type="video/mp4" />
+              <source src="/headernew1_hq.mp4" type="video/mp4" />
             </video>
           </motion.div>
         </div>
