@@ -123,13 +123,13 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-4xl mx-auto">
             {/* Managing Director */}
             <motion.div variants={fadeUp} className="flex flex-col items-center text-center group">
-              <div className="w-64 h-64 mb-8 overflow-hidden rounded-full border-[3px] border-[#8a385a]/20 shadow-lg relative bg-[#f4f4f4]">
+              <div className="w-64 h-64 mb-8 overflow-hidden rounded-full border-[3px] border-[#8a385a]/20 shadow-lg relative bg-white">
                 <Image 
                   src="/current-owner.jpeg" 
                   alt="Mr. J.V. Udesh - Managing Director"
                   fill
                   sizes="256px"
-                  className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
               <h3 className="font-playfair text-2xl font-bold text-gray-900 mb-1 uppercase tracking-wide">Managing Director</h3>
