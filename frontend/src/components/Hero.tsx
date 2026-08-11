@@ -40,13 +40,15 @@ export default function Hero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2 }}
           >
-            <Image 
-              src="/images/hero_floral_arrangement.jpg" 
-              alt="Premium artificial floral arrangement" 
-              fill
-              priority
-              className="object-cover"
-            />
+            <video 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              className="object-cover w-full h-full absolute inset-0"
+            >
+              <source src="https://vjilhfyiupdvtscmwxbt.supabase.co/storage/v1/object/public/headernew1/headernew1_hq.mp4" type="video/mp4" />
+            </video>
           </motion.div>
         </div>
 
