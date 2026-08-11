@@ -72,7 +72,7 @@
   font-family: var(--font-inter), sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
-  color: #b56c50; /* Terracotta tone */
+  color: #3c0b1d; /* Matches main title */
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 1.5rem;
@@ -81,14 +81,14 @@
 .description {
   font-family: var(--font-inter), sans-serif;
   font-size: 1rem;
-  color: #666;
+  color: #333; /* Darker grey/black */
   line-height: 1.6;
   margin-bottom: 2.5rem;
 }
 
 .ctaButton {
   display: inline-block;
-  background-color: #a05a45; /* Muted terracotta/brown */
+  background-color: #3c0b1d; /* Matches main title */
   color: white;
   padding: 0.75rem 2rem;
   border-radius: 8px;
@@ -99,13 +99,13 @@
   letter-spacing: 1px;
   text-decoration: none;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(160, 90, 69, 0.3);
+  box-shadow: 0 4px 10px rgba(60, 11, 29, 0.3);
 }
 
 .ctaButton:hover {
-  background-color: #8a4835;
+  background-color: #2b0411;
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(160, 90, 69, 0.4);
+  box-shadow: 0 6px 15px rgba(60, 11, 29, 0.4);
 }
 
 
