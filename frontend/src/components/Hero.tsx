@@ -18,7 +18,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <h1 className={styles.mainTitle}>
-              FLOWERS
+              PREMIUM ARTIFICIAL FLOWERS
             </h1>
             <h2 className={styles.subTitle}>
               PREMIUM EXPORTER IN SRI LANKA
