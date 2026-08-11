@@ -17,11 +17,6 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <a href="/carton-boxes" style={{ display: 'inline-flex' }} className="items-center gap-2 mb-6 px-1.5 py-1.5 pr-4 rounded-full bg-amber-50 border border-amber-200 hover:bg-amber-100 transition-all shadow-sm w-fit max-w-full">
-              <span className="bg-[#3c0b1d] shrink-0 text-white text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">New</span>
-              <span className="text-[10px] sm:text-xs font-bold text-[#3c0b1d] tracking-wide uppercase whitespace-normal leading-tight">High Quality Corrugated Carton Boxes Manufacturer</span>
-            </a>
-
             <h1 className={styles.mainTitle}>
               PREMIUM ARTIFICIAL FLOWER DECORATIONS
             </h1>
