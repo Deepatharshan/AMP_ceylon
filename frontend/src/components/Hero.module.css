@@ -47,13 +47,13 @@
   font-family: var(--font-playfair), serif;
   font-size: 3.5rem;
   font-weight: 900;
-  color: #8a385a; /* Deep rose/maroon color */
+  color: #3c0b1d; /* Deep dark maroon matching swatch */
   text-transform: uppercase;
   letter-spacing: 4px;
   line-height: 1.1;
   margin-bottom: 1rem;
-  /* Text shadow to mimic the 3D/inset look from the reference */
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1), -1px -1px 0 rgba(255,255,255,0.8);
+  /* Enhanced soft shadow for 3D effect */
+  text-shadow: 2px 4px 10px rgba(0,0,0,0.15), -1px -1px 0 rgba(255,255,255,0.6);
 }
 
 @media (min-width: 768px) {
