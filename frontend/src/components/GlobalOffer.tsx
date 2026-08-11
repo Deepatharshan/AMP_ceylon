@@ -329,7 +329,7 @@ export default function GlobalOffer({ offer, autoOpen = true, onDismiss }: { off
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
               onClick={() => setIsOpen(true)}
-              className="fixed bottom-6 right-6 z-50 flex items-center justify-center p-4 rounded-full bg-[#3a081a] text-white shadow-xl hover:scale-110 hover:shadow-2xl transition-all duration-300"
+              className="fixed bottom-6 left-6 z-50 flex items-center justify-center p-4 rounded-full bg-[#3a081a] text-white shadow-xl hover:scale-110 hover:shadow-2xl transition-all duration-300"
               aria-label="View Offer"
             >
               <Gift size={24} className="animate-pulse" />
