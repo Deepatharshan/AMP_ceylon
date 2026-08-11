@@ -129,7 +129,7 @@ export default function AboutPage() {
                   alt="Mr. J.V. Udesh - Managing Director"
                   fill
                   sizes="256px"
-                  className="object-cover object-[center_30%] transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
               <h3 className="font-playfair text-2xl font-bold text-gray-900 mb-1 uppercase tracking-wide">Managing Director</h3>
