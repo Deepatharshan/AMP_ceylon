@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { X, Copy, Check, Gift, ChevronLeft } from 'lucide-react';
+import { X, Copy, Check, Gift, ChevronLeft, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function GlobalOffer({ offer, autoOpen = true, onDismiss }: { offer: any; autoOpen?: boolean; onDismiss?: () => void }) {
@@ -187,12 +187,13 @@ export default function GlobalOffer({ offer, autoOpen = true, onDismiss }: { off
                 
                 {/* Details Toggle Button for Campaign */}
                 {offer.type === 'CAMPAIGN' && (
-                  <div className="absolute bottom-6 left-6 z-20">
+                  <div className="absolute bottom-4 left-4 z-20">
                     <button 
                       onClick={() => setShowCampaignDetails(prev => !prev)}
-                      className="bg-black/80 backdrop-blur-md text-white border border-white/20 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-black transition-all flex items-center gap-2 shadow-xl"
+                      className="w-10 h-10 rounded-full bg-black/40 hover:bg-black/80 backdrop-blur-md text-white flex items-center justify-center transition-all shadow-lg border border-white/20"
+                      title={showCampaignDetails ? 'Hide Details' : 'View Details'}
                     >
-                      {showCampaignDetails ? 'Hide Details' : 'View Campaign Details'}
+                      <Info size={20} />
                     </button>
                   </div>
                 )}
