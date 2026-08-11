@@ -182,6 +182,8 @@ export default function GlobalOffer({ offer, autoOpen = true, onDismiss }: { off
                   src={offer.image_url || 'https://images.unsplash.com/photo-1563241598-646bc5683794?q=80&w=800&auto=format&fit=crop'} 
                   alt={offer.title}
                   fill
+                  priority={true}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                 />
                 
