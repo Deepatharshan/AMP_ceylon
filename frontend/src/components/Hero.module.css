@@ -26,14 +26,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem 1.5rem;
+  padding: 5rem 1.5rem 3rem; /* Increased top padding */
   background-color: #faf9f8;
   z-index: 10;
 }
 
 @media (min-width: 1024px) {
   .textContent {
-    padding: 6rem;
+    padding: 8rem 6rem 6rem; /* Increased top padding */
     justify-content: flex-start;
   }
 }
