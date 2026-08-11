@@ -47,7 +47,7 @@ export default function Hero() {
               playsInline 
               className="object-cover w-full h-full absolute inset-0"
             >
-              <source src="https://vjilhfyiupdvtscmwxbt.supabase.co/storage/v1/object/public/headernew1/headernew1_hq.mp4" type="video/mp4" />
+              <source src="/headernew1_hq_compressed.mp4" type="video/mp4" />
             </video>
           </motion.div>
         </div>
