@@ -92,6 +92,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://vjilhfyiupdvtscmwxbt.supabase.co" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://vjilhfyiupdvtscmwxbt.supabase.co" />
+      </head>
       <body className={`${inter.variable} ${playfair.variable} bg-floral-pattern`}>
         <SmoothScroll>
           {children}
