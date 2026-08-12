@@ -204,13 +204,13 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
   };
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
-    const { width, height } = e.currentTarget;
-    const crop = centerCrop(
-      makeAspectCrop({ unit: '%', width: 90 }, 4 / 5, width, height),
-      width,
-      height
-    );
-    setCrop(crop);
+    setCrop({
+      unit: '%',
+      width: 100,
+      height: 100,
+      x: 0,
+      y: 0
+    });
   }
 
   const getCroppedImg = async (image: HTMLImageElement, crop: PixelCrop): Promise<Blob | null> => {
