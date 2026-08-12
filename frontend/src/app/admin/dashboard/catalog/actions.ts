@@ -58,6 +58,25 @@ export async function saveProduct(prevState: any, formData: FormData) {
     business_line: businessLine,
   }
 
+  // Server-side validation for maximum 4 items
+  if (isFeaturedHome) {
+    let query = supabase.from('products').select('id', { count: 'exact', head: true }).eq('is_featured_home', true);
+    if (id) query = query.neq('id', id);
+    const { count } = await query;
+    if (count && count >= 4) {
+      return { success: false, message: 'Validation Error: You can only feature up to 4 items on the home page.' };
+    }
+  }
+
+  if (isNewCollection) {
+    let query = supabase.from('products').select('id', { count: 'exact', head: true }).eq('is_new_collection', true);
+    if (id) query = query.neq('id', id);
+    const { count } = await query;
+    if (count && count >= 4) {
+      return { success: false, message: 'Validation Error: You can only have up to 4 items in the New Arrivals list.' };
+    }
+  }
+
   let error;
   if (id) {
     const res = await supabase.from('products').update(productData).eq('id', id)

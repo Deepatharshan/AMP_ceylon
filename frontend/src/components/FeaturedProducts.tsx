@@ -22,16 +22,16 @@ export default async function FeaturedProducts() {
   }
 
   const allProducts = productsData || [];
-  let featuredProducts = allProducts.filter(p => p.is_featured_home);
-  let newArrivals = allProducts.filter(p => p.is_new_collection);
-
-  // Fallbacks if admin hasn't ticked any yet
-  if (featuredProducts.length === 0) {
-    featuredProducts = allProducts.slice(0, 8);
-  }
-  if (newArrivals.length === 0) {
-    newArrivals = allProducts.slice(0, 8);
-  }
+  // Construct the arrays: flagged items first, then everything else appended
+  let featuredProducts = [
+    ...allProducts.filter(p => p.is_featured_home),
+    ...allProducts.filter(p => !p.is_featured_home)
+  ];
+  
+  let newArrivals = [
+    ...allProducts.filter(p => p.is_new_collection),
+    ...allProducts.filter(p => !p.is_new_collection)
+  ];
 
   // Map to ShowcaseProduct format
   const mapToProp = (p: any) => ({
