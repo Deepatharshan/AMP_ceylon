@@ -84,13 +84,13 @@ export default function CategoryShowcase({
               <div key={product.id} className="flex flex-col h-full group items-start bg-white rounded-[2rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden">
                 <Link href={`/product/${product.slug}`} className="flex flex-col h-full block w-full text-left">
                   {/* Image Container */}
-                  <div className="w-full shrink-0 aspect-[4/5] bg-gradient-to-b from-[#fafafa] to-[#f4f4f6] relative flex items-center justify-center shadow-inner transition-transform duration-500 group-hover:scale-[1.02]">
+                  <div className="w-full shrink-0 aspect-[4/5] bg-white relative flex items-center justify-center shadow-inner transition-transform duration-500 group-hover:scale-[1.02]">
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.02] transition-colors duration-500 z-10" />
                     <Image 
                       src={product.image}
                       alt={product.name}
                       fill
-                      className="object-cover transition-all duration-500 group-hover:scale-105"
+                      className="object-contain p-4 transition-all duration-500 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 25vw"
                     />
                     {/* Banner tags overlay */}
