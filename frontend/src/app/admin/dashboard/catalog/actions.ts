@@ -31,6 +31,7 @@ export async function saveProduct(prevState: any, formData: FormData) {
   const colors = colorsRaw ? colorsRaw.split(',').map(c => c.trim()).filter(Boolean) : []
 
   const isTopSeller = formData.get('is_top_seller') === 'on'
+  const isFeaturedHome = formData.get('is_featured_home') === 'on'
   const isNewCollection = formData.get('is_new_collection') === 'on'
   const isLimitedProduct = formData.get('is_limited_product') === 'on'
   
@@ -45,6 +46,7 @@ export async function saveProduct(prevState: any, formData: FormData) {
     materials,
     colors,
     is_top_seller: isTopSeller,
+    is_featured_home: isFeaturedHome,
     is_new_collection: isNewCollection,
     is_limited_product: isLimitedProduct,
     image_url: imageUrl,

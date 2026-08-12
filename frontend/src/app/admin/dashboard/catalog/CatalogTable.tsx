@@ -20,6 +20,7 @@ interface Product {
   active_count?: number;
   materials?: string[];
   colors?: string[];
+  is_featured_home?: boolean;
 }
 
 const getColorHex = (colorName: string): string => {
@@ -236,6 +237,26 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
     setDeleteConfirmId(null);
   };
 
+  const handleToggleFeaturedHome = async (id: string, currentVal: boolean) => {
+    const newVal = !currentVal;
+    
+    // Optimistic update
+    setProducts(products.map(p => p.id === id ? { ...p, is_featured_home: newVal } : p));
+    
+    const { error } = await supabase
+      .from('products')
+      .update({ is_featured_home: newVal })
+      .eq('id', id);
+
+    if (error) {
+      // Revert on error
+      setProducts(products.map(p => p.id === id ? { ...p, is_featured_home: currentVal } : p));
+      showToast('Failed to update featured status: ' + error.message, 'error');
+    } else {
+      showToast(`Product ${newVal ? 'added to' : 'removed from'} home page featured list.`, 'success');
+    }
+  };
+
   const filteredProducts = products.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.sku.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
@@ -298,6 +319,7 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
               <th className="px-6 py-4 font-semibold">Item Code</th>
               <th className="px-6 py-4 font-semibold">Category</th>
               <th className="px-6 py-4 font-semibold">Price (USD)</th>
+              <th className="px-6 py-4 font-semibold text-center w-24">Featured</th>
               <th className="px-6 py-4 font-semibold text-center w-28">Actions</th>
             </tr>
           </thead>
@@ -376,6 +398,19 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
                   </td>
                   <td className="px-6 py-4 font-semibold text-[#3a081a]">
                     ${Number(product.price).toFixed(2)}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center justify-center">
+                      <button
+                        onClick={() => handleToggleFeaturedHome(product.id, !!product.is_featured_home)}
+                        className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${product.is_featured_home ? 'bg-emerald-600' : 'bg-gray-200'}`}
+                        title={product.is_featured_home ? 'Remove from Home Page' : 'Feature on Home Page'}
+                      >
+                        <span
+                          className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${product.is_featured_home ? 'translate-x-4' : 'translate-x-1'}`}
+                        />
+                      </button>
+                    </div>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-center gap-4">
