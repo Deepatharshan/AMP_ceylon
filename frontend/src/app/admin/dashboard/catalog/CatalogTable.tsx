@@ -20,6 +20,10 @@ interface Product {
   active_count?: number;
   materials?: string[];
   colors?: string[];
+  is_featured_home?: boolean;
+  is_new_collection?: boolean;
+  is_top_seller?: boolean;
+  is_limited_product?: boolean;
 }
 
 const getColorHex = (colorName: string): string => {
@@ -236,6 +240,46 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
     setDeleteConfirmId(null);
   };
 
+  const handleToggleFeaturedHome = async (id: string, currentVal: boolean) => {
+    const newVal = !currentVal;
+    
+    // Optimistic update
+    setProducts(products.map(p => p.id === id ? { ...p, is_featured_home: newVal } : p));
+    
+    const { error } = await supabase
+      .from('products')
+      .update({ is_featured_home: newVal })
+      .eq('id', id);
+
+    if (error) {
+      // Revert on error
+      setProducts(products.map(p => p.id === id ? { ...p, is_featured_home: currentVal } : p));
+      showToast('Failed to update featured status: ' + error.message, 'error');
+    } else {
+      showToast(`Product ${newVal ? 'added to' : 'removed from'} home page featured list.`, 'success');
+    }
+  };
+
+  const handleToggleNewCollection = async (id: string, currentVal: boolean) => {
+    const newVal = !currentVal;
+    
+    // Optimistic update
+    setProducts(products.map(p => p.id === id ? { ...p, is_new_collection: newVal } : p));
+    
+    const { error } = await supabase
+      .from('products')
+      .update({ is_new_collection: newVal })
+      .eq('id', id);
+
+    if (error) {
+      // Revert on error
+      setProducts(products.map(p => p.id === id ? { ...p, is_new_collection: currentVal } : p));
+      showToast('Failed to update New Arrival status: ' + error.message, 'error');
+    } else {
+      showToast(`Product ${newVal ? 'added to' : 'removed from'} New Arrivals list.`, 'success');
+    }
+  };
+
   const filteredProducts = products.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.sku.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
@@ -298,6 +342,8 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
               <th className="px-6 py-4 font-semibold">Item Code</th>
               <th className="px-6 py-4 font-semibold">Category</th>
               <th className="px-6 py-4 font-semibold">Price (USD)</th>
+              <th className="px-6 py-4 font-semibold text-center w-24">Featured</th>
+              <th className="px-6 py-4 font-semibold text-center w-24">New Arrival</th>
               <th className="px-6 py-4 font-semibold text-center w-28">Actions</th>
             </tr>
           </thead>
@@ -321,6 +367,26 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
                   </td>
                   <td className="px-6 py-4">
                     <div className="font-bold text-gray-900">{product.name}</div>
+                    {/* Tags */}
+                    {(product.is_top_seller || product.is_new_collection || product.is_limited_product) && (
+                      <div className="flex flex-wrap gap-1.5 mt-1.5 mb-1">
+                        {product.is_top_seller && (
+                          <span className="bg-[#3a081a] text-[#f5ebd3] text-[8px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded shadow-sm">
+                            Top Seller
+                          </span>
+                        )}
+                        {product.is_new_collection && (
+                          <span className="bg-emerald-600 text-white text-[8px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded shadow-sm">
+                            New Collection
+                          </span>
+                        )}
+                        {product.is_limited_product && (
+                          <span className="bg-amber-600 text-white text-[8px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded shadow-sm">
+                            Limited Edition
+                          </span>
+                        )}
+                      </div>
+                    )}
                     {product.description && (
                       <div className="text-xs text-gray-400 max-w-sm line-clamp-1 mt-0.5" title={product.description}>
                         {product.description}
@@ -378,6 +444,32 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
                     ${Number(product.price).toFixed(2)}
                   </td>
                   <td className="px-6 py-4">
+                    <div className="flex items-center justify-center">
+                      <button
+                        onClick={() => handleToggleFeaturedHome(product.id, !!product.is_featured_home)}
+                        className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${product.is_featured_home ? 'bg-emerald-600' : 'bg-gray-200'}`}
+                        title={product.is_featured_home ? 'Remove from Home Page' : 'Feature on Home Page'}
+                      >
+                        <span
+                          className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${product.is_featured_home ? 'translate-x-4' : 'translate-x-1'}`}
+                        />
+                      </button>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center justify-center">
+                      <button
+                        onClick={() => handleToggleNewCollection(product.id, !!product.is_new_collection)}
+                        className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${product.is_new_collection ? 'bg-emerald-600' : 'bg-gray-200'}`}
+                        title={product.is_new_collection ? 'Remove from New Arrivals' : 'Add to New Arrivals'}
+                      >
+                        <span
+                          className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${product.is_new_collection ? 'translate-x-4' : 'translate-x-1'}`}
+                        />
+                      </button>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
                     <div className="flex items-center justify-center gap-4">
                       {/* View details button */}
                       <button 
@@ -417,27 +509,25 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
       </div>
       <div className="p-4 border-t border-[#ececec] bg-gray-50/50 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 rounded-b gap-4">
         <span>Showing {paginatedProducts.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to {Math.min(currentPage * itemsPerPage, filteredProducts.length)} of {filteredProducts.length} results</span>
-        {totalPages > 1 && (
-          <div className="flex items-center gap-1">
-            <button 
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-3 py-1.5 border border-gray-200 rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
-            >
-              Previous
-            </button>
-            <span className="px-3 py-1.5 font-medium text-gray-700">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button 
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1.5 border border-gray-200 rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
-            >
-              Next
-            </button>
-          </div>
-        )}
+        <div className="flex items-center gap-1">
+          <button 
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-1.5 border border-gray-200 rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
+          >
+            Previous
+          </button>
+          <span className="px-3 py-1.5 font-medium text-gray-700">
+            Page {currentPage} of {Math.max(1, totalPages)}
+          </span>
+          <button 
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.max(1, totalPages)))}
+            disabled={currentPage === Math.max(1, totalPages)}
+            className="px-3 py-1.5 border border-gray-200 rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
+          >
+            Next
+          </button>
+        </div>
       </div>
 
       {/* Product Details Preview Modal */}

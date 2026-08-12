@@ -18,6 +18,7 @@ interface Product {
   materials: string[];
   colors: string[];
   is_top_seller: boolean;
+  is_featured_home: boolean;
   is_new_collection: boolean;
   is_limited_product: boolean;
   image_url: string;
@@ -38,6 +39,7 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
     materials: [],
     colors: [],
     is_top_seller: false,
+    is_featured_home: false,
     is_new_collection: false,
     is_limited_product: false,
     image_url: '',
@@ -114,6 +116,7 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
 
   // Checkbox Visibility States
   const [isTopSeller, setIsTopSeller] = useState(!!(product as any)?.is_top_seller);
+  const [isFeaturedHome, setIsFeaturedHome] = useState(!!(product as any)?.is_featured_home);
   const [isNewCollection, setIsNewCollection] = useState(!!(product as any)?.is_new_collection);
   const [isLimitedProduct, setIsLimitedProduct] = useState(!!(product as any)?.is_limited_product);
 
@@ -168,6 +171,7 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
         setColors(cols);
 
         setIsTopSeller(!!prod.is_top_seller);
+        setIsFeaturedHome(!!prod.is_featured_home);
         setIsNewCollection(!!prod.is_new_collection);
         setIsLimitedProduct(!!prod.is_limited_product);
 
@@ -362,6 +366,7 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
       }
 
       if (isTopSeller !== !!orig.is_top_seller) changedFields.push('TOP SELLER BANNER');
+      if (isFeaturedHome !== !!orig.is_featured_home) changedFields.push('FEATURED ON HOME PAGE');
       if (isNewCollection !== !!orig.is_new_collection) changedFields.push('NEW COLLECTION BANNER');
       if (isLimitedProduct !== !!orig.is_limited_product) changedFields.push('LIMITED PRODUCT BANNER');
 
@@ -383,6 +388,7 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
 
       // Include visibility defaults
       formData.append('is_top_seller', isTopSeller ? 'on' : 'off');
+      formData.append('is_featured_home', isFeaturedHome ? 'on' : 'off');
       formData.append('is_new_collection', isNewCollection ? 'on' : 'off');
       formData.append('is_limited_product', isLimitedProduct ? 'on' : 'off');
 
@@ -660,8 +666,22 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
                 className="accent-[#3a081a] w-4 h-4"
               />
               <div>
-                <p className="text-xs font-bold text-gray-800">Top Seller / Home Page</p>
-                <p className="text-[10px] text-gray-500">Showcase 8 products on Home</p>
+                <p className="text-xs font-bold text-gray-800">Top Seller</p>
+                <p className="text-[10px] text-gray-500">Badge on product cards</p>
+              </div>
+            </label>
+
+            <label className="flex items-center gap-3 bg-emerald-50 p-4 border border-emerald-200 rounded cursor-pointer hover:bg-emerald-100 transition-colors">
+              <input 
+                type="checkbox" 
+                name="is_featured_home" 
+                checked={isFeaturedHome}
+                onChange={(e) => setIsFeaturedHome(e.target.checked)}
+                className="accent-emerald-600 w-4 h-4"
+              />
+              <div>
+                <p className="text-xs font-bold text-emerald-900">Featured on Home</p>
+                <p className="text-[10px] text-emerald-700">Showcase in the Home Carousel</p>
               </div>
             </label>
 
@@ -964,6 +984,7 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
             materials,
             colors,
             is_top_seller: isTopSeller,
+            is_featured_home: isFeaturedHome,
             is_new_collection: isNewCollection,
             is_limited_product: isLimitedProduct,
             imageUrls: previewUrlsForModal,

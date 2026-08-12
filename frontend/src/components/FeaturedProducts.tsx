@@ -7,71 +7,49 @@ import CategoryShowcase from './CategoryShowcase';
 export default async function FeaturedProducts() {
   const supabase = await createClient();
 
-  // First, check the total count of active products
-  const { count, error: countError } = await supabase
+  // Fetch all active products, sorting by is_featured_home (true first) then by created_at
+  const { data: productsData, error: fetchError } = await supabase
     .from('products')
-    .select('*', { count: 'exact', head: true })
+    .select('*')
     .or('business_line.eq.FLORAL,business_line.is.null')
-    .eq('is_active', true);
+    .eq('is_active', true)
+    .order('is_featured_home', { ascending: false, nullsFirst: false })
+    .order('created_at', { ascending: false });
 
-  if (countError) {
-    console.error('Error fetching products count:', countError);
+  if (fetchError) {
+    console.error('Error fetching featured products:', fetchError);
     return null;
   }
 
-  const totalProducts = count || 0;
-  let productsToDisplay: any[] = [];
+  const allProducts = productsData || [];
+  // Featured products: flagged items first, then everything else appended so users can browse all products
+  let featuredProducts = [
+    ...allProducts.filter(p => p.is_featured_home),
+    ...allProducts.filter(p => !p.is_featured_home)
+  ];
+  
+  // New Arrivals: STRICTLY only include items that actually have the flag. No padding.
+  let newArrivals = allProducts.filter(p => p.is_new_collection);
 
-  if (totalProducts <= 6) {
-    // If 6 or fewer products, just show them all
-    const { data } = await supabase
-      .from('products')
-      .select('*')
-      .or('business_line.eq.FLORAL,business_line.is.null')
-      .eq('is_active', true)
-      .order('created_at', { ascending: false });
-    
-    productsToDisplay = data || [];
-  } else {
-    // Fetch products marked for homepage (using is_top_seller as the flag)
-    const { data: featuredData } = await supabase
-      .from('products')
-      .select('*')
-      .or('business_line.eq.FLORAL,business_line.is.null')
-      .eq('is_active', true)
-      .eq('is_top_seller', true)
-      .order('created_at', { ascending: false })
-      .limit(8);
+  // Map to ShowcaseProduct format
+  const mapToProp = (p: any) => ({
+    id: p.id,
+    name: p.name,
+    image: p.image_urls?.[0] || p.image_url || '/placeholder-product.jpg',
+    price: p.price,
+    slug: p.id,
+    description: p.description || '',
+    colors: p.colors || [],
+    is_top_seller: p.is_top_seller,
+    is_new_collection: p.is_new_collection,
+    is_limited_product: p.is_limited_product
+  });
 
-    productsToDisplay = featuredData || [];
-
-    // If less than 8 are checked, pad with other latest products
-    if (productsToDisplay.length < 8) {
-      const remainingSlots = 8 - productsToDisplay.length;
-      const existingIds = productsToDisplay.map(p => p.id);
-
-      let query = supabase
-        .from('products')
-        .select('*')
-        .or('business_line.eq.FLORAL,business_line.is.null')
-        .eq('is_active', true)
-        .order('created_at', { ascending: false })
-        .limit(remainingSlots);
-
-      if (existingIds.length > 0) {
-        // Exclude the ones we already fetched
-        query = query.not('id', 'in', `(${existingIds.join(',')})`);
-      }
-
-      const { data: paddingData } = await query;
-      if (paddingData) {
-        productsToDisplay = [...productsToDisplay, ...paddingData];
-      }
-    }
-  }
+  const featuredToDisplay = featuredProducts.map(mapToProp);
+  const newArrivalsToDisplay = newArrivals.map(mapToProp);
 
   // If there are absolutely no products, don't render the section
-  if (productsToDisplay.length === 0) {
+  if (allProducts.length === 0) {
     return null;
   }
 
@@ -89,20 +67,21 @@ export default async function FeaturedProducts() {
 
       <ScrollFadeWrapper delay={200} className="w-full">
         <CategoryShowcase
-          categoryLink="/collections"
-          featuredImage={productsToDisplay[0]?.image_urls?.[0] || productsToDisplay[0]?.image_url || 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=1600&auto=format&fit=crop'}
-          products={productsToDisplay.map(p => ({
-            id: p.id,
-            name: p.name,
-            image: p.image_urls?.[0] || p.image_url || '/placeholder-product.jpg',
-            price: p.price,
-            slug: p.id,
-            description: p.description || '',
-            colors: p.colors || [],
-            is_top_seller: p.is_top_seller,
-            is_new_collection: p.is_new_collection,
-            is_limited_product: p.is_limited_product
-          }))}
+          products={featuredToDisplay}
+        />
+      </ScrollFadeWrapper>
+
+      {/* New Arrivals Section */}
+      <ScrollFadeWrapper className={styles.header} delay={100}>
+        <div style={{ marginTop: '2rem' }}>
+          <p className={styles.preTitle}>Fresh Additions</p>
+          <h2 className={styles.title}>New Arrivals</h2>
+        </div>
+      </ScrollFadeWrapper>
+
+      <ScrollFadeWrapper delay={300} className="w-full">
+        <CategoryShowcase
+          products={newArrivalsToDisplay}
         />
       </ScrollFadeWrapper>
     </section>
