@@ -22,16 +22,9 @@ export default async function FeaturedProducts() {
   }
 
   const allProducts = productsData || [];
-  // Construct the arrays: flagged items first, then everything else appended so arrows always work
-  let featuredProducts = [
-    ...allProducts.filter(p => p.is_featured_home),
-    ...allProducts.filter(p => !p.is_featured_home)
-  ];
-  
-  let newArrivals = [
-    ...allProducts.filter(p => p.is_new_collection),
-    ...allProducts.filter(p => !p.is_new_collection)
-  ];
+  // Construct the arrays: STRICTLY only include items that actually have the flag. No padding.
+  let featuredProducts = allProducts.filter(p => p.is_featured_home);
+  let newArrivals = allProducts.filter(p => p.is_new_collection);
 
   // Map to ShowcaseProduct format
   const mapToProp = (p: any) => ({
