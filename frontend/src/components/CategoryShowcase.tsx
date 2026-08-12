@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -31,8 +31,19 @@ export default function CategoryShowcase({
   categoryLink,
   products
 }: CategoryShowcaseProps) {
-  // Take up to 8 products for the grid
-  const displayProducts = products.slice(0, 8);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 4;
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+
+  const displayProducts = products.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
+  const handleNext = () => {
+    setCurrentPage((prev) => (prev + 1) % totalPages);
+  };
+
+  const handlePrev = () => {
+    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+  };
 
   // Helper to map color names to hex codes if needed, though Tailwind supports many standard names.
   const getColorHex = (colorName: string) => {
@@ -71,10 +82,34 @@ export default function CategoryShowcase({
               </Link>
             )}
           </div>
+            <div className="flex items-center justify-center gap-4 mt-8">
+              {totalPages > 1 && (
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={handlePrev}
+                    className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-[#3a081a] hover:text-white hover:border-[#3a081a] transition-colors"
+                    aria-label="Previous Products"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <span className="text-xs font-bold text-gray-400 min-w-[60px] text-center">
+                    {currentPage + 1} / {totalPages}
+                  </span>
+                  <button 
+                    onClick={handleNext}
+                    className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-[#3a081a] hover:text-white hover:border-[#3a081a] transition-colors"
+                    aria-label="Next Products"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         )}
 
         {/* Clean Static Grid Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12 min-h-[500px]">
           {displayProducts.map((product) => {
             const hasColors = product.colors && product.colors.length > 0;
             const displayColors = hasColors ? product.colors!.slice(0, 3) : [];

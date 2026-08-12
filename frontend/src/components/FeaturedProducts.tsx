@@ -7,68 +7,21 @@ import CategoryShowcase from './CategoryShowcase';
 export default async function FeaturedProducts() {
   const supabase = await createClient();
 
-  // First, check the total count of active products
-  const { count, error: countError } = await supabase
+  // Fetch all active products, sorting by is_featured_home (true first) then by created_at
+  const { data: productsData, error: fetchError } = await supabase
     .from('products')
-    .select('*', { count: 'exact', head: true })
+    .select('*')
     .or('business_line.eq.FLORAL,business_line.is.null')
-    .eq('is_active', true);
+    .eq('is_active', true)
+    .order('is_featured_home', { ascending: false, nullsFirst: false })
+    .order('created_at', { ascending: false });
 
-  if (countError) {
-    console.error('Error fetching products count:', countError);
+  if (fetchError) {
+    console.error('Error fetching featured products:', fetchError);
     return null;
   }
 
-  const totalProducts = count || 0;
-  let productsToDisplay: any[] = [];
-
-  if (totalProducts <= 6) {
-    // If 6 or fewer products, just show them all
-    const { data } = await supabase
-      .from('products')
-      .select('*')
-      .or('business_line.eq.FLORAL,business_line.is.null')
-      .eq('is_active', true)
-      .order('created_at', { ascending: false });
-    
-    productsToDisplay = data || [];
-  } else {
-    // Fetch products marked for homepage (using is_top_seller as the flag)
-    const { data: featuredData } = await supabase
-      .from('products')
-      .select('*')
-      .or('business_line.eq.FLORAL,business_line.is.null')
-      .eq('is_active', true)
-      .eq('is_top_seller', true)
-      .order('created_at', { ascending: false })
-      .limit(8);
-
-    productsToDisplay = featuredData || [];
-
-    // If less than 8 are checked, pad with other latest products
-    if (productsToDisplay.length < 8) {
-      const remainingSlots = 8 - productsToDisplay.length;
-      const existingIds = productsToDisplay.map(p => p.id);
-
-      let query = supabase
-        .from('products')
-        .select('*')
-        .or('business_line.eq.FLORAL,business_line.is.null')
-        .eq('is_active', true)
-        .order('created_at', { ascending: false })
-        .limit(remainingSlots);
-
-      if (existingIds.length > 0) {
-        // Exclude the ones we already fetched
-        query = query.not('id', 'in', `(${existingIds.join(',')})`);
-      }
-
-      const { data: paddingData } = await query;
-      if (paddingData) {
-        productsToDisplay = [...productsToDisplay, ...paddingData];
-      }
-    }
-  }
+  const productsToDisplay = productsData || [];
 
   // If there are absolutely no products, don't render the section
   if (productsToDisplay.length === 0) {
