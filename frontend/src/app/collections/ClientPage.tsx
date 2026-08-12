@@ -232,12 +232,12 @@ function CollectionsMain() {
                     key={product.id} 
                     className="group flex flex-col bg-white border border-[#ececec] p-4 rounded shadow-sm hover:shadow transition-shadow cursor-pointer"
                   >
-                    <div className="relative aspect-square mb-6 overflow-hidden bg-gray-100 rounded">
+                    <div className="relative aspect-square mb-6 overflow-hidden bg-white rounded">
                       <Image 
                         src={product.image_url || 'https://images.unsplash.com/photo-1562690868-60bbe7293e94?q=80&w=800&auto=format&fit=crop'} 
                         alt={product.name}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-102"
+                        className="object-contain p-4 transition-transform duration-700 group-hover:scale-102"
                       />
                       {/* Banner tags overlay */}
                       <div className="absolute top-2 left-2 flex flex-col gap-1.5 z-10">

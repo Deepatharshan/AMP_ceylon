@@ -253,7 +253,7 @@ export default function ProductDetailPage({
 
             {/* Main Image Display */}
             <div className="flex-1 aspect-[4/5] bg-white border border-gray-200 rounded overflow-hidden relative shadow-sm group">
-              <Image src={activeImage} alt={product.name} fill sizes="(max-width: 768px) 100vw, 50vw" priority className="object-cover transition-transform duration-700 group-hover:scale-105" />
+              <Image src={activeImage} alt={product.name} fill sizes="(max-width: 768px) 100vw, 50vw" priority className="object-contain p-4 transition-transform duration-700 group-hover:scale-105" />
               
               <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
                 {product.is_top_seller && (
