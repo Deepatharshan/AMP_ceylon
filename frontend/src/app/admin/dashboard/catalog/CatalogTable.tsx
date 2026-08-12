@@ -509,27 +509,25 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
       </div>
       <div className="p-4 border-t border-[#ececec] bg-gray-50/50 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 rounded-b gap-4">
         <span>Showing {paginatedProducts.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to {Math.min(currentPage * itemsPerPage, filteredProducts.length)} of {filteredProducts.length} results</span>
-        {totalPages > 1 && (
-          <div className="flex items-center gap-1">
-            <button 
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-3 py-1.5 border border-gray-200 rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
-            >
-              Previous
-            </button>
-            <span className="px-3 py-1.5 font-medium text-gray-700">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button 
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1.5 border border-gray-200 rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
-            >
-              Next
-            </button>
-          </div>
-        )}
+        <div className="flex items-center gap-1">
+          <button 
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-1.5 border border-gray-200 rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
+          >
+            Previous
+          </button>
+          <span className="px-3 py-1.5 font-medium text-gray-700">
+            Page {currentPage} of {Math.max(1, totalPages)}
+          </span>
+          <button 
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.max(1, totalPages)))}
+            disabled={currentPage === Math.max(1, totalPages)}
+            className="px-3 py-1.5 border border-gray-200 rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
+          >
+            Next
+          </button>
+        </div>
       </div>
 
       {/* Product Details Preview Modal */}
