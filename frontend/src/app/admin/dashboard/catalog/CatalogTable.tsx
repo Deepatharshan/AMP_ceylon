@@ -21,6 +21,7 @@ interface Product {
   materials?: string[];
   colors?: string[];
   is_featured_home?: boolean;
+  is_new_collection?: boolean;
 }
 
 const getColorHex = (colorName: string): string => {
@@ -265,6 +266,34 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
     }
   };
 
+  const handleToggleNewCollection = async (id: string, currentVal: boolean) => {
+    const newVal = !currentVal;
+    
+    if (newVal) {
+      const currentNewCount = products.filter(p => p.is_new_collection).length;
+      if (currentNewCount >= 4) {
+        showToast('You can only feature up to 4 items in the New Arrivals list.', 'error');
+        return;
+      }
+    }
+
+    // Optimistic update
+    setProducts(products.map(p => p.id === id ? { ...p, is_new_collection: newVal } : p));
+    
+    const { error } = await supabase
+      .from('products')
+      .update({ is_new_collection: newVal })
+      .eq('id', id);
+
+    if (error) {
+      // Revert on error
+      setProducts(products.map(p => p.id === id ? { ...p, is_new_collection: currentVal } : p));
+      showToast('Failed to update New Arrival status: ' + error.message, 'error');
+    } else {
+      showToast(`Product ${newVal ? 'added to' : 'removed from'} New Arrivals list.`, 'success');
+    }
+  };
+
   const filteredProducts = products.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.sku.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
@@ -328,6 +357,7 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
               <th className="px-6 py-4 font-semibold">Category</th>
               <th className="px-6 py-4 font-semibold">Price (USD)</th>
               <th className="px-6 py-4 font-semibold text-center w-24">Featured</th>
+              <th className="px-6 py-4 font-semibold text-center w-24">New Arrival</th>
               <th className="px-6 py-4 font-semibold text-center w-28">Actions</th>
             </tr>
           </thead>
@@ -416,6 +446,19 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
                       >
                         <span
                           className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${product.is_featured_home ? 'translate-x-4' : 'translate-x-1'}`}
+                        />
+                      </button>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center justify-center">
+                      <button
+                        onClick={() => handleToggleNewCollection(product.id, !!product.is_new_collection)}
+                        className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${product.is_new_collection ? 'bg-emerald-600' : 'bg-gray-200'}`}
+                        title={product.is_new_collection ? 'Remove from New Arrivals' : 'Add to New Arrivals'}
+                      >
+                        <span
+                          className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${product.is_new_collection ? 'translate-x-4' : 'translate-x-1'}`}
                         />
                       </button>
                     </div>
