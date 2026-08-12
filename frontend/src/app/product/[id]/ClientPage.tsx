@@ -187,7 +187,7 @@ export default function ProductDetailPage({
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#fcfbf9] text-[#333] flex flex-col justify-between">
+      <main className="min-h-screen bg-transparent text-[#333] flex flex-col justify-between">
         <div className="bg-[#3a081a] h-32 w-full relative">
           <Navbar />
         </div>
@@ -199,7 +199,7 @@ export default function ProductDetailPage({
 
   if (!product) {
     return (
-      <main className="min-h-screen bg-[#fcfbf9] text-[#333] flex flex-col justify-between">
+      <main className="min-h-screen bg-transparent text-[#333] flex flex-col justify-between">
         <div className="bg-[#3a081a] h-32 w-full relative">
           <Navbar />
         </div>
@@ -214,7 +214,7 @@ export default function ProductDetailPage({
     : (product.image_url ? [product.image_url] : ['https://images.unsplash.com/photo-1562690868-60bbe7293e94?q=80&w=800&auto=format&fit=crop']);
 
   return (
-    <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
+    <main className="min-h-screen bg-transparent text-[#333]">
       <div className="bg-transparent w-full relative" style={{ height: 'calc(5rem + var(--banner-height, 0px))' }}>
         <Navbar />
       </div>
