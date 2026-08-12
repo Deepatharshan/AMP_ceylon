@@ -82,31 +82,31 @@ export default function CategoryShowcase({
               </Link>
             )}
           </div>
-            <div className="flex items-center justify-center gap-4 mt-8">
-              {totalPages > 1 && (
-                <div className="flex items-center gap-2">
-                  <button 
-                    onClick={handlePrev}
-                    className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-[#3a081a] hover:text-white hover:border-[#3a081a] transition-colors"
-                    aria-label="Previous Products"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
-                  </button>
-                  <span className="text-xs font-bold text-gray-400 min-w-[60px] text-center">
-                    {currentPage + 1} / {totalPages}
-                  </span>
-                  <button 
-                    onClick={handleNext}
-                    className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-[#3a081a] hover:text-white hover:border-[#3a081a] transition-colors"
-                    aria-label="Next Products"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
         )}
+
+        <div className="flex items-center justify-center gap-4 mb-8">
+          {totalPages > 1 && (
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={handlePrev}
+                className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-[#3a081a] hover:text-white hover:border-[#3a081a] transition-colors"
+                aria-label="Previous Products"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <span className="text-xs font-bold text-gray-400 min-w-[60px] text-center">
+                {currentPage + 1} / {totalPages}
+              </span>
+              <button 
+                onClick={handleNext}
+                className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-[#3a081a] hover:text-white hover:border-[#3a081a] transition-colors"
+                aria-label="Next Products"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Clean Static Grid Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12 min-h-[500px]">
