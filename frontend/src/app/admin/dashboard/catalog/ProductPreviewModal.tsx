@@ -15,6 +15,7 @@ interface ProductPreviewModalProps {
     materials: string;
     colors: string;
     is_top_seller: boolean;
+    is_featured_home?: boolean;
     is_new_collection: boolean;
     is_limited_product: boolean;
     imageUrls: string[];
