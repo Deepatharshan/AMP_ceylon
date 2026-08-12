@@ -404,30 +404,6 @@ export default function ProductDetailPage({
           </div>
         </div>
 
-        {/* Technical Specifications */}
-        <div className="mb-20 text-left">
-          <h3 className="text-lg font-bold text-[#3a081a] uppercase tracking-wider mb-6 border-b border-gray-100 pb-2" style={{ fontFamily: 'var(--font-playfair)' }}>
-            Technical Specifications
-          </h3>
-          <div className="border border-[#ececec] rounded bg-white p-6 md:p-8">
-            <table className="w-full text-xs text-gray-600">
-              <tbody>
-                <tr className="border-b border-gray-100">
-                  <td className="py-4 font-semibold uppercase tracking-wider text-gray-400 w-1/3 md:w-1/4">Units Available</td>
-                  <td className="py-4 text-gray-800 font-medium">{product.stock_count !== undefined ? `${product.stock_count} Units` : '0 Units'}</td>
-                </tr>
-                <tr className="text-left">
-                  <td className="py-4 font-semibold uppercase tracking-wider text-gray-400 w-1/3 md:w-1/4">Colors Available</td>
-                  <td className="py-4 text-gray-800 font-medium">
-                    {Array.isArray(product.colors)
-                      ? product.colors.join(', ')
-                      : (typeof product.colors === 'string' ? product.colors : 'Standard Finishes')}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
 
         {/* Related Collections */}
         {relatedProducts.length > 0 && (
