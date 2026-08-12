@@ -114,7 +114,7 @@ export default function ProductPreviewModal({ productData, onClose }: ProductPre
                             activeImage === imgUrl ? 'border-[#3a081a] ring-1 ring-[#3a081a]' : 'border-gray-200 hover:border-gray-400'
                           }`}
                         >
-                          <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="object-cover w-full h-full" />
+                          <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="object-contain p-1 w-full h-full" />
                         </button>
                       ))}
                     </div>
@@ -122,7 +122,7 @@ export default function ProductPreviewModal({ productData, onClose }: ProductPre
 
                   {/* Main Image Display */}
                   <div className="flex-1 aspect-[4/5] bg-white border border-gray-200 rounded overflow-hidden relative shadow-sm group">
-                    <img src={activeImage} alt={productData.name} className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105" />
+                    <img src={activeImage} alt={productData.name} className="object-contain p-4 w-full h-full transition-transform duration-700 group-hover:scale-105" />
                     
                     <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
                       {productData.is_top_seller && (
@@ -232,8 +232,8 @@ export default function ProductPreviewModal({ productData, onClose }: ProductPre
                 
                 {/* Dummy Product 1 */}
                 <div className="group flex flex-col bg-white border border-[#ececec] p-4 rounded shadow-sm opacity-40 grayscale pointer-events-none">
-                  <div className="relative aspect-square mb-6 overflow-hidden bg-gray-100 rounded">
-                    <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=800&auto=format&fit=crop" className="object-cover w-full h-full" alt="dummy" />
+                  <div className="relative aspect-square mb-6 overflow-hidden bg-white rounded">
+                    <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=800&auto=format&fit=crop" className="object-contain p-4 w-full h-full" alt="dummy" />
                   </div>
                   <div className="flex flex-col flex-1">
                     <h4 className="font-bold text-base text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>Previous Product</h4>
@@ -248,8 +248,8 @@ export default function ProductPreviewModal({ productData, onClose }: ProductPre
                     Currently Editing
                   </div>
                   
-                  <div className="relative aspect-square mb-6 overflow-hidden bg-gray-100 rounded border border-gray-100">
-                    <img src={activeImage} alt={productData.name} className="object-cover w-full h-full" />
+                  <div className="relative aspect-square mb-6 overflow-hidden bg-white rounded border border-gray-100">
+                    <img src={activeImage} alt={productData.name} className="object-contain p-4 w-full h-full" />
                     
                     {/* Tags */}
                     <div className="absolute top-2 left-2 flex flex-col gap-1.5 z-10">
@@ -286,8 +286,8 @@ export default function ProductPreviewModal({ productData, onClose }: ProductPre
 
                 {/* Dummy Product 2 */}
                 <div className="group flex flex-col bg-white border border-[#ececec] p-4 rounded shadow-sm opacity-40 grayscale pointer-events-none hidden xl:flex">
-                  <div className="relative aspect-square mb-6 overflow-hidden bg-gray-100 rounded">
-                    <img src="https://images.unsplash.com/photo-1507290439931-a861b5a38200?q=80&w=800&auto=format&fit=crop" className="object-cover w-full h-full" alt="dummy" />
+                  <div className="relative aspect-square mb-6 overflow-hidden bg-white rounded">
+                    <img src="https://images.unsplash.com/photo-1507290439931-a861b5a38200?q=80&w=800&auto=format&fit=crop" className="object-contain p-4 w-full h-full" alt="dummy" />
                   </div>
                   <div className="flex flex-col flex-1">
                     <h4 className="font-bold text-base text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>Next Product</h4>
