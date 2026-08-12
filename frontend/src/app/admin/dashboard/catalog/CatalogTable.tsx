@@ -22,6 +22,8 @@ interface Product {
   colors?: string[];
   is_featured_home?: boolean;
   is_new_collection?: boolean;
+  is_top_seller?: boolean;
+  is_limited_product?: boolean;
 }
 
 const getColorHex = (colorName: string): string => {
@@ -365,6 +367,26 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
                   </td>
                   <td className="px-6 py-4">
                     <div className="font-bold text-gray-900">{product.name}</div>
+                    {/* Tags */}
+                    {(product.is_top_seller || product.is_new_collection || product.is_limited_product) && (
+                      <div className="flex flex-wrap gap-1.5 mt-1.5 mb-1">
+                        {product.is_top_seller && (
+                          <span className="bg-[#3a081a] text-[#f5ebd3] text-[8px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded shadow-sm">
+                            Top Seller
+                          </span>
+                        )}
+                        {product.is_new_collection && (
+                          <span className="bg-emerald-600 text-white text-[8px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded shadow-sm">
+                            New Collection
+                          </span>
+                        )}
+                        {product.is_limited_product && (
+                          <span className="bg-amber-600 text-white text-[8px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded shadow-sm">
+                            Limited Edition
+                          </span>
+                        )}
+                      </div>
+                    )}
                     {product.description && (
                       <div className="text-xs text-gray-400 max-w-sm line-clamp-1 mt-0.5" title={product.description}>
                         {product.description}
