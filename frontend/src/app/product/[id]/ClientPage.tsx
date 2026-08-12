@@ -288,17 +288,7 @@ export default function ProductDetailPage({
               <p className="text-xs font-mono text-gray-500 uppercase tracking-wider">SKU: {product.sku}</p>
             </div>
 
-            {/* Size/Arrangement selector */}
-            <div className="flex flex-col gap-2">
-              <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Select Size / Arrangement</label>
-              <select
-                value={selectedSize}
-                onChange={e => setSelectedSize(e.target.value)}
-                className="px-4 py-2 text-xs border border-gray-300 bg-white rounded focus:outline-none focus:border-[#3a081a] text-black w-full cursor-pointer"
-              >
-                <option>{product.size || 'Standard Size'}</option>
-              </select>
-            </div>
+
 
             {/* Color selection circles */}
             {product.colors && product.colors.length > 0 && (
@@ -419,31 +409,15 @@ export default function ProductDetailPage({
           <h3 className="text-lg font-bold text-[#3a081a] uppercase tracking-wider mb-6 border-b border-gray-100 pb-2" style={{ fontFamily: 'var(--font-playfair)' }}>
             Technical Specifications
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 border border-[#ececec] rounded bg-white p-6 md:p-8">
+          <div className="border border-[#ececec] rounded bg-white p-6 md:p-8">
             <table className="w-full text-xs text-gray-600">
               <tbody>
                 <tr className="border-b border-gray-100">
-                  <td className="py-4 font-semibold uppercase tracking-wider text-gray-400 w-1/3">Size (Dimensions)</td>
-                  <td className="py-4 text-gray-800 font-medium">{product.size || 'Standard Size'}</td>
-                </tr>
-                <tr className="border-b border-gray-100 last:border-0 text-left">
-                  <td className="py-4 font-semibold uppercase tracking-wider text-gray-400 w-1/3">Materials Used</td>
-                  <td className="py-4 text-gray-800 font-medium">
-                    {Array.isArray(product.materials)
-                      ? product.materials.join(', ')
-                      : (typeof product.materials === 'string' ? product.materials : 'Premium Botanical Blends')}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <table className="w-full text-xs text-gray-600">
-              <tbody>
-                <tr className="border-b border-gray-100">
-                  <td className="py-4 font-semibold uppercase tracking-wider text-gray-400 w-1/3">Units Available</td>
+                  <td className="py-4 font-semibold uppercase tracking-wider text-gray-400 w-1/3 md:w-1/4">Units Available</td>
                   <td className="py-4 text-gray-800 font-medium">{product.stock_count !== undefined ? `${product.stock_count} Units` : '0 Units'}</td>
                 </tr>
-                <tr className="border-b border-gray-100 last:border-0 text-left">
-                  <td className="py-4 font-semibold uppercase tracking-wider text-gray-400 w-1/3">Colors Available</td>
+                <tr className="text-left">
+                  <td className="py-4 font-semibold uppercase tracking-wider text-gray-400 w-1/3 md:w-1/4">Colors Available</td>
                   <td className="py-4 text-gray-800 font-medium">
                     {Array.isArray(product.colors)
                       ? product.colors.join(', ')

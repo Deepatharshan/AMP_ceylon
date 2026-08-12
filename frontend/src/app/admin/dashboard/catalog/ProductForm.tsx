@@ -631,33 +631,6 @@ export default function ProductForm({ product, businessLine = 'FLORAL' }: { prod
 
               <div className="flex flex-col gap-1">
                 <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                  SIZE (DIMENSIONS)
-                </label>
-                <input
-                  type="text"
-                  name="size"
-                  value={size}
-                  onChange={(e) => setSize(e.target.value)}
-                  className="px-4 py-2 border border-gray-200 rounded text-sm focus:outline-none focus:border-[#3a081a] text-black w-full bg-white"
-                  placeholder="e.g., 27X15X16.5CM H"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                  MATERIALS USED (COMMA SEPARATED)
-                </label>
-                <input
-                  type="text"
-                  name="materials"
-                  value={materials}
-                  onChange={(e) => setMaterials(e.target.value)}
-                  className="px-4 py-2 border border-gray-200 rounded text-sm focus:outline-none focus:border-[#3a081a] text-black w-full bg-white"
-                  placeholder="Premium Silk, Hand-painted Po"
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                   COLORS AVAILABLE (COMMA SEPARATED)
                 </label>
                 <input

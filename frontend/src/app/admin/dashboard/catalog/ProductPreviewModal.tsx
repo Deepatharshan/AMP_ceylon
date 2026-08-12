@@ -157,16 +157,6 @@ export default function ProductPreviewModal({ productData, onClose }: ProductPre
                     <p className="text-xs font-mono text-gray-500 uppercase tracking-wider">SKU: {productData.sku || 'N/A'}</p>
                   </div>
 
-                  {/* Size/Arrangement selector */}
-                  <div className="flex flex-col gap-2">
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Select Size / Arrangement</label>
-                    <select
-                      className="px-4 py-2 text-xs border border-gray-300 bg-white rounded focus:outline-none focus:border-[#3a081a] text-black w-full cursor-not-allowed"
-                      disabled
-                    >
-                      <option>{productData.size || 'Standard Size'}</option>
-                    </select>
-                  </div>
 
                   {/* Color selection circles */}
                   {colorList.length > 0 && (
@@ -198,11 +188,6 @@ export default function ProductPreviewModal({ productData, onClose }: ProductPre
                   {/* Tags */}
                   {(materialList.length > 0 || colorList.length > 0) && (
                     <div className="pt-4 flex flex-wrap gap-2">
-                      {materialList.map((m, idx) => (
-                        <span key={idx} className="flex items-center gap-1.5 px-3 py-1 bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider rounded">
-                          <LayoutGrid size={12} /> {m}
-                        </span>
-                      ))}
                       {colorList.map((c, idx) => (
                         <span key={idx} className="flex items-center gap-1.5 px-3 py-1 bg-[#f4e6ea] text-[#3a081a] text-[10px] font-bold uppercase tracking-wider rounded">
                           <TagIcon size={12} /> {c}
