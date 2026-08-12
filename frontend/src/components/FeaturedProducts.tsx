@@ -22,8 +22,13 @@ export default async function FeaturedProducts() {
   }
 
   const allProducts = productsData || [];
-  // Construct the arrays: STRICTLY only include items that actually have the flag. No padding.
-  let featuredProducts = allProducts.filter(p => p.is_featured_home);
+  // Featured products: flagged items first, then everything else appended so users can browse all products
+  let featuredProducts = [
+    ...allProducts.filter(p => p.is_featured_home),
+    ...allProducts.filter(p => !p.is_featured_home)
+  ];
+  
+  // New Arrivals: STRICTLY only include items that actually have the flag. No padding.
   let newArrivals = allProducts.filter(p => p.is_new_collection);
 
   // Map to ShowcaseProduct format
