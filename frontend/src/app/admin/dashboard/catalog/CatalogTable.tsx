@@ -241,14 +241,6 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
   const handleToggleFeaturedHome = async (id: string, currentVal: boolean) => {
     const newVal = !currentVal;
     
-    if (newVal) {
-      const currentFeaturedCount = products.filter(p => p.is_featured_home).length;
-      if (currentFeaturedCount >= 4) {
-        showToast('You can only feature up to 4 items on the home page.', 'error');
-        return;
-      }
-    }
-
     // Optimistic update
     setProducts(products.map(p => p.id === id ? { ...p, is_featured_home: newVal } : p));
     
@@ -269,14 +261,6 @@ export default function CatalogTable({ initialProducts, businessLine = 'FLORAL' 
   const handleToggleNewCollection = async (id: string, currentVal: boolean) => {
     const newVal = !currentVal;
     
-    if (newVal) {
-      const currentNewCount = products.filter(p => p.is_new_collection).length;
-      if (currentNewCount >= 4) {
-        showToast('You can only feature up to 4 items in the New Arrivals list.', 'error');
-        return;
-      }
-    }
-
     // Optimistic update
     setProducts(products.map(p => p.id === id ? { ...p, is_new_collection: newVal } : p));
     
