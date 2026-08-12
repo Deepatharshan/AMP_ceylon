@@ -187,7 +187,7 @@ export default function ProductDetailPage({
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#fcfbf9] text-[#333] flex flex-col justify-between">
+      <main className="min-h-screen bg-transparent text-[#333] flex flex-col justify-between">
         <div className="bg-[#3a081a] h-32 w-full relative">
           <Navbar />
         </div>
@@ -199,7 +199,7 @@ export default function ProductDetailPage({
 
   if (!product) {
     return (
-      <main className="min-h-screen bg-[#fcfbf9] text-[#333] flex flex-col justify-between">
+      <main className="min-h-screen bg-transparent text-[#333] flex flex-col justify-between">
         <div className="bg-[#3a081a] h-32 w-full relative">
           <Navbar />
         </div>
@@ -214,7 +214,7 @@ export default function ProductDetailPage({
     : (product.image_url ? [product.image_url] : ['https://images.unsplash.com/photo-1562690868-60bbe7293e94?q=80&w=800&auto=format&fit=crop']);
 
   return (
-    <main className="min-h-screen bg-[#fcfbf9] text-[#333]">
+    <main className="min-h-screen bg-transparent text-[#333]">
       <div className="bg-transparent w-full relative" style={{ height: 'calc(5rem + var(--banner-height, 0px))' }}>
         <Navbar />
       </div>
@@ -404,30 +404,6 @@ export default function ProductDetailPage({
           </div>
         </div>
 
-        {/* Technical Specifications */}
-        <div className="mb-20 text-left">
-          <h3 className="text-lg font-bold text-[#3a081a] uppercase tracking-wider mb-6 border-b border-gray-100 pb-2" style={{ fontFamily: 'var(--font-playfair)' }}>
-            Technical Specifications
-          </h3>
-          <div className="border border-[#ececec] rounded bg-white p-6 md:p-8">
-            <table className="w-full text-xs text-gray-600">
-              <tbody>
-                <tr className="border-b border-gray-100">
-                  <td className="py-4 font-semibold uppercase tracking-wider text-gray-400 w-1/3 md:w-1/4">Units Available</td>
-                  <td className="py-4 text-gray-800 font-medium">{product.stock_count !== undefined ? `${product.stock_count} Units` : '0 Units'}</td>
-                </tr>
-                <tr className="text-left">
-                  <td className="py-4 font-semibold uppercase tracking-wider text-gray-400 w-1/3 md:w-1/4">Colors Available</td>
-                  <td className="py-4 text-gray-800 font-medium">
-                    {Array.isArray(product.colors)
-                      ? product.colors.join(', ')
-                      : (typeof product.colors === 'string' ? product.colors : 'Standard Finishes')}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
 
         {/* Related Collections */}
         {relatedProducts.length > 0 && (
