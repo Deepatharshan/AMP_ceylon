@@ -84,32 +84,20 @@ export default function CategoryShowcase({
           </div>
         )}
 
-        <div className="flex items-center justify-center gap-4 mb-8">
+        {/* Carousel Container */}
+        <div className="relative w-full group">
           {totalPages > 1 && (
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={handlePrev}
-                className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-[#3a081a] hover:text-white hover:border-[#3a081a] transition-colors"
-                aria-label="Previous Products"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
-              </button>
-              <span className="text-xs font-bold text-gray-400 min-w-[60px] text-center">
-                {currentPage + 1} / {totalPages}
-              </span>
-              <button 
-                onClick={handleNext}
-                className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-[#3a081a] hover:text-white hover:border-[#3a081a] transition-colors"
-                aria-label="Next Products"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
-              </button>
-            </div>
+            <button 
+              onClick={handlePrev}
+              className="absolute -left-4 md:-left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.1)] border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-[#3a081a] hover:text-white hover:border-[#3a081a] hover:scale-105 transition-all opacity-0 group-hover:opacity-100 disabled:opacity-30 disabled:hover:scale-100 disabled:hover:bg-white/90 disabled:hover:text-gray-700 disabled:hover:border-gray-200"
+              aria-label="Previous Products"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
           )}
-        </div>
 
-        {/* Clean Static Grid Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12 min-h-[500px]">
+          {/* Clean Static Grid Section */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12 min-h-[400px]">
           {displayProducts.map((product) => {
             const hasColors = product.colors && product.colors.length > 0;
             const displayColors = hasColors ? product.colors!.slice(0, 3) : [];
@@ -197,6 +185,17 @@ export default function CategoryShowcase({
               </div>
             );
           })}
+        </div>
+
+          {totalPages > 1 && (
+            <button 
+              onClick={handleNext}
+              className="absolute -right-4 md:-right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.1)] border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-[#3a081a] hover:text-white hover:border-[#3a081a] hover:scale-105 transition-all opacity-0 group-hover:opacity-100 disabled:opacity-30 disabled:hover:scale-100 disabled:hover:bg-white/90 disabled:hover:text-gray-700 disabled:hover:border-gray-200"
+              aria-label="Next Products"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          )}
         </div>
       </div>
     </section>
