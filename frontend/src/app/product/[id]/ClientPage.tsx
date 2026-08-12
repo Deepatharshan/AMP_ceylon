@@ -424,8 +424,8 @@ export default function ProductDetailPage({
                   key={p.id}
                   className="group flex flex-col bg-white border border-[#ececec] p-3 rounded shadow-sm hover:shadow transition-shadow"
                 >
-                  <div className="aspect-square bg-gray-50 border border-gray-100 rounded overflow-hidden relative mb-4">
-                    <Image src={p.image_url || ''} alt={p.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-500 group-hover:scale-102" />
+                  <div className="aspect-square bg-white border border-gray-100 rounded overflow-hidden relative mb-4">
+                    <Image src={p.image_url || ''} alt={p.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-contain p-4 transition-transform duration-500 group-hover:scale-102" />
                   </div>
                   <div>
                     <h4 className="font-bold text-xs text-[#3a081a]" style={{ fontFamily: 'var(--font-playfair)' }}>{p.name}</h4>
