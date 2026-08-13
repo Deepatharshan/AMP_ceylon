@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
@@ -24,6 +24,8 @@ interface Product {
 function CollectionsMain() {
   const searchParams = useSearchParams();
   const categoryQuery = searchParams.get('category');
+  
+  const gridRef = useRef<HTMLDivElement>(null);
   
   const [activeCategory, setActiveCategory] = useState("All Collections");
   const [products, setProducts] = useState<Product[]>([]);
@@ -106,6 +108,17 @@ function CollectionsMain() {
     showToast(`Added ${product.name} to your Inquiry Cart!`);
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    // Use a slightly longer timeout to allow React to fully swap out the images
+    // and let the browser's native scroll-anchoring finish
+    setTimeout(() => {
+      if (gridRef.current) {
+        gridRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 150);
+  };
+
   const filteredProducts = activeCategory === "All Collections" 
     ? products 
     : products.filter(p => p.category && p.category.toLowerCase() === activeCategory.toLowerCase());
@@ -152,7 +165,7 @@ function CollectionsMain() {
         </div>
 
         {/* Main Content Layout */}
-        <div className="flex flex-col lg:flex-row gap-12">
+        <div className="flex flex-col lg:flex-row gap-12 scroll-mt-[100px]" ref={gridRef}>
           
           {/* Left Sidebar */}
           <div className="w-full lg:w-64 flex-shrink-0 space-y-12">
@@ -282,7 +295,7 @@ function CollectionsMain() {
             {totalPages > 1 && (
               <div className="flex justify-center mt-16 gap-2">
                 <button 
-                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                   disabled={currentPage === 1}
                   className={`w-8 h-8 flex items-center justify-center border border-gray-200 text-sm transition-colors ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:border-gray-400 cursor-pointer'}`}
                 >
@@ -292,7 +305,7 @@ function CollectionsMain() {
                 {Array.from({ length: totalPages }).map((_, i) => (
                   <button 
                     key={i} 
-                    onClick={() => setCurrentPage(i + 1)}
+                    onClick={() => handlePageChange(i + 1)}
                     className={`w-8 h-8 flex items-center justify-center text-sm transition-colors border ${
                       currentPage === i + 1 
                         ? 'bg-[#3a081a] border-[#3a081a] text-white' 
@@ -304,7 +317,7 @@ function CollectionsMain() {
                 ))}
                 
                 <button 
-                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
                   disabled={currentPage === totalPages}
                   className={`w-8 h-8 flex items-center justify-center border border-gray-200 text-sm transition-colors ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:border-gray-400 cursor-pointer'}`}
                 >
