@@ -110,14 +110,13 @@ function CollectionsMain() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+    // Use a slightly longer timeout to allow React to fully swap out the images
+    // and let the browser's native scroll-anchoring finish
     setTimeout(() => {
       if (gridRef.current) {
-        const yOffset = -100; // Account for sticky headers if any
-        const element = gridRef.current;
-        const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
-        window.scrollTo({ top: y, behavior: 'smooth' });
+        gridRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    }, 50);
+    }, 150);
   };
 
   const filteredProducts = activeCategory === "All Collections" 
@@ -166,7 +165,7 @@ function CollectionsMain() {
         </div>
 
         {/* Main Content Layout */}
-        <div className="flex flex-col lg:flex-row gap-12" ref={gridRef}>
+        <div className="flex flex-col lg:flex-row gap-12 scroll-mt-[100px]" ref={gridRef}>
           
           {/* Left Sidebar */}
           <div className="w-full lg:w-64 flex-shrink-0 space-y-12">
