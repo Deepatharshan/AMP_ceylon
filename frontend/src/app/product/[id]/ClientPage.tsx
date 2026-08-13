@@ -291,7 +291,7 @@ export default function ProductDetailPage({
 
 
             {/* Color selection circles */}
-            {product.colors && product.colors.length > 0 && (
+            {product.business_line !== 'CARTON' && product.colors && product.colors.length > 0 && (
               <div className="flex flex-col gap-2">
                 <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Color Base Finish</label>
                 <div className="flex gap-3">
