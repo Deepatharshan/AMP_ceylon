@@ -74,6 +74,9 @@ export default function Navbar() {
           .from('products')
           .select('*')
           .or('business_line.eq.FLORAL,business_line.is.null')
+          .eq('is_active', true)
+          .order('is_featured_home', { ascending: false, nullsFirst: false })
+          .order('created_at', { ascending: false })
           .limit(3);
           
         if (prodData) {
