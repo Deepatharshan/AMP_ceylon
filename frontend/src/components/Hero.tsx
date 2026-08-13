@@ -27,7 +27,7 @@ export default function Hero() {
               Discover hyper-realistic, sustainable botanical decor crafted for global wholesale markets. Perfect for luxury retail, commercial spaces, and bespoke events.
             </p>
             <Link href="/collections" className={styles.ctaButton}>
-              Shop now
+              Inquiry now
             </Link>
           </motion.div>
         </div>
