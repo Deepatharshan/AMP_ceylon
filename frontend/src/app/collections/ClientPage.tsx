@@ -108,6 +108,16 @@ function CollectionsMain() {
     showToast(`Added ${product.name} to your Inquiry Cart!`);
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    if (gridRef.current) {
+      const yOffset = -100; // Account for sticky headers if any
+      const element = gridRef.current;
+      const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
   const filteredProducts = activeCategory === "All Collections" 
     ? products 
     : products.filter(p => p.category && p.category.toLowerCase() === activeCategory.toLowerCase());
