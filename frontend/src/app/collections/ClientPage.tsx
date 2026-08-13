@@ -25,6 +25,8 @@ function CollectionsMain() {
   const searchParams = useSearchParams();
   const categoryQuery = searchParams.get('category');
   
+  const gridRef = useRef<HTMLDivElement>(null);
+  
   const [activeCategory, setActiveCategory] = useState("All Collections");
   const [products, setProducts] = useState<Product[]>([]);
   const [categoriesList, setCategoriesList] = useState<string[]>(["All Collections"]);
@@ -152,7 +154,7 @@ function CollectionsMain() {
         </div>
 
         {/* Main Content Layout */}
-        <div className="flex flex-col lg:flex-row gap-12">
+        <div className="flex flex-col lg:flex-row gap-12" ref={gridRef}>
           
           {/* Left Sidebar */}
           <div className="w-full lg:w-64 flex-shrink-0 space-y-12">
@@ -282,7 +284,7 @@ function CollectionsMain() {
             {totalPages > 1 && (
               <div className="flex justify-center mt-16 gap-2">
                 <button 
-                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                   disabled={currentPage === 1}
                   className={`w-8 h-8 flex items-center justify-center border border-gray-200 text-sm transition-colors ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:border-gray-400 cursor-pointer'}`}
                 >
@@ -292,7 +294,7 @@ function CollectionsMain() {
                 {Array.from({ length: totalPages }).map((_, i) => (
                   <button 
                     key={i} 
-                    onClick={() => setCurrentPage(i + 1)}
+                    onClick={() => handlePageChange(i + 1)}
                     className={`w-8 h-8 flex items-center justify-center text-sm transition-colors border ${
                       currentPage === i + 1 
                         ? 'bg-[#3a081a] border-[#3a081a] text-white' 
@@ -304,7 +306,7 @@ function CollectionsMain() {
                 ))}
                 
                 <button 
-                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
                   disabled={currentPage === totalPages}
                   className={`w-8 h-8 flex items-center justify-center border border-gray-200 text-sm transition-colors ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:border-gray-400 cursor-pointer'}`}
                 >
