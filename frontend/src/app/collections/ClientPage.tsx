@@ -33,6 +33,7 @@ function CollectionsMain() {
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSortBy] = useState('Newest Arrivals');
   const ITEMS_PER_PAGE = 12;
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
@@ -119,9 +120,16 @@ function CollectionsMain() {
     }, 150);
   };
 
-  const filteredProducts = activeCategory === "All Collections" 
+  let filteredProducts = activeCategory === "All Collections" 
     ? products 
     : products.filter(p => p.category && p.category.toLowerCase() === activeCategory.toLowerCase());
+
+  // Apply sorting
+  filteredProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === 'Name: A to Z') return a.name.localeCompare(b.name);
+    if (sortBy === 'Name: Z to A') return b.name.localeCompare(a.name);
+    return 0; // Default (Newest Arrivals) is already sorted by created_at desc from Supabase
+  });
 
   // Reset pagination when category changes
   useEffect(() => {
@@ -225,10 +233,17 @@ function CollectionsMain() {
                 Showing {filteredProducts.length} items in <span className="font-semibold text-gray-800">{activeCategory}</span>
               </p>
               <div className="flex items-center gap-4">
-                <select className="bg-transparent text-sm text-gray-600 font-medium outline-none cursor-pointer">
+                <select 
+                  className="bg-transparent text-sm text-gray-600 font-medium outline-none cursor-pointer"
+                  value={sortBy}
+                  onChange={(e) => {
+                    setSortBy(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                >
                   <option>Newest Arrivals</option>
-                  <option>Price: Low to High</option>
-                  <option>Price: High to Low</option>
+                  <option>Name: A to Z</option>
+                  <option>Name: Z to A</option>
                 </select>
                 <div className="w-8 h-8 bg-gray-100 flex items-center justify-center text-gray-500 cursor-pointer">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
