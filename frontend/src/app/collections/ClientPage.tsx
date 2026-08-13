@@ -110,12 +110,14 @@ function CollectionsMain() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    if (gridRef.current) {
-      const yOffset = -100; // Account for sticky headers if any
-      const element = gridRef.current;
-      const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
+    setTimeout(() => {
+      if (gridRef.current) {
+        const yOffset = -100; // Account for sticky headers if any
+        const element = gridRef.current;
+        const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }, 50);
   };
 
   const filteredProducts = activeCategory === "All Collections" 
