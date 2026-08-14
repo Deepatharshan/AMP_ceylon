@@ -41,6 +41,8 @@ export default function Navbar() {
   const [isMobileFloralOpen, setIsMobileFloralOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [liveSearchResults, setLiveSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
   
   const pathname = usePathname();
@@ -60,6 +62,30 @@ export default function Navbar() {
       setTimeout(() => searchInputRef.current?.focus(), 100);
     }
   }, [isSearchOpen]);
+
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setLiveSearchResults([]);
+      return;
+    }
+    const fetchResults = async () => {
+      setIsSearching(true);
+      const supabase = createClient();
+      const q = searchQuery.trim();
+      const { data } = await supabase
+        .from('products')
+        .select('id, name, image_urls, image_url, category')
+        .eq('is_active', true)
+        .or(`name.ilike.%${q}%,sku.ilike.%${q}%`)
+        .limit(4);
+      
+      setLiveSearchResults(data || []);
+      setIsSearching(false);
+    };
+
+    const debounceId = setTimeout(fetchResults, 300);
+    return () => clearTimeout(debounceId);
+  }, [searchQuery]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -205,9 +231,54 @@ export default function Navbar() {
                 >
                   <X size={20} />
                 </button>
-              </form>
-            </motion.div>
-          )}
+
+                  {/* Live Search Results Dropdown */}
+                  {(liveSearchResults.length > 0 || isSearching) && searchQuery.trim() && (
+                    <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden z-50 flex flex-col">
+                      {isSearching ? (
+                        <div className="p-6 text-center text-sm text-gray-400 animate-pulse">Searching...</div>
+                      ) : (
+                        <>
+                          <div className="flex flex-col">
+                            {liveSearchResults.map(product => (
+                              <button 
+                                key={product.id}
+                                type="button"
+                                onClick={() => {
+                                  setIsSearchOpen(false);
+                                  router.push(`/product/${product.id}`);
+                                  setSearchQuery('');
+                                }}
+                                className="flex items-center gap-4 p-3 hover:bg-[#faf9f6] border-b border-gray-50 transition-colors text-left group"
+                              >
+                                <div className="w-12 h-12 relative bg-gray-100 rounded overflow-hidden shrink-0">
+                                  <Image 
+                                    src={product.image_url || (product.image_urls && product.image_urls[0]) || '/placeholder-product.jpg'}
+                                    alt={product.name}
+                                    fill
+                                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                  />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-[#3a081a] font-bold text-sm truncate">{product.name}</p>
+                                  <p className="text-gray-400 text-[10px] uppercase tracking-widest">{product.category}</p>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                          <button 
+                            type="submit"
+                            className="p-3 text-center text-xs text-[#3a081a] font-bold uppercase tracking-widest hover:bg-[#3a081a] hover:text-white transition-colors bg-gray-50"
+                          >
+                            View all results for "{searchQuery}"
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </form>
+              </motion.div>
+            )}
         </AnimatePresence>
 
       <div className="flex items-center justify-between w-full gap-x-8 sm:gap-x-12">
