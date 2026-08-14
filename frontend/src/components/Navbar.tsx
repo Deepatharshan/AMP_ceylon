@@ -3,8 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { ShoppingBag, ChevronDown } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { ShoppingBag, ChevronDown, Search, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/utils/supabase/client';
 
@@ -39,8 +39,27 @@ export default function Navbar() {
   const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileFloralOpen, setIsMobileFloralOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
   
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setIsSearchOpen(false);
+      router.push(`/collections?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    }
+  };
+
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      setTimeout(() => searchInputRef.current?.focus(), 100);
+    }
+  }, [isSearchOpen]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -158,6 +177,38 @@ export default function Navbar() {
         className={`pointer-events-auto flex flex-col items-center w-full relative
                    border-b border-gray-200 bg-[#faf9f6] backdrop-blur-md px-6 md:px-12 py-2.5`}
       >
+        {/* Search Overlay */}
+        <AnimatePresence>
+          {isSearchOpen && (
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-0 left-0 w-full h-full bg-[#faf9f6] z-50 flex items-center justify-center px-6 border-b border-gray-200"
+            >
+              <form onSubmit={handleSearch} className="w-full max-w-3xl relative flex items-center">
+                <Search size={20} className="text-gray-400 absolute left-4" />
+                <input 
+                  ref={searchInputRef}
+                  type="text" 
+                  placeholder="Search products..." 
+                  className="w-full h-12 bg-white border border-gray-300 rounded-full pl-12 pr-12 focus:outline-none focus:border-[#3a081a] focus:ring-1 focus:ring-[#3a081a] text-[#3a081a] text-lg shadow-sm"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button 
+                  type="button" 
+                  onClick={() => setIsSearchOpen(false)}
+                  className="absolute right-4 p-1 text-gray-400 hover:text-[#3a081a] transition-colors"
+                  aria-label="Close search"
+                >
+                  <X size={20} />
+                </button>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
       <div className="flex items-center justify-between w-full gap-x-8 sm:gap-x-12">
         <div className="flex items-center">
@@ -238,6 +289,14 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-4 ml-auto md:ml-0">
+          <button 
+            onClick={() => setIsSearchOpen(true)}
+            className="p-1 !text-[#3a081a] hover:!text-[#3a081a]/80 transition-colors shrink-0"
+            aria-label="Search"
+          >
+            <Search size={20} />
+          </button>
+          
           <Link href="/cart" className="relative flex items-center p-1 !text-[#3a081a] hover:!text-[#3a081a]/80 transition-colors shrink-0">
             <motion.div
               key={animationTrigger}
