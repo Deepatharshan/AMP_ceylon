@@ -348,6 +348,7 @@ export default function CartPage() {
                             <img
                               src={item.image_url || 'https://images.unsplash.com/photo-1562690868-60bbe7293e94?q=80&w=800&auto=format&fit=crop'}
                               alt={item.name}
+                              loading="lazy"
                               className="object-cover w-full h-full"
                             />
                           </div>
