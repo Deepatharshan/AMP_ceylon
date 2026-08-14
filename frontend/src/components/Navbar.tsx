@@ -3,8 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { ShoppingBag, ChevronDown } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { ShoppingBag, ChevronDown, Search, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/utils/supabase/client';
 
@@ -39,8 +39,53 @@ export default function Navbar() {
   const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileFloralOpen, setIsMobileFloralOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [liveSearchResults, setLiveSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setIsSearchOpen(false);
+      router.push(`/collections?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    }
+  };
+
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      setTimeout(() => searchInputRef.current?.focus(), 100);
+    }
+  }, [isSearchOpen]);
+
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setLiveSearchResults([]);
+      return;
+    }
+    const fetchResults = async () => {
+      setIsSearching(true);
+      const supabase = createClient();
+      const q = searchQuery.trim();
+      const { data } = await supabase
+        .from('products')
+        .select('id, name, image_urls, image_url, category')
+        .eq('is_active', true)
+        .or(`name.ilike.%${q}%,sku.ilike.%${q}%`)
+        .limit(4);
+      
+      setLiveSearchResults(data || []);
+      setIsSearching(false);
+    };
+
+    const debounceId = setTimeout(fetchResults, 300);
+    return () => clearTimeout(debounceId);
+  }, [searchQuery]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -74,6 +119,9 @@ export default function Navbar() {
           .from('products')
           .select('*')
           .or('business_line.eq.FLORAL,business_line.is.null')
+          .eq('is_active', true)
+          .order('is_featured_home', { ascending: false, nullsFirst: false })
+          .order('created_at', { ascending: false })
           .limit(3);
           
         if (prodData) {
@@ -155,6 +203,83 @@ export default function Navbar() {
         className={`pointer-events-auto flex flex-col items-center w-full relative
                    border-b border-gray-200 bg-[#faf9f6] backdrop-blur-md px-6 md:px-12 py-2.5`}
       >
+        {/* Search Overlay */}
+        <AnimatePresence>
+          {isSearchOpen && (
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-0 left-0 w-full h-full bg-[#faf9f6] z-50 flex items-center justify-center px-6 border-b border-gray-200"
+            >
+              <form onSubmit={handleSearch} className="w-full max-w-3xl relative flex items-center">
+                <Search size={20} className="text-gray-400 absolute left-4" />
+                <input 
+                  ref={searchInputRef}
+                  type="text" 
+                  placeholder="Search products..." 
+                  className="w-full h-12 bg-white border border-gray-300 rounded-full pl-12 pr-12 focus:outline-none focus:border-[#3a081a] focus:ring-1 focus:ring-[#3a081a] text-[#3a081a] text-lg shadow-sm"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button 
+                  type="button" 
+                  onClick={() => setIsSearchOpen(false)}
+                  className="absolute right-4 p-1 text-gray-400 hover:text-[#3a081a] transition-colors"
+                  aria-label="Close search"
+                >
+                  <X size={20} />
+                </button>
+
+                  {/* Live Search Results Dropdown */}
+                  {(liveSearchResults.length > 0 || isSearching) && searchQuery.trim() && (
+                    <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden z-50 flex flex-col">
+                      {isSearching ? (
+                        <div className="p-6 text-center text-sm text-gray-400 animate-pulse">Searching...</div>
+                      ) : (
+                        <>
+                          <div className="flex flex-col">
+                            {liveSearchResults.map(product => (
+                              <button 
+                                key={product.id}
+                                type="button"
+                                onClick={() => {
+                                  setIsSearchOpen(false);
+                                  router.push(`/product/${product.id}`);
+                                  setSearchQuery('');
+                                }}
+                                className="flex items-center gap-4 p-3 hover:bg-[#faf9f6] border-b border-gray-50 transition-colors text-left group"
+                              >
+                                <div className="w-12 h-12 relative bg-gray-100 rounded overflow-hidden shrink-0">
+                                  <Image 
+                                    src={product.image_url || (product.image_urls && product.image_urls[0]) || '/placeholder-product.jpg'}
+                                    alt={product.name}
+                                    fill
+                                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                  />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-[#3a081a] font-bold text-sm truncate">{product.name}</p>
+                                  <p className="text-gray-400 text-[10px] uppercase tracking-widest">{product.category}</p>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                          <button 
+                            type="submit"
+                            className="p-3 text-center text-xs text-[#3a081a] font-bold uppercase tracking-widest hover:bg-[#3a081a] hover:text-white transition-colors bg-gray-50"
+                          >
+                            View all results for "{searchQuery}"
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </form>
+              </motion.div>
+            )}
+        </AnimatePresence>
 
       <div className="flex items-center justify-between w-full gap-x-8 sm:gap-x-12">
         <div className="flex items-center">
@@ -235,6 +360,14 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-4 ml-auto md:ml-0">
+          <button 
+            onClick={() => setIsSearchOpen(true)}
+            className="p-1 !text-[#3a081a] hover:!text-[#3a081a]/80 transition-colors shrink-0"
+            aria-label="Search"
+          >
+            <Search size={20} />
+          </button>
+          
           <Link href="/cart" className="relative flex items-center p-1 !text-[#3a081a] hover:!text-[#3a081a]/80 transition-colors shrink-0">
             <motion.div
               key={animationTrigger}

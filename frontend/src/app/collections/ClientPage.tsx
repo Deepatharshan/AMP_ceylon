@@ -24,6 +24,7 @@ interface Product {
 function CollectionsMain() {
   const searchParams = useSearchParams();
   const categoryQuery = searchParams.get('category');
+  const searchQuery = searchParams.get('search');
   
   const gridRef = useRef<HTMLDivElement>(null);
   
@@ -123,6 +124,15 @@ function CollectionsMain() {
   let filteredProducts = activeCategory === "All Collections" 
     ? products 
     : products.filter(p => p.category && p.category.toLowerCase() === activeCategory.toLowerCase());
+
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    filteredProducts = filteredProducts.filter(p => 
+      p.name.toLowerCase().includes(q) || 
+      (p.sku && p.sku.toLowerCase().includes(q)) ||
+      (p.description && p.description.toLowerCase().includes(q))
+    );
+  }
 
   // Apply sorting
   filteredProducts = [...filteredProducts].sort((a, b) => {
@@ -230,7 +240,11 @@ function CollectionsMain() {
             {/* Toolbar */}
             <div className="flex justify-between items-center mb-8 border-b border-gray-100 pb-4">
               <p className="text-sm text-gray-500">
-                Showing {filteredProducts.length} items in <span className="font-semibold text-gray-800">{activeCategory}</span>
+                {searchQuery ? (
+                  <>Showing {filteredProducts.length} results for <span className="font-semibold text-gray-800">"{searchQuery}"</span></>
+                ) : (
+                  <>Showing {filteredProducts.length} items in <span className="font-semibold text-gray-800">{activeCategory}</span></>
+                )}
               </p>
               <div className="flex items-center gap-4">
                 <select 
