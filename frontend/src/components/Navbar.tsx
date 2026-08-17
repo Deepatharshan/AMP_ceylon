@@ -64,8 +64,12 @@ export default function Navbar() {
   }, [isSearchOpen]);
 
   useEffect(() => {
+    let isMounted = true;
     if (!searchQuery.trim()) {
-      setLiveSearchResults([]);
+      // Avoid synchronous setState in effect; use a small timeout or just let render handle it
+      setTimeout(() => {
+        if (isMounted) setLiveSearchResults([]);
+      }, 0);
       return;
     }
     const fetchResults = async () => {
@@ -84,7 +88,10 @@ export default function Navbar() {
     };
 
     const debounceId = setTimeout(fetchResults, 300);
-    return () => clearTimeout(debounceId);
+    return () => {
+      isMounted = false;
+      clearTimeout(debounceId);
+    };
   }, [searchQuery]);
 
   const toggleMenu = () => {
@@ -152,7 +159,9 @@ export default function Navbar() {
     };
     
     window.addEventListener('scroll', handleScroll, { passive: true });
-    updateCartCount();
+    setTimeout(() => {
+      updateCartCount();
+    }, 0);
     window.addEventListener('cart-updated', updateCartCount);
     
     return () => {
@@ -166,7 +175,9 @@ export default function Navbar() {
       clearTimeout(shapeTimeoutRef.current);
     }
     if (isOpen) {
-      setHeaderShapeClass(isAtTop ? 'rounded-none' : 'rounded-2xl');
+      setTimeout(() => {
+        setHeaderShapeClass(isAtTop ? 'rounded-none' : 'rounded-2xl');
+      }, 0);
     } else {
       if (wasOpen.current) {
         shapeTimeoutRef.current = setTimeout(() => {
@@ -185,8 +196,10 @@ export default function Navbar() {
 
   // Close mobile menu on route change
   useEffect(() => {
-    setIsOpen(false);
-    setIsDropdownOpen(false);
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsDropdownOpen(false);
+    }, 0);
   }, [pathname]);
 
   const logoElement = (
@@ -270,7 +283,7 @@ export default function Navbar() {
                             type="submit"
                             className="p-3 text-center text-xs text-[#3a081a] font-bold uppercase tracking-widest hover:bg-[#3a081a] hover:text-white transition-colors bg-gray-50"
                           >
-                            View all results for "{searchQuery}"
+                            View all results for &quot;{searchQuery}&quot;
                           </button>
                         </>
                       )}
