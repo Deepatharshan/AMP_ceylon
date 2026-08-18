@@ -48,6 +48,7 @@ import ScrollToTop from '@/components/ScrollToTop';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import GlobalOffersManager from '@/components/GlobalOffersManager';
 import SmoothScroll from '@/components/SmoothScroll';
+import CookieConsent from '@/components/CookieConsent';
 
 export default async function RootLayout({
   children,
@@ -102,6 +103,7 @@ export default async function RootLayout({
           <GlobalOffersManager offers={validOffers} />
           <ScrollToTop />
           <WhatsAppButton />
+          <CookieConsent />
         </SmoothScroll>
       </body>
     </html>
