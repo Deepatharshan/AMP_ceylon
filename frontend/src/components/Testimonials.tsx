@@ -1,43 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { Star, ShieldCheck, Award, Sparkles, CheckCircle2, ThumbsUp, Heart, TrendingUp, Globe2, PackageCheck } from "lucide-react";
+import React from "react";
+import { Star, ShieldCheck, Sparkles, CheckCircle2, TrendingUp } from "lucide-react";
 import { useScrollFade } from "@/hooks/useScrollFade";
-
-const reviews = [
-  {
-    name: "Sarah Jenkins",
-    role: "Event Director, Luxe Weddings (USA)",
-    rating: 5,
-    emoji: "😍",
-    quote: "The artificial orchids are indistinguishable from fresh blooms. Custom pantone matching was 100% accurate for all 12 gala events.",
-    tag: "Orchid Collection",
-  },
-  {
-    name: "David Sterling",
-    role: "CEO, Sterling Botanicals (UK)",
-    rating: 5,
-    emoji: "🤩",
-    quote: "We switched all OEM manufacturing to AMP Ceylon. Their quality control is flawless — every stem is thermal set to perfection.",
-    tag: "OEM Manufacturing",
-  },
-  {
-    name: "Michael Chen",
-    role: "Head of Procurement, HomeGoods (Canada)",
-    rating: 5,
-    emoji: "💖",
-    quote: "Multi-layer carton packaging arrived without a single crushed petal across 15,000 units. Exceptional logistics reliability.",
-    tag: "Global Freight",
-  },
-  {
-    name: "Elena Rodriguez",
-    role: "Supply Chain Manager (Australia)",
-    rating: 5,
-    emoji: "🌸",
-    quote: "Hit our freight deadline 2 days early during peak holiday demand. Reliable manufacturing scaling at its finest.",
-    tag: "Bulk Export",
-  },
-];
 
 const emojiStats = [
   { emoji: "😍", label: "Exceeded Expectations", percent: "98.8%" },
@@ -48,7 +13,6 @@ const emojiStats = [
 
 export default function Testimonials() {
   const { ref, isVisible } = useScrollFade(0.2);
-  const [activeTab, setActiveTab] = useState(0);
 
   return (
     <section className="py-20 md:py-28 bg-[#fdfbf9] overflow-hidden border-t border-b border-[#e9e3dc]">
@@ -85,7 +49,7 @@ export default function Testimonials() {
 
         {/* 3 Core Highlight Summary Cards */}
         <div
-          className={`grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16 fade-in delay-100 ${
+          className={`grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 fade-in delay-100 ${
             isVisible ? "visible" : ""
           }`}
         >
@@ -229,101 +193,6 @@ export default function Testimonials() {
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>OEM / ODM Bespoke Pantone Accuracy</span>
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Interactive Verified Feedback Highlights */}
-        <div className={`bg-white rounded-2xl border border-[#e8e2da] p-6 sm:p-8 shadow-sm fade-in delay-200 ${isVisible ? "visible" : ""}`}>
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-100">
-            <div>
-              <h3 className="text-xl font-bold text-[#222] flex items-center gap-2">
-                <Award className="w-5 h-5 text-[#4a0b22]" />
-                Verified Partner Statements
-              </h3>
-              <p className="text-sm text-[#666]">
-                Direct feedback from international event planners, procurement leads, and wholesale retailers.
-              </p>
-            </div>
-            
-            {/* Tab navigation */}
-            <div className="flex flex-wrap gap-2">
-              {reviews.map((rev, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveTab(index)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
-                    activeTab === index
-                      ? "bg-[#4a0b22] text-white shadow-sm"
-                      : "bg-[#f5f1eb] text-[#666] hover:bg-[#eae3d9] hover:text-[#333]"
-                  }`}
-                >
-                  {rev.tag}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Active Review Spotlight */}
-          <div className="mt-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-[#faf8f5] rounded-xl p-6 border border-[#ece6de]">
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="flex text-amber-400">
-                    {[...Array(reviews[activeTab].rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <span className="text-xs font-medium text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded-md">
-                    Verified Buyer
-                  </span>
-                  <span className="text-xl">{reviews[activeTab].emoji}</span>
-                </div>
-                
-                <blockquote className="text-[#333] text-base sm:text-lg italic leading-relaxed">
-                  &ldquo;{reviews[activeTab].quote}&rdquo;
-                </blockquote>
-
-                <div className="pt-2">
-                  <p className="font-bold text-[#222] text-sm">
-                    {reviews[activeTab].name}
-                  </p>
-                  <p className="text-xs text-[#777]">
-                    {reviews[activeTab].role}
-                  </p>
-                </div>
-              </div>
-
-              <div className="shrink-0 flex md:flex-col items-center justify-center gap-2 p-4 bg-white rounded-lg border border-[#e4ddd4] min-w-[140px] text-center">
-                <span className="text-2xl font-bold text-[#4a0b22]">5.0 / 5.0</span>
-                <span className="text-[11px] uppercase tracking-wider text-[#888] font-semibold">
-                  Partner Score
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Trust Guarantees Strip */}
-          <div className="mt-8 pt-6 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-            <div className="flex flex-col items-center">
-              <Globe2 className="w-5 h-5 text-[#4a0b22]" />
-              <span className="text-xs font-bold text-[#333] mt-1.5">50+ Export Markets</span>
-              <span className="text-[11px] text-[#777]">Worldwide Logistics</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <PackageCheck className="w-5 h-5 text-[#4a0b22]" />
-              <span className="text-xs font-bold text-[#333] mt-1.5">0% Damage Target</span>
-              <span className="text-[11px] text-[#777]">Reinforced Cartons</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <ThumbsUp className="w-5 h-5 text-[#4a0b22]" />
-              <span className="text-xs font-bold text-[#333] mt-1.5">100% Quality Check</span>
-              <span className="text-[11px] text-[#777]">Thermal-Set Crafting</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <Heart className="w-5 h-5 text-[#4a0b22]" />
-              <span className="text-xs font-bold text-[#333] mt-1.5">99.8% Delighted</span>
-              <span className="text-[11px] text-[#777]">Client Happiness</span>
             </div>
           </div>
         </div>
