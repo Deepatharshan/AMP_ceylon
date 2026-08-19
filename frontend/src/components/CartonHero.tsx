@@ -13,42 +13,43 @@ export default function CartonHero() {
     offset: ['start start', 'end end'],
   });
 
-  // Fullscreen initial overlay animation (fades out as scrolling begins)
-  const introOpacity = useTransform(scrollYProgress, [0, 0.18], [1, 0]);
-  const introScale = useTransform(scrollYProgress, [0, 0.18], [1, 0.95]);
-  const introY = useTransform(scrollYProgress, [0, 0.18], [0, -30]);
+  // Stage 1: Full-screen intro title (visible initially, fades out immediately on scroll 0 -> 0.15)
+  const introOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const introScale = useTransform(scrollYProgress, [0, 0.15], [1, 0.96]);
+  const introY = useTransform(scrollYProgress, [0, 0.15], [0, -25]);
 
-  // Left-side content reveal animation
-  const leftOpacity = useTransform(scrollYProgress, [0.15, 0.65], [0, 1]);
-  const leftX = useTransform(scrollYProgress, [0.15, 0.65], [-50, 0]);
-  const leftY = useTransform(scrollYProgress, [0.15, 0.65], [20, 0]);
+  // Stage 2: Left-side text content reveal (starts AFTER image clears left side: 0.38 -> 0.72)
+  const leftOpacity = useTransform(scrollYProgress, [0.38, 0.72], [0, 1]);
+  const leftX = useTransform(scrollYProgress, [0.38, 0.72], [-35, 0]);
+  const leftY = useTransform(scrollYProgress, [0.38, 0.72], [20, 0]);
 
-  // Right-side image transform (shrinks from full screen to card on the right)
-  const imageScale = useTransform(scrollYProgress, [0, 0.65], [2.2, 1]);
-  const imageX = useTransform(scrollYProgress, [0, 0.65], ['-25vw', '0vw']);
-  const imageRadius = useTransform(scrollYProgress, [0, 0.65], ['0px', '16px']);
+  // Stage 3: Image resizing and docking smoothly from full viewport to right-side card
+  const imageWidth = useTransform(scrollYProgress, [0, 0.68], ['100vw', '100%']);
+  const imageHeight = useTransform(scrollYProgress, [0, 0.68], ['100vh', '100%']);
+  const imageTop = useTransform(scrollYProgress, [0, 0.68], ['calc(-50vh + 50%)', '0%']);
+  const imageRadius = useTransform(scrollYProgress, [0, 0.68], ['0px', '20px']);
   const imageShadow = useTransform(
     scrollYProgress,
-    [0.3, 0.65],
-    ['0px 0px 0px rgba(0,0,0,0)', '0px 25px 50px -12px rgba(58,8,26,0.25)']
+    [0.35, 0.68],
+    ['0px 0px 0px rgba(0,0,0,0)', '0px 25px 50px -12px rgba(58,8,26,0.22)']
   );
 
-  // Overlay on the image
-  const darkOverlayOpacity = useTransform(scrollYProgress, [0, 0.3, 0.65], [0.45, 0.25, 0.1]);
+  // Dark overlay (darker during fullscreen for contrast, subtle in card mode)
+  const darkOverlayOpacity = useTransform(scrollYProgress, [0, 0.25, 0.68], [0.45, 0.2, 0.05]);
 
-  // Floating badge on the image
-  const badgeOpacity = useTransform(scrollYProgress, [0.45, 0.7], [0, 1]);
-  const badgeY = useTransform(scrollYProgress, [0.45, 0.7], [20, 0]);
+  // Floating badge on the card (pops in at the end: 0.6 -> 0.8)
+  const badgeOpacity = useTransform(scrollYProgress, [0.6, 0.8], [0, 1]);
+  const badgeY = useTransform(scrollYProgress, [0.6, 0.8], [15, 0]);
 
   return (
     <section ref={containerRef} className="relative w-full h-[220vh] bg-[#f8f5f2]">
       {/* Sticky Viewport Container */}
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden border-t border-[#ececec]">
         
-        {/* Main Content Layout */}
+        {/* Main Content Layout Grid */}
         <div className="max-w-7xl w-full mx-auto px-6 sm:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 relative z-10 py-6">
           
-          {/* Left Text Content (Appears and slides in with scroll) */}
+          {/* Left Text Content (Only appears after full-screen image shrinks) */}
           <motion.div
             style={{
               opacity: leftOpacity,
@@ -108,16 +109,18 @@ export default function CartonHero() {
             </Link>
           </motion.div>
 
-          {/* Right Image Container (Shrinks from full screen to right side) */}
-          <div className="w-full md:w-1/2 relative h-[360px] sm:h-[460px] md:h-[580px] flex items-center justify-center">
+          {/* Right Column Target Slot */}
+          <div className="w-full md:w-1/2 relative h-[360px] sm:h-[460px] md:h-[580px] flex items-center justify-end">
             <motion.div
               style={{
-                scale: imageScale,
-                x: imageX,
+                width: imageWidth,
+                height: imageHeight,
+                top: imageTop,
+                right: 0,
                 borderRadius: imageRadius,
                 boxShadow: imageShadow,
               }}
-              className="w-full h-full relative overflow-hidden origin-center will-change-transform"
+              className="absolute overflow-hidden origin-center will-change-transform z-15"
             >
               <img
                 src="/cartonbox.jpg"
@@ -125,13 +128,13 @@ export default function CartonHero() {
                 className="w-full h-full object-cover select-none"
               />
               
-              {/* Dynamic Dark Gradient Overlay */}
+              {/* Dynamic Overlay */}
               <motion.div
                 style={{ opacity: darkOverlayOpacity }}
                 className="absolute inset-0 bg-black pointer-events-none"
               />
 
-              {/* Floating Badge (Pops in as it settles to card form) */}
+              {/* Floating Badge (Appears when docked in card form) */}
               <motion.div
                 style={{
                   opacity: badgeOpacity,
@@ -153,7 +156,7 @@ export default function CartonHero() {
 
         </div>
 
-        {/* Fullscreen Initial Intro (Visible at progress 0, fades out smoothly on scroll) */}
+        {/* Fullscreen Initial Intro (Only at scroll start 0 -> 0.15) */}
         <motion.div
           style={{
             opacity: introOpacity,
