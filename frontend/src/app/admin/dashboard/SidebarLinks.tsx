@@ -10,23 +10,29 @@ export default function SidebarLinks() {
   const [newInquiriesCount, setNewInquiriesCount] = useState<number>(0);
   const supabase = createClient();
 
-  useEffect(() => {
-    const fetchNewCount = async () => {
-      try {
-        const { count, error } = await supabase
-          .from('inquiries')
-          .select('*', { count: 'exact', head: true })
-          .or('status.eq.new,status.eq.pending');
+  const fetchNewCount = async () => {
+    try {
+      const { count, error } = await supabase
+        .from('inquiries')
+        .select('*', { count: 'exact', head: true })
+        .or('status.ilike.new,status.ilike.pending');
 
-        if (!error && count !== null) {
-          setNewInquiriesCount(count);
-        }
-      } catch (err) {
-        console.error('Error fetching new inquiry count:', err);
+      if (!error && count !== null) {
+        setNewInquiriesCount(count);
       }
+    } catch (err) {
+      console.error('Error fetching new inquiry count:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchNewCount();
+
+    const handleUpdate = () => {
+      fetchNewCount();
     };
 
-    fetchNewCount();
+    window.addEventListener('inquiries_updated', handleUpdate);
 
     // Subscribe to realtime inquiry updates
     const channel = supabase
@@ -37,9 +43,14 @@ export default function SidebarLinks() {
       .subscribe();
 
     return () => {
+      window.removeEventListener('inquiries_updated', handleUpdate);
       supabase.removeChannel(channel);
     };
   }, []);
+
+  useEffect(() => {
+    fetchNewCount();
+  }, [pathname]);
 
   const links = [
     {
