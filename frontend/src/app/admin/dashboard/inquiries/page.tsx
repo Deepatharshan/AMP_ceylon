@@ -46,6 +46,8 @@ export default function InquiriesDashboardPage() {
   // Toast & Delete states
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
+  const [liveNewAlert, setLiveNewAlert] = useState<{ name: string; country: string } | null>(null);
 
   const supabase = createClient();
 
@@ -267,6 +269,30 @@ export default function InquiriesDashboardPage() {
 
   useEffect(() => {
     fetchInquiries();
+
+    // Realtime subscription for incoming inquiries
+    const channel = supabase
+      .channel('admin-inquiries-live-feed')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'inquiries' },
+        (payload) => {
+          fetchInquiries();
+          if (payload.eventType === 'INSERT') {
+            const newRecord = payload.new as Inquiry;
+            setLiveNewAlert({
+              name: newRecord.customer_name || 'New Customer',
+              country: newRecord.country || 'Global',
+            });
+            setBannerDismissed(false);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleUpdateStatus = async (id: string, status: string) => {
@@ -307,7 +333,12 @@ export default function InquiriesDashboardPage() {
       case 'pending':
       case 'new':
       default:
-        return <span className="px-2.5 py-1 text-[10px] font-bold tracking-wider rounded bg-gray-50 text-gray-600 border border-gray-200">{formatted}</span>;
+        return (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold tracking-wider rounded-full bg-rose-50 text-rose-700 border border-rose-200 shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse shrink-0"></span>
+            {formatted}
+          </span>
+        );
     }
   };
 
@@ -319,7 +350,15 @@ export default function InquiriesDashboardPage() {
 
     const statusKey = inq.status.replace('_', ' ').toLowerCase();
     const filterKey = statusFilter.toLowerCase();
-    const matchesStatus = statusFilter === 'All Statuses' || statusKey === filterKey;
+    
+    let matchesStatus = false;
+    if (statusFilter === 'All Statuses') {
+      matchesStatus = true;
+    } else if (filterKey === 'new' || filterKey === 'pending') {
+      matchesStatus = statusKey === 'new' || statusKey === 'pending';
+    } else {
+      matchesStatus = statusKey === filterKey;
+    }
 
     return matchesSearch && matchesStatus;
   });
@@ -365,10 +404,15 @@ export default function InquiriesDashboardPage() {
   ).length;
   const conversionRate = totalInquiries > 0 ? ((confirmed / totalInquiries) * 100).toFixed(1) : '0.0';
 
+  const newInquiriesList = inquiries.filter(i => 
+    i.status.toLowerCase() === 'new' || i.status.toLowerCase() === 'pending'
+  );
+  const latestNewInquiry = newInquiriesList[0];
+
   return (
     <div className="max-w-6xl mx-auto pb-12">
       {/* Header */}
-      <div className="flex justify-between items-end mb-8">
+      <div className="flex justify-between items-end mb-6">
         <div>
           <h2 className="text-2xl font-bold text-[#3a081a] mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>
             Inquiry Management
@@ -378,6 +422,121 @@ export default function InquiriesDashboardPage() {
           </p>
         </div>
       </div>
+
+      {/* Live Realtime Notification Pop */}
+      {liveNewAlert && (
+        <div className="mb-6 p-4 rounded-xl bg-[#3a081a] text-white flex items-center justify-between shadow-lg animate-bounce">
+          <div className="flex items-center gap-3">
+            <span className="text-xl">🔔</span>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-rose-200">Live Alert: New Inquiry Received!</p>
+              <p className="text-sm font-semibold">{liveNewAlert.name} from {liveNewAlert.country} just submitted a wholesale inquiry.</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {latestNewInquiry && (
+              <button
+                onClick={() => {
+                  setLiveNewAlert(null);
+                  setSelectedInquiry(latestNewInquiry);
+                }}
+                className="px-3 py-1.5 bg-white text-[#3a081a] text-xs font-bold rounded shadow hover:bg-rose-50 transition-colors cursor-pointer"
+              >
+                View Now
+              </button>
+            )}
+            <button
+              onClick={() => setLiveNewAlert(null)}
+              className="p-1 text-white/70 hover:text-white cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* New Inquiries Priority Banner */}
+      {newInquiriesList.length > 0 && !bannerDismissed && (
+        <div className="mb-8 rounded-xl border border-[#3a081a]/20 bg-gradient-to-r from-[#fbf8f9] via-white to-[#fff8f9] p-5 shadow-[0_4px_20px_-4px_rgba(58,8,26,0.08)] relative overflow-hidden">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            
+            <div className="flex items-start gap-4">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#3a081a] to-[#5a102a] text-white flex items-center justify-center shrink-0 shadow-md relative">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-rose-600 border-2 border-white"></span>
+                </span>
+              </div>
+
+              <div>
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <h3 className="text-sm md:text-base font-bold text-[#3a081a]">
+                    {newInquiriesList.length} New Wholesale {newInquiriesList.length === 1 ? 'Inquiry' : 'Inquiries'} Awaiting Action
+                  </h3>
+                  <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-rose-100 text-rose-800 border border-rose-200">
+                    Action Required
+                  </span>
+                </div>
+
+                {latestNewInquiry && (
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    <span className="font-semibold text-gray-800">Latest from:</span>{' '}
+                    <span className="font-bold text-[#3a081a]">{latestNewInquiry.customer_name}</span>{' '}
+                    <span className="text-gray-500">({latestNewInquiry.country})</span>
+                    {latestNewInquiry.inquiry_items?.[0] && (
+                      <span className="text-gray-700">
+                        {' '}• {latestNewInquiry.inquiry_items[0].products?.name || 'Item'} ({latestNewInquiry.inquiry_items[0].quantity} Units)
+                      </span>
+                    )}
+                    <span className="text-gray-400 ml-1.5 font-mono">
+                      • {new Date(latestNewInquiry.created_at).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </span>
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5 self-end lg:self-center shrink-0">
+              {latestNewInquiry && (
+                <button
+                  onClick={() => setSelectedInquiry(latestNewInquiry)}
+                  className="px-3.5 py-2 bg-[#3a081a] hover:bg-[#2a0512] text-white text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow flex items-center gap-1.5 cursor-pointer"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  Review Latest
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  const isFiltered = statusFilter.toLowerCase() === 'new' || statusFilter.toLowerCase() === 'pending';
+                  setStatusFilter(isFiltered ? 'All Statuses' : 'new');
+                }}
+                className={`px-3.5 py-2 border text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                  statusFilter.toLowerCase() === 'new' || statusFilter.toLowerCase() === 'pending'
+                    ? 'bg-rose-50 border-rose-300 text-rose-800'
+                    : 'bg-white border-gray-300 hover:bg-gray-50 text-gray-700'
+                }`}
+              >
+                {statusFilter.toLowerCase() === 'new' || statusFilter.toLowerCase() === 'pending'
+                  ? '✓ Filtering New'
+                  : 'Filter New Only'}
+              </button>
+              <button
+                onClick={() => setBannerDismissed(true)}
+                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+                title="Dismiss Banner"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
 
       {/* Toolbar Filter */}
       <div className="bg-white border border-[#ececec] rounded shadow-sm flex flex-col mb-8">
@@ -398,8 +557,8 @@ export default function InquiriesDashboardPage() {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-4 py-2 text-xs border border-gray-200 rounded-sm bg-white focus:outline-none focus:border-[#3a081a] text-black w-full md:w-40 cursor-pointer"
             >
-              <option>All Statuses</option>
-              <option value="pending">Pending</option>
+              <option value="All Statuses">All Statuses</option>
+              <option value="new">New / Pending</option>
               <option value="quoted">Quoted</option>
               <option value="order_confirmed">Order Confirmed</option>
               <option value="reply_sent">Reply Sent</option>

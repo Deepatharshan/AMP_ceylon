@@ -3,12 +3,20 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { X, Cookie } from 'lucide-react';
 
 export default function CookieConsent() {
+  const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // Do not show on admin routes
+    if (pathname?.startsWith('/admin')) {
+      setIsVisible(false);
+      return;
+    }
+
     // Check if the user has already consented
     const hasConsented = localStorage.getItem('amp_cookie_consent');
     if (!hasConsented) {
@@ -18,7 +26,11 @@ export default function CookieConsent() {
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [pathname]);
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   const handleAccept = () => {
     localStorage.setItem('amp_cookie_consent', 'true');
