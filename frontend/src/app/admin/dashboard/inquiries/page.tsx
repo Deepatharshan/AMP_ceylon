@@ -231,6 +231,7 @@ export default function InquiriesDashboardPage() {
       // 3. Update local state list
       setInquiries(prev => prev.filter(i => i.id !== deleteConfirmId));
       showToast('Inquiry request successfully deleted.', 'success');
+      window.dispatchEvent(new CustomEvent('inquiries_updated'));
     } catch (err: any) {
       console.error('Failed to delete inquiry:', err);
       showToast('Failed to delete inquiry: ' + (err.message || err), 'error');
@@ -303,6 +304,8 @@ export default function InquiriesDashboardPage() {
         .update({ status })
         .eq('id', id);
 
+      if (error) throw error;
+
       // Local state update
       setInquiries(prev => prev.map(inq => {
         if (inq.id === id) {
@@ -311,9 +314,19 @@ export default function InquiriesDashboardPage() {
         return inq;
       }));
 
+      setSelectedInquiry(prev => (prev && prev.id === id ? { ...prev, status } : prev));
       setEditingInquiryId(null);
+      window.dispatchEvent(new CustomEvent('inquiries_updated'));
     } catch (err) {
       console.error('Failed to update inquiry status:', err);
+    }
+  };
+
+  const handleOpenDetail = (inq: Inquiry) => {
+    setSelectedInquiry(inq);
+    // If it's a new or pending inquiry, automatically mark it as 'checked' so it's acknowledged
+    if (inq.status.toLowerCase() === 'new' || inq.status.toLowerCase() === 'pending') {
+      handleUpdateStatus(inq.id, 'checked');
     }
   };
 
@@ -438,7 +451,7 @@ export default function InquiriesDashboardPage() {
               <button
                 onClick={() => {
                   setLiveNewAlert(null);
-                  setSelectedInquiry(latestNewInquiry);
+                  handleOpenDetail(latestNewInquiry);
                 }}
                 className="px-3 py-1.5 bg-white text-[#3a081a] text-xs font-bold rounded shadow hover:bg-rose-50 transition-colors cursor-pointer"
               >
@@ -503,7 +516,7 @@ export default function InquiriesDashboardPage() {
             <div className="flex items-center gap-2.5 self-end lg:self-center shrink-0">
               {latestNewInquiry && (
                 <button
-                  onClick={() => setSelectedInquiry(latestNewInquiry)}
+                  onClick={() => handleOpenDetail(latestNewInquiry)}
                   className="px-3.5 py-2 bg-[#3a081a] hover:bg-[#2a0512] text-white text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow flex items-center gap-1.5 cursor-pointer"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
@@ -626,10 +639,10 @@ export default function InquiriesDashboardPage() {
                             autoFocus
                           >
                             <option value="pending">Pending</option>
+                            <option value="checked">Checked</option>
                             <option value="quoted">Quoted</option>
                             <option value="order_confirmed">Order Confirmed</option>
                             <option value="reply_sent">Reply Sent</option>
-                            <option value="checked">Checked</option>
                           </select>
                         ) : (
                           <div 
@@ -645,7 +658,7 @@ export default function InquiriesDashboardPage() {
                         <div className="flex justify-center gap-4 text-gray-400">
                           {/* View Button */}
                           <button 
-                            onClick={() => setSelectedInquiry(inq)}
+                            onClick={() => handleOpenDetail(inq)}
                             className="hover:text-[#3a081a] p-1 transition-colors cursor-pointer"
                             title="View Details"
                           >
@@ -791,9 +804,20 @@ export default function InquiriesDashboardPage() {
                   <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Export Details</h4>
                   <p className="text-gray-700">Country: <span className="font-semibold">{selectedInquiry.country}</span></p>
                   <p className="text-gray-700">Inquiry Date: {new Date(selectedInquiry.created_at).toLocaleString()}</p>
-                  <p className="text-gray-700 flex items-center gap-2 mt-2">
-                    Status: {getStatusPill(selectedInquiry.status)}
-                  </p>
+                  <div className="text-gray-700 flex items-center gap-2 mt-2">
+                    <span className="text-xs font-semibold">Status:</span>
+                    <select
+                      value={selectedInquiry.status.toLowerCase()}
+                      onChange={(e) => handleUpdateStatus(selectedInquiry.id, e.target.value)}
+                      className="text-xs border border-gray-300 rounded p-1 bg-white font-medium focus:border-[#3a081a] focus:outline-none cursor-pointer"
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="checked">Checked</option>
+                      <option value="quoted">Quoted</option>
+                      <option value="order_confirmed">Order Confirmed</option>
+                      <option value="reply_sent">Reply Sent</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
@@ -844,7 +868,15 @@ export default function InquiriesDashboardPage() {
               </div>
             </div>
 
-            <div className="bg-gray-50 p-4 border-t border-gray-100 flex justify-end gap-3">
+            <div className="bg-gray-50 p-4 border-t border-gray-100 flex flex-wrap justify-end gap-3">
+              {['new', 'pending'].includes(selectedInquiry.status.toLowerCase()) && (
+                <button
+                  onClick={() => handleUpdateStatus(selectedInquiry.id, 'checked')}
+                  className="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
+                >
+                  ✓ Mark as Checked
+                </button>
+              )}
               <button
                 onClick={() => downloadInquiryPDF(selectedInquiry, false)}
                 className="border border-gray-200 hover:bg-gray-100 text-gray-700 px-4 py-2 rounded text-xs font-semibold uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer"
@@ -863,7 +895,7 @@ export default function InquiriesDashboardPage() {
                 href={`https://mail.google.com/mail/?view=cm&fs=1&to=${selectedInquiry.email}&su=${encodeURIComponent(`Wholesale Export Quote - AMP Ceylon (ID: ${selectedInquiry.id.substring(0,8)})`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#3a081a] hover:bg-[#4a0b22] text-white px-5 py-2 rounded text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center text-center block"
+                className="bg-[#3a081a] hover:bg-[#4a0b22] text-white px-5 py-2 rounded text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center text-center block cursor-pointer"
                 style={{ color: '#ffffff' }}
               >
                 Send Email Reply
